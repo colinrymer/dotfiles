@@ -17,13 +17,6 @@ alias netlogoff="sudo sysctl -w net.inet.ip.fw.verbose=0"
 
 alias gemit="rvm gem install"
 
-#-------------------
-# Git Aliases
-#-------------------
-alias push='git push'
-alias pull='git pull'
-alias commit='git commit'
-
 alias ls='ls -A'
 alias ll='ls -l'
 
@@ -32,8 +25,6 @@ alias ~='cd ~'
 alias h='cd ~'
 
 nsm () { nasm -f elf -o "$1".o -l "$1".l "$1".s;}
-
-gi () { sudo gem install "$1" --no-ri --no-rdoc -V; }
 
 #-------------------------------------------------------------
 # spelling typos - highly personal and keyboard-dependent :-)
