@@ -16,4 +16,4 @@ Any files ending in ".symlink" will be appropriately linked in the home director
 
 ## thanks
 
-Major thanks to [Zach Holman](https://github.com/holman/), from whom I borrowed heavily. Eric Haughee also provided me with the intial .bash_profile upgrades that prompted this project and can still be seen in my prompt.
+Major thanks to [Zach Holman](https://github.com/holman/), from whom I borrowed heavily. [Eric Haughee](https://github.com/ehaughee) also provided me with the intial .bash_profile upgrades that prompted this project and can still be seen in my prompt.
