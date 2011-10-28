@@ -14,6 +14,10 @@ To install, you must have rake installed on your machine. You can test for rake 
 
 Any files ending in ".symlink" will be appropriately linked in the home directory (files beginning with a "." will not be symlinked).
 
+## ooh, secrets
+
+The .gitignore file includes a line that ignores anything in a "secrets" directory. I use this to store anything private.
+
 ## thanks
 
 Major thanks to [Zach Holman](https://github.com/holman/), from whom I borrowed heavily. [Eric Haughee](https://github.com/ehaughee) also provided me with the intial .bash_profile upgrades that prompted this project and can still be seen in my prompt.
