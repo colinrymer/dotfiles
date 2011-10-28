@@ -18,8 +18,8 @@ Any files ending in ".symlink" will be appropriately linked in the home director
 
 To uninstall this setup:
 
-	1. `cd ~/.dotfiles`
-	2. `rake uninstall`
+  1. `cd ~/.dotfiles`
+  2. `rake uninstall`
 
 All the symlinks created by `rake install` will be removed and any backups made during the installation will be replaced. 
 
