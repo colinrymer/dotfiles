@@ -8,7 +8,7 @@ This is my collection of dotfiles, as inspired by Zack Holman, Ryan Bates, Eric 
 
 To install, you must have rake installed on your machine. You can test for rake with the command `rake -V`. RVM is highly recommended.
 
-  1. `git clone git@github.com:crymer11/Dotfiles.git ~/.dotfiles`
+  1. `git clone git@github.com:crymer11/dotfiles.git ~/.dotfiles`
   2. `cd .dotfiles`
   3. `rake install`
 
