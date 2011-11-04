@@ -6,13 +6,28 @@ This is my collection of dotfiles, as inspired by Zack Holman, Ryan Bates, Eric 
 
 ## installation
 
+### install
+
 To install, you must have rake installed on your machine. You can test for rake with the command `rake -V`. RVM is highly recommended.
 
-  1. `git clone git@github.com:crymer11/Dotfiles.git ~/.dotfiles`
-  2. `cd .dotfiles`
+  1. `git clone git@github.com:crymer11/dotfiles.git ~/.dotfiles`
+  2. `cd ~/.dotfiles`
   3. `rake install`
 
 Any files ending in ".symlink" will be appropriately linked in the home directory (files beginning with a "." will not be symlinked).
+
+### uninstall
+
+To uninstall this setup:
+
+  1. `cd ~/.dotfiles`
+  2. `rake uninstall`
+
+All the symlinks created by `rake install` will be removed and any backups made during the installation will be replaced. 
+
+## ooh, secrets
+
+The .gitignore file includes a line that ignores anything in a "secrets" directory. I use this to store anything private.
 
 ## thanks
 
