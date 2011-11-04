@@ -1,6 +1,8 @@
 # shortcut to this dotfiles path is $BSH
 export BSH=$HOME/.dotfiles
 
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
 # source every .bash file in this rep
 for config_file in $BSH/**/*.bash
 do
@@ -18,11 +20,11 @@ shopt -s nocaseglob
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
 
-# Auto-screen invocation. see: http://taint.org/wk/RemoteLoginAutoScreen
-# if we're coming from a remote SSH connection, in an interactive session
-# then automatically put us into a screen(1) session.   Only try once
-# -- if $STARTED_SCREEN is set, don't try it again, to avoid looping
-# if screen fails for some reason.
+## Auto-screen invocation. see: http://taint.org/wk/RemoteLoginAutoScreen
+## if we're coming from a remote SSH connection, in an interactive session
+## then automatically put us into a screen(1) session.   Only try once
+## -- if $STARTED_SCREEN is set, don't try it again, to avoid looping
+## if screen fails for some reason.
 
 # if [ "$PS1" != "" -a "${STARTED_SCREEN:-x}" = x -a "${SSH_TTY:-x}" != x ]
 # then
