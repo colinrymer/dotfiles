@@ -1,6 +1,8 @@
 # shortcut to this dotfiles path is $BSH
 export BSH=$HOME/.dotfiles
 
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
 # source every .bash file in this rep
 for config_file in $BSH/**/*.bash
 do
@@ -17,7 +19,7 @@ source `brew --prefix`/Library/Contributions/brew_bash_completion.sh
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
 
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2)" scp sftp ssh
