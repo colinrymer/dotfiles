@@ -17,8 +17,8 @@ alias netlogoff="sudo sysctl -w net.inet.ip.fw.verbose=0"
 
 alias gemit="rvm gem install"
 
-alias ls='ls -A'
-alias ll='ls -l'
+alias ls='ls -A -G'
+alias ll='ls -l -g'
 
 alias ..='cd ..'
 alias ~='cd ~'

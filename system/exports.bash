@@ -1,3 +1,7 @@
+# Colors for ls
+export CLICOLOR=1
+export LSCOLORS=gxdxbxfxcxegedabagacad
+
 # Less Colors for Man Pages
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
 export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
