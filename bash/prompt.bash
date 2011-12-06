@@ -12,6 +12,7 @@ if tput setaf 1 &> /dev/null; then
       WHITE=$(tput setaf 254)
       CLEAR=$(tput setaf 256)
       RUBY=$(tput setaf 200)
+      GEMSET=$(tput setaf 123)
     else
       MAGENTA=$(tput setaf 5)
       ORANGE=$(tput setaf 4)
@@ -31,4 +32,4 @@ parse_git_branch () {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
 
-PS1="\[${MAGENTA}\]\u\[$WHITE\]@\[$ORANGE\]\h \[$WHITE\]in \[$GREEN\]\w\[$WHITE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$PURPLE\]\$(parse_git_branch)\[$RUBY\] using Ruby v. $(ruby -e 'print RUBY_VERSION')\n\[$RESET\]\$ "
+PS1="\[${MAGENTA}\]\u\[$WHITE\]@\[$ORANGE\]\h \[$WHITE\]in \[$GREEN\]\w\[$WHITE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$PURPLE\]\$(parse_git_branch)\[$RUBY\] using Ruby v. \$(ruby -e 'print RUBY_VERSION'),\[$GEMSET\] gemset => \$(rvm gemset name)\n\[$RESET\]\$ "
