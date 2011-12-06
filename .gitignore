@@ -1,3 +1,4 @@
 secrets/*
 git/gitconfig.symlink
-bash/prompt.bash
+# bash/colors.sh
+

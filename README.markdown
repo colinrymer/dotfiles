@@ -16,6 +16,11 @@ To install, you must have rake installed on your machine. You can test for rake 
 
 Any files ending in ".symlink" will be appropriately linked in the home directory (files beginning with a "." will not be symlinked).
 
+The bash prompt colors can be customized by changing the values in the
+`/bash/colors.sh` file. Any changes will automatically change the
+default values. To preserve these changes, uncomment the
+`/bash/colors.sh` line in the `.gitignore` file.
+
 ### uninstall
 
 To uninstall this setup:

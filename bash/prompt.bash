@@ -5,24 +5,28 @@
 if tput setaf 1 &> /dev/null; then
     tput sgr0
     if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
-      MAGENTA=$(tput setaf 9)
-      ORANGE=$(tput setaf 172)
-      GREEN=$(tput setaf 190)
-      PURPLE=$(tput setaf 141)
-      WHITE=$(tput setaf 254)
-      CLEAR=$(tput setaf 256)
-      RUBY=$(tput setaf 200)
-      GEMSET=$(tput setaf 123)
+      # set defaults
+      COLOR_ONE=$(tput setaf 9)     # magenta
+      COLOR_TWO=$(tput setaf 172)   # COLOR_TWO
+      COLOR_THREE=$(tput setaf 190) # COLOR_THREE
+      COLOR_FOUR=$(tput setaf 141)  # COLOR_FOUR
+      COLOR_FIVE=$(tput setaf 254)  # COLOR_FIVE
+      COLOR_SIX=$(tput setaf 256)   # COLOR_SIX
+      RUBY=$(tput setaf 200)        # ruby prompt color
+      GEMSET=$(tput setaf 123)      # gemset color
+
+      # load custom settings - would like to remove hard-coding
+      source $BSH/bash/colors.sh 
+
     else
-      MAGENTA=$(tput setaf 5)
-      ORANGE=$(tput setaf 4)
-      GREEN=$(tput setaf 2)
-      PURPLE=$(tput setaf 1)
-      WHITE=$(tput setaf 7)
+      COLOR_ONE=$(tput setaf 5)
+      COLOR_TWO=$(tput setaf 4)
+      COLOR_THREE=$(tput setaf 2)
+      COLOR_FOUR=$(tput setaf 1)
+      COLOR_FIVE=$(tput setaf 7)
     fi
     BOLD=$(tput bold)
     RESET=$(tput sgr0)
-
 fi
 
 parse_git_dirty () {
@@ -32,4 +36,4 @@ parse_git_branch () {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
 
-PS1="\[${MAGENTA}\]\u\[$WHITE\]@\[$ORANGE\]\h \[$WHITE\]in \[$GREEN\]\w\[$WHITE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$PURPLE\]\$(parse_git_branch)\[$RUBY\] using Ruby v. \$(ruby -e 'print RUBY_VERSION'),\[$GEMSET\] gemset => \$(rvm gemset name)\n\[$RESET\]\$ "
+PS1="\[${COLOR_ONE}\]\u\[$COLOR_FIVE\]@\[$COLOR_TWO\]\h \[$COLOR_FIVE\]in \[$COLOR_THREE\]\w\[$COLOR_FIVE\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$COLOR_FOUR\]\$(parse_git_branch)\[$RUBY\] using Ruby v. \$(ruby -e 'print RUBY_VERSION'),\[$GEMSET\] gemset => \$(rvm gemset name)\n\[$RESET\]\$ "
