@@ -1,0 +1,2 @@
+alias gemset="rvm gemset"
+
