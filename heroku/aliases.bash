@@ -1,0 +1,1 @@
+alias hlogs='heroku logs'
