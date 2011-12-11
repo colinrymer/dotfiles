@@ -1,0 +1,4 @@
+#!/bin/bash
+
+osascript -e "set Volume $(printf "%d" $1)"
+
