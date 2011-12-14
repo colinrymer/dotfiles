@@ -10,9 +10,9 @@
 #
 # Colin Rymer 12/6/11
 
-COLOR_ONE=$(tput setaf 99)     # magenta
-COLOR_TWO=$(tput setaf 122)   # orange
-COLOR_THREE=$(tput setaf 10) # green
+COLOR_ONE=$(tput setaf 9)     # magenta
+COLOR_TWO=$(tput setaf 172)   # orange
+COLOR_THREE=$(tput setaf 190) # green
 COLOR_FOUR=$(tput setaf 141)  # purple
 COLOR_FIVE=$(tput setaf 254)  # white
 COLOR_SIX=$(tput setaf 256)   # clear (on my macbook - should be white)
