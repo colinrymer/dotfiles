@@ -1,20 +1,46 @@
 set nocompatible
 syntax enable
 set encoding=utf-8
-set showcmd			" display incomplete commands
 filetype plugin indent on	" load file type plugins + indentation
 colorscheme candycode
 
 "" Whitespace
-set nowrap			" don't wrap lines
-set tabstop=2 shiftwidth=2	" a tab is two spaces
+set nowrap			    " don't wrap lines
+set tabstop=2       " a tab is two spaces
+set shiftwidth=2	  " ''
 set expandtab			" use spaces, not tabs
 set backspace=indent,eol,start	" backspace through everything in insert mode
 
-
-"" Searching
+"-----------------------------------------------------------------------------
+" Searching
+"-----------------------------------------------------------------------------
 set hlsearch			" highlight matches
 set incsearch			" incremental searching
 set ignorecase			" searches are case insensitive
 set smartcase			" ... unless they contain at least 1 capital letter
 
+"-----------------------------------------------------------------------------
+" Visual Cues
+"-----------------------------------------------------------------------------
+
+set showmatch              " brackets/braces that is
+set mat=5                  " duration to show matching brace (1/10 sec)
+set laststatus=2           " always show the status line
+set visualbell             " be quiet 
+
+"-----------------------------------------------------------------------------
+"  UI
+"-----------------------------------------------------------------------------
+set ruler         " show the cursor position all the time
+set number        " line numbers
+set ch=2          " command line height = 2
+set showcmd			" display incomplete commands
+
+"-----------------------------------------------------------------------------
+"  Strip all trailing whitespace in file
+"-----------------------------------------------------------------------------
+
+  function! StripWhitespace ()
+      exec ':%s/ \+$//gc'
+  endfunction
+  map ,s :call StripWhitespace ()<CR>
