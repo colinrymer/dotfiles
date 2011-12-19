@@ -1,5 +1,6 @@
 # Editor
 export EDITOR='subl'
+
 # Colors for ls
 export CLICOLOR=1
 export LSCOLORS=gxdxbxfxcxegedabagacad
