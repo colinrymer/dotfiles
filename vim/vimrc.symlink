@@ -1,23 +1,56 @@
 set nocompatible
 syntax enable
 set encoding=utf-8
+set history=1000
+set undolevels=1000
+set wildignore=*.swp,*.bak
+set pastetoggle=<F2>
 filetype plugin indent on	" load file type plugins + indentation
 colorscheme candycode
 
-"" Whitespace
+" Set buffer to hide instead of close
+set hidden
+
+" Initialize Pathogen for plugin management
+call pathogen#infect()
+call pathogen#helptags()
+
+"------------------------------------------------------------------------------
+" Key Remappings
+"------------------------------------------------------------------------------
+:inoremap jj <Esc>
+nnoremap ; :
+
+let mapleader = "," "change the mapleader from \ to ,
+
+" Quickly edit/reload the vimrc file
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
+
+" Thanks to Steve Losh for this liberating tip
+" See http://stevelosh.com/blog/2010/09/coming-home-to-vim
+nnoremap / /\v
+vnoremap / /\v
+
+"------------------------------------------------------------------------------
+" Whitespace
+"------------------------------------------------------------------------------
 set nowrap			    " don't wrap lines
 set tabstop=2       " a tab is two spaces
-set shiftwidth=2	  " ''
-set expandtab			" use spaces, not tabs
+set shiftwidth=2	  " two spaces, ok?
+set expandtab			  " use spaces, not tabs
 set backspace=indent,eol,start	" backspace through everything in insert mode
 
 "-----------------------------------------------------------------------------
 " Searching
 "-----------------------------------------------------------------------------
-set hlsearch			" highlight matches
-set incsearch			" incremental searching
-set ignorecase			" searches are case insensitive
-set smartcase			" ... unless they contain at least 1 capital letter
+set hlsearch			  " highlight matches
+set incsearch			  " incremental searching
+set ignorecase		  " searches are case insensitive
+set smartcase			  " ... unless they contain at least 1 capital letter
+
+" Clear the search buffer on ,/
+nnoremap <leader><space> :nohlsearch<CR>
 
 "-----------------------------------------------------------------------------
 " Visual Cues
@@ -31,10 +64,11 @@ set visualbell             " be quiet
 "-----------------------------------------------------------------------------
 "  UI
 "-----------------------------------------------------------------------------
+set title         " change the terminal window's title
 set ruler         " show the cursor position all the time
 set number        " line numbers
 set ch=2          " command line height = 2
-set showcmd			" display incomplete commands
+set showcmd			  " display incomplete commands
 
 "-----------------------------------------------------------------------------
 "  Strip all trailing whitespace in file

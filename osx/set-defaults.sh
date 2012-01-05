@@ -55,5 +55,5 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:showItemInfo true" ~/Library/Preferences/com.apple.finder.plist
 
 # Kill affected applications
-for app in Finder Dock; do killall "$app"; done
+for app in Finder Dock; do echo "killing $app"; killall "$app"; done
 
