@@ -35,3 +35,5 @@ alias vf='cd'
 alias moer='more'
 alias moew='more'
 alias puhs='push'
+alias psuh='push'
+
