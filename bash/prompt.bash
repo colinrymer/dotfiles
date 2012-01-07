@@ -1,5 +1,4 @@
 # Sexy Bash Prompt, inspired by "Extravagant Zsh Prompt"
-# Screenshot: http://img.gf3.ca/d54942f474256ec26a49893681c49b5a.png
 # A big thanks to \amethyst on Freenode
 
 if tput setaf 1 &> /dev/null; then

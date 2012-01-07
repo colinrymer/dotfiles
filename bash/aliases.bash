@@ -26,6 +26,8 @@ alias h='cd ~'
 
 nsm () { nasm -f elf -o "$1".o -l "$1".l "$1".s;}
 
+vidcut () { ffmpeg -sameq -ss 0 -t "$2" -i "$1" shortened_"$1"; }
+
 #-------------------------------------------------------------
 # spelling typos - highly personal and keyboard-dependent :-)
 #-------------------------------------------------------------
@@ -36,4 +38,3 @@ alias moer='more'
 alias moew='more'
 alias puhs='push'
 alias psuh='push'
-

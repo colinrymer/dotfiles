@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# Quick shortcut to an editor
+# 
+# Credit to Zach Holman
+#
+# Usage:
+#
+#   $ e
+#   # => opens current directory in $EDITOR
+#
+#   $ e .
+#   $ e /usr/local
+#   # => opens the specified directory in your editor
+
+if [ "$#" -ne "1" ]
+then
+  $($EDITOR .)
+else
+  $($EDITOR $1)
+fi
