@@ -6,11 +6,6 @@ for config_file in $BSH/**/*.bash
 do
   source $config_file
 done
-# load every completion after autocomplete loads
-for config_file in $BSH/**/completion.sh
-do
-  source $config_file
-done
 
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob
