@@ -1,39 +1,90 @@
-# Colin's dotfiles
+# holman does dotfiles
 
 ## dotfiles
 
-This is my collection of dotfiles, as inspired by Zack Holman, Ryan Bates, Eric Haughee, and random posts on the web. This uses the [implementation designed by Zach Holman](https://github.com/holman/dotfiles), but is focused on bash. Merging of a fork of his work is likely in the near future, since I'd like to start using zsh and some vim.
+Your dotfiles are how you personalize your system. These are mine. The very
+prejudiced mix: OS X, zsh, Ruby, Rails, git, homebrew, rvm, vim. If you
+match up along most of those lines, you may dig my dotfiles.
 
-## installation
+I was a little tired of having long alias files and everything strewn about
+(which is extremely common on other dotfiles projects, too). That led to this
+project being much more topic-centric. I realized I could split a lot of things
+up into the main areas I used (Ruby, git, system libraries, and so on), so I
+structured the project accordingly.
 
-### install
+If you're interested in the philosophy behind why projects like these are
+awesome, you might want to [read my post on the
+subject](http://zachholman.com/2010/08/dotfiles-are-meant-to-be-forked/).
 
-To install, you must have rake installed on your machine. You can test for rake with the command `rake -V`. RVM is highly recommended.
+## install
 
-  1. `git clone git@github.com:crymer11/dotfiles.git ~/.dotfiles`
-  2. `cd ~/.dotfiles`
-  3. `rake install`
+- `git clone git://github.com/holman/dotfiles ~/.dotfiles`
+- `cd ~/.dotfiles`
+- `rake install`
 
-Any files ending in ".symlink" will be appropriately linked in the home directory (files beginning with a "." will not be symlinked).
+The install rake task will symlink the appropriate files in `.dotfiles` to your
+home directory. Everything is configured and tweaked within `~/.dotfiles`,
+though.
 
-The bash prompt colors can be customized by changing the values in the
-`/bash/colors.sh` file. Any changes will automatically change the
-default values. To preserve these changes, uncomment the
-`/bash/colors.sh` line in the `.gitignore` file.
+The main file you'll want to change right off the bat is `zsh/zshrc.symlink`,
+which sets up a few paths that'll be different on your particular machine.
 
-### uninstall
+## topical
 
-To uninstall this setup:
+Everything's built around topic areas. If you're adding a new area to your
+forked dotfiles — say, "Java" — you can simply add a `java` directory and put
+files in there. Anything with an extension of `.zsh` will get automatically
+included into your shell. Anything with an extension of `.symlink` will get
+symlinked without extension into `$HOME` when you run `rake install`.
 
-  1. `cd ~/.dotfiles`
-  2. `rake uninstall`
+## what's inside
 
-All the symlinks created by `rake install` will be removed and any backups made during the installation will be replaced. 
+A lot of stuff. Seriously, a lot of stuff. Check them out in the file browser
+above and see what components may mesh up with you. Fork it, remove what you
+don't use, and build on what you do use.
 
-## ooh, secrets
+## components
 
-The .gitignore file includes a line that ignores anything in a "secrets" directory. I use this to store anything private.
+There's a few special files in the hierarchy.
+
+- **bin/**: Anything in `bin/` will get added to your `$PATH` and be made
+  available everywhere.
+- **topic/\*.zsh**: Any files ending in `.zsh` get loaded into your
+  environment.
+- **topic/\*.symlink**: Any files ending in `*.symlink` get symlinked into
+  your `$HOME`. This is so you can keep all of those versioned in your dotfiles
+  but still keep those autoloaded files in your home directory. These get
+  symlinked in when you run `rake install`.
+- **topic/\*.completion.sh**: Any files ending in `completion.sh` get loaded
+  last so that they get loaded after we set up zsh autocomplete functions.
+
+## add-ons
+
+There are a few things I use to make my life awesome. They're not a required
+dependency, but if you install them they'll make your life a bit more like a
+bubble bath.
+
+- If you want some more colors for things like `ls`, install grc: `brew install
+  grc`.
+- If you install the excellent [rvm](http://rvm.beginrescueend.com) to manage
+  multiple rubies, your current branch will show up in the prompt. Bonus.
+
+## bugs
+
+I want this to work for everyone; that means when you clone it down it should
+work for you even though you may not have `rvm` installed, for example. That
+said, I do use this as *my* dotfiles, so there's a good chance I may break
+something if I forget to make a check for a dependency.
+
+If you're brand-new to the project and run into any blockers, please
+[open an issue](https://github.com/holman/dotfiles/issues) on this repository
+and I'd love to get it fixed for you!
 
 ## thanks
 
-Major thanks to [Zach Holman](https://github.com/holman/), from whom I borrowed heavily. [Eric Haughee](https://github.com/ehaughee) also provided me with the intial .bash_profile upgrades that prompted this project and can still be seen in my prompt.
+I forked [Ryan Bates](http://github.com/ryanb)' excellent
+[dotfiles](http://github.com/ryanb/dotfiles) for a couple years before the
+weight of my changes and tweaks inspired me to finally roll my own. But Ryan's
+dotfiles were an easy way to get into bash customization, and then to jump ship
+to zsh a bit later. A decent amount of the code in these dotfiles stem or are
+inspired from Ryan's original project.

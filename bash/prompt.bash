@@ -7,7 +7,7 @@ if tput setaf 1 &> /dev/null; then
       # set defaults
       COLOR_ONE=$(tput setaf 9)     # magenta
       COLOR_TWO=$(tput setaf 172)   # orange
-      COLOR_THREE=$(tput setaf 190) # green
+      COLOR_THREE=$(tput setaf 190) # yellow
       COLOR_FOUR=$(tput setaf 141)  # purple
       COLOR_FIVE=$(tput setaf 254)  # white
       COLOR_SIX=$(tput setaf 256)   # clear (on my macbook - should be white)

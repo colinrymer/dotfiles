@@ -54,6 +54,9 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # Show item info below desktop icons
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:showItemInfo true" ~/Library/Preferences/com.apple.finder.plist
 
+# Copy text in Quicklook windows
+defaults write com.apple.finder QLEnableTextSelection -bool TRUE
+
 # Kill affected applications
 for app in Finder Dock; do echo "killing $app"; killall "$app"; done
 

@@ -1,0 +1,32 @@
+# Path to your oh-my-zsh configuration.
+export ZSH=$HOME/.oh-my-zsh
+
+export ZSHDOTFILES=$HOME/.dotfiles
+export PROJECTS=~/Projects
+
+# ZSH_THEME="robbyrussell"
+
+# Uncomment following line if you want red dots to be displayed while waiting for completion
+# COMPLETION_WAITING_DOTS="true"
+
+plugins=(git)
+
+# use .localrc for SUPER SECRET CRAP that you don't
+# want in your public, versioned repo.
+if [[ -a ~/.localrc ]]
+then
+  source ~/.localrc
+fi
+
+source $ZSH/oh-my-zsh.sh
+
+# load every completion after autocomplete loads
+for config_file ($ZSHDOTFILES/**/completion.sh) source $config_file
+
+# source every .zshell file in this rep
+for config_file ($ZSHDOTFILES/**/*.zshell) source $config_file
+
+# source every .aliases file in this rep
+for config_file ($ZSHDOTFILES/**/*.aliases) source $config_file
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"

@@ -7,6 +7,11 @@ do
   source $config_file
 done
 
+for config_file in $BSH/**/*.aliases
+do
+  source $config_file
+done
+
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob
 

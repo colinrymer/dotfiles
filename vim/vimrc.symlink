@@ -8,6 +8,9 @@ set pastetoggle=<F2>
 filetype plugin indent on	" load file type plugins + indentation
 colorscheme candycode
 
+" Store swap files in fixed location, not current directory.
+set dir=~/.vimswap//,/var/tmp//,/tmp//,.
+
 " Set buffer to hide instead of close
 set hidden
 
