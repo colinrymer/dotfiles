@@ -9,8 +9,8 @@ require 'optparse'
 
 class Dong
 
-  attr_accessor :soft_length, :hard_length, :refractory_period, :spurt_size, 
-                :spurt_distance, :girth, :balls, :direction, :dong_stage
+  attr_accessor :soft_length, :hard_length, :refractory_period, :spurt_size, :swordfight,
+                :spurt_distance, :girth, :balls, :direction, :dong_stage, :moneyshot
 
   def initialize args
     @refractory_period = 2
@@ -21,7 +21,9 @@ class Dong
     @thickness = "thick"
     @balls = "big"
     @direction = "right"
-    
+    @moneyshot = false
+    @swordfight = false
+
     args.each { |k,v| instance_variable_set("@#{k}", v) unless v.nil? }
   end
 
@@ -83,17 +85,31 @@ class Dong
     spray = true if length >= @hard_length
     if @direction == "right"
       unit << member("right")
-      unit << spurt("right") if spray
+      unit << (spray ? spurt("right") : no_spurt)
+      unit << target
     else
-      unit << spurt("left") if spray
+      unit << target
+      unit << (spray ? spurt("left") : no_spurt)
       unit << member("left")
     end
     unit
   end
 
+  def target
+    if @moneyshot === "boobs"
+      return "(.)(.)"
+    elsif @moneyshot === "butt"
+      return "( Y )"
+    elsif @moneyshot === "face"
+      return "('o')"
+    else
+      return ""
+    end
+  end
+
+  def no_spurt; result = ""; @spurt_distance.times{result << " "}; return result end
   def balls; if @balls == "big" then return "8" else return ":" end end
   def shaft; if girthy then return "=" else return "-" end end
-
   def cooldown; dong_factor end
   def dong_cycle_end; dong_factor+@spurt_distance+@spurt_size+cooldown+@refractory_period end
   def spurt_cycle_end; dong_cycle_end - cooldown - @refractory_period end
@@ -104,45 +120,33 @@ class Dong
 
 end
 
-options = {}
+options = {
+  balls:          "big",                  # DEFAULT_BALLS
+  direction:      "right",                # DEFAULT_DIRECTION
+  file:           "#{ENV['HOME']}/.dong", # DEFAULT_SAVE_FILE
+  hard_length:    5,                      # DEFAULT_HARD_LENGTH
+  moneyshot:      "none",                 # DEFAULT_MONEYSHOT
+  refractory:     2,                      # DEFAULT_REFRACTORY_PERIOD
+  soft_length:    2,                      # DEFAULT_SOFT_LENGTH
+  spurt_distance: 8,                      # DEFAULT_SPURT_DISTANCE
+  spurt_size:     4,                      # DEFAULT_SPURT_SIZE
+  swordfight:     false,                  # DEFAULT_SWORDFIGHT_STATUS
+  thickness:      "thick"                 # DEFAULT_THICKNESS
+}
 
 OptionParser.new do |opts|
-  options[:refractory] = 2 # DEFAULT_REFRACTORY_PERIOD
-  opts.on("-r", "--refractory PERIOD", "length of the refractory period") do |opt|
-    options[:refractory] = opt
-  end
-  options[:soft_length] = 2 # DEFAULT_SOFT_LENGTH
-  opts.on("-f", "--flaccid LENGTH", "length of the soft dong") do |opt|
-    options[:soft_length] = opt
-  end
-  options[:hard_length] = 5 # DEFAULT_HARD_LENGTH
-  opts.on("-h", "--hard LENGTH", "length of the hard dong") do |opt|
-    options[:hard_length] = opt
-  end
-  options[:spurt_size] = 4 # DEFAULT_SPURT_SIZE
-  opts.on("-s", "--spurt SIZE", "size of the spurt") do |opt|
-    options[:spurt_size] = opt
-  end
-  options[:spurt_distance] = 8 # DEFAULT_SPURT_DISTANCE
-  opts.on("-d", "--distance LENGTH", "distance of the spurt") do |opt|
-    options[:spurt_distance] = opt
-  end
-  options[:thickness] = "thick" # DEFAULT_THICKNESS
-  opts.on("-t", "--thin", "none of those thick dongs; make it thin") do
-    options[:thickness] = "thin"
-  end
-  options[:balls] = "big" # DEFAULT_BALLS
-  opts.on("-b", "--tiny", "who's got big balls? not this dong. those balls are tiny.") do
-    options[:balls] = "tiny"
-  end
-  options[:direction] = "right" # DEFAULT_BALLS
-  opts.on("-l", "--direction", "normally, it hangs to the right.") do
-    options[:direction] = "left"
-  end
-  options[:file] = "#{ENV['HOME']}/.dong" # DEFAULT_SAVE_FILE
-  opts.on("-x", "--file URI", "special save file location.") do |opt|
-    options[:file] = opt
-  end
+  opts.on("-b", "--tinyballs", "give the dong tiny balls.") { options[:balls] = "tiny"}
+  opts.on("-d", "--distance [LENGTH]", "distance of the spurt") {|opt| options[:spurt_distance] = opt }
+  opts.on("-e", "--erect [LENGTH]", "length of the hard dong") {|opt| options[:hard_length] = opt }
+  opts.on("-f", "--flaccid [LENGTH]", "length of the soft dong") {|opt| options[:soft_length] = opt }
+  opts.on("-l", "--left", "normally, it hangs to the right.") { options[:direction] = "left" }
+  opts.on("-m", "--moneyshot [boobs|butt|face]", "give that dong a target.") {|opt| options[:moneyshot] = opt }
+  opts.on("-r", "--refractory [PERIOD]", "length of the refractory period") {|opt| options[:refractory] = opt }
+  opts.on("-s", "--spurt [SIZE]", "size of the spurt") {|opt| options[:spurt_size] = opt }
+  opts.on("-t", "--thin", "none of those thick dongs; make it thin") { options[:thickness] = "thin" }
+  opts.on("-w", "--swordfight", "make those dongs battle") { options[:swordfight] == true }
+  opts.on("-x", "--file URI", "special save file location.") {|opt| options[:file] = opt }
+  opts.on("-h", "--help", "Display this screen" ) { puts opts; exit }
 end.parse!
 
 file = options[:file]
@@ -158,6 +162,8 @@ penis = Dong.new ({
                     girth: options[:thickness],
                     balls: options[:balls],
                     direction: options[:direction],
+                    moneyshot: options[:moneyshot],
+                    swordfight: options[:swordfight],
                     dong_stage: Integer(File.read file)
                   })
 
