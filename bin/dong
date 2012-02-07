@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+#
+# dong
+# Colin Rymer / @crymer11
+#
+# Sorry, mom.
+
+
+require 'rubygems'
+
+prompt_file = "#{ENV['HOME']}/.dong"
+
+if !File.exists? prompt_file
+  File.open( prompt_file, 'w') do |file|
+  	file.write "0"
+  end
+end
+
+dong_count = File.read prompt_file
+
+dong = case dong_count
+  when "0" then "C==8"
+  when "1" then "C===8"
+  when "2" then "C====8"
+  when "3" then "C=====8"
+  when "4" then "~C=====8"
+  when "5" then "~~C=====8"
+  when "6" then "~~~C=====8"
+  when "7" then "~~~~C=====8"
+  when "8" then "~~~~ C=====8"
+  when "9" then "~~~~  C=====8"
+  when "10" then "~~~~   C=====8"
+  when "11" then "~~~    C=====8"
+  when "12" then "~~     C=====8"
+  when "13" then "~      C=====8"
+  when "14" then "C====8"
+  when "15" then "C===8"
+end
+
+dong_size = (Integer(dong_count) + 1) % 16
+
+File.open( prompt_file, 'w') do |file|
+  file.write dong_size.to_s
+end
+
+puts dong
