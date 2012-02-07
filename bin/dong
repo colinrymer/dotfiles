@@ -5,9 +5,6 @@
 #
 # Sorry, mom.
 
-
-require 'rubygems'
-
 prompt_file = "#{ENV['HOME']}/.dong"
 
 if !File.exists? prompt_file
