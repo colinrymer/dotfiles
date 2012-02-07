@@ -32,7 +32,7 @@ gemset_name(){
 export PROMPT=$'\n$(user_and_host)%{$FG[254]%} in $(directory_name) $(git_status) %{$FG[254]%}using $(ruby_version)%{$FG[254]%}, gemset $(gemset_name)%{$reset_color%}\n\$ '
 
 dong_it(){
-	'dong'
+	echo `dong -lx ~/.zdong`
 }
 
 export RPROMPT='$(dong_it)'

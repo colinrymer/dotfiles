@@ -9,114 +9,150 @@ require 'optparse'
 
 class Dong
 
-attr_accessor :girthy, :length, :max_length, :spurt_size, :spurt_distance, :spurt_traveled
+  attr_accessor :soft_length, :hard_length, :refractory_period, :spurt_size, 
+                :spurt_distance, :girth, :balls, :direction, :dong_stage
 
-  def girthy
-    (@girthy === "thick") || false
+  def initialize args
+    args.each { |k,v| instance_variable_set("@#{k}", v) unless v.nil? }
   end
 
-  def member
-    if girthy then body = "C" else body = "c" end
-    @length.times {body << shaft_section}
-    body << "8"
+  def length
+    if @dong_stage < dong_factor
+      return @soft_length + @dong_stage
+    elsif @dong_stage >= dong_factor && @dong_stage < (dong_cycle - cooldown - @refractory_period)
+      return @hard_length
+    elsif @dong_stage >= (dong_cycle - cooldown - @refractory_period) && @dong_stage < (dong_cycle - @refractory_period)
+      return @hard_length - (@dong_stage - (dong_cycle - cooldown - @refractory_period))
+    else
+      return @soft_length
+    end
+      
+  end
+
+  def member(direction)
+
+    if direction == "left"
+      if girthy then body = "C" else body = "c" end
+      length.times {body << shaft_section}
+      body << balls
+    else
+      body = balls
+      length.times {body << shaft_section}
+      if girthy then body << "D" else body << "" end
+    end
     return body
   end
 
-  def shaft_section
-    if girthy then return "=" else return "-" end
-  end
-
-  def spurt
+  def spurt(direction)
     splurge = ""
-    spurt_distance_minus_traveled = @spurt_distance - @spurt_traveled
-    (spurt_distance_minus_traveled - @spurt_size).times {splurge << " "}
-    if spurt_distance_minus_traveled < @spurt_size
-      spurt_distance_minus_traveled.times {splurge << "~"}
+    spurt_stage = @dong_stage - dong_factor
+    if spurt_stage <= @spurt_size
+      spurt_length = spurt_stage
+      back_space = 0
+      front_space = @spurt_distance - spurt_length
     else
-      @spurt_size.times {splurge << "~"}
+      back_space = spurt_stage - @spurt_size
+      if back_space <= (@spurt_distance - @spurt_size)
+        spurt_length = @spurt_size
+        front_space = @spurt_distance - spurt_length - back_space
+      else
+        spurt_length = @spurt_distance - back_space
+        front_space = 0
+      end
     end
-    @spurt_traveled.times {splurge << " "}
+
+    if direction == "left"
+      front_space.times {splurge << " "}
+      spurt_length.times {splurge << "~"}
+      back_space.times {splurge << " "}
+    else
+      back_space.times {splurge << " "}
+      spurt_length.times {splurge << "~"}
+      front_space.times {splurge << " "}
+    end
     return splurge
   end
+
+  def schlong
+    unit = ""
+    if @direction == "right"
+      unit << member("right")
+      unit << spurt("right") if length >= @hard_length
+    else
+      unit << spurt("left") if length >= @hard_length
+      unit << member("left")
+    end
+    unit
+  end
+
+  def balls; if @balls == "big" then return "8" else return ":" end end
+  def cooldown; dong_factor end
+  def dong_cycle; dong_factor+@spurt_distance+@spurt_size+cooldown+@refractory_period end
+  def dong_factor; @hard_length - @soft_length; end
+  def girthy; (@girth === "thick") || false end
+  def next_dong_stage; (@dong_stage + 1) % dong_cycle end
+  def shaft_section; if girthy then return "=" else return "-" end end
+
 end
-
-DEFAULT_SOFT_LENGTH       = 2
-DEFAULT_HARD_LENGTH       = 5
-DEFAULT_SPURT_SIZE        = 4
-DEFAULT_SPURT_DISTANCE    = 8
-DEFAULT_REFACTORY_PERIOD  = 2
-DEFAULT_THICKNESS         = "thick"
-
-PROMPT_FILE = "#{ENV['HOME']}/.dong"
-
-File.open( PROMPT_FILE, 'w') {|f| f.write "0" } if !File.exists? PROMPT_FILE
 
 options = {}
 
 OptionParser.new do |opts|
-  options[:refactory] = DEFAULT_REFACTORY_PERIOD
-  opts.on("-r", "--refactory_period LENGTH", "length of the refactory period") do |opt|
-    options[:refactory] = opt
+  options[:refractory] = 2 # DEFAULT_refractory_PERIOD
+  opts.on("-r", "--refractory PERIOD", "length of the refractory period") do |opt|
+    options[:refractory] = opt
   end
-  options[:soft_length] = DEFAULT_SOFT_LENGTH
+  options[:soft_length] = 2 # DEFAULT_SOFT_LENGTH
   opts.on("-f", "--flaccid LENGTH", "length of the soft dong") do |opt|
     options[:soft_length] = opt
   end
-  options[:hard_length] = DEFAULT_HARD_LENGTH
+  options[:hard_length] = 5 # DEFAULT_HARD_LENGTH
   opts.on("-h", "--hard LENGTH", "length of the hard dong") do |opt|
     options[:hard_length] = opt
   end
-  options[:spurt_size] = DEFAULT_SPURT_SIZE
+  options[:spurt_size] = 4 # DEFAULT_SPURT_SIZE
   opts.on("-s", "--spurt SIZE", "size of the spurt") do |opt|
     options[:spurt_size] = opt
   end
-  options[:spurt_distance] = DEFAULT_SPURT_DISTANCE
+  options[:spurt_distance] = 8 # DEFAULT_SPURT_DISTANCE
   opts.on("-d", "--distance LENGTH", "distance of the spurt") do |opt|
     options[:spurt_distance] = opt
   end
-  options[:thickness] = DEFAULT_THICKNESS
+  options[:thickness] = "thick" # DEFAULT_THICKNESS
   opts.on("-t", "--thin", "none of those thick dongs; make it thin") do
-    options[:thickness] = false
+    options[:thickness] = "thin"
+  end
+  options[:balls] = "big" # DEFAULT_BALLS
+  opts.on("-b", "--tiny", "who's got big balls? not this dong. those balls are tiny.") do
+    options[:balls] = "tiny"
+  end
+  options[:direction] = "right" # DEFAULT_BALLS
+  opts.on("-l", "--direction", "normally, it hangs to the right.") do
+    options[:direction] = "left"
+  end
+  options[:file] = "#{ENV['HOME']}/.dong" # DEFAULT_SAVE_FILE
+  opts.on("-x", "--file URI", "special save file location.") do |opt|
+    options[:file] = opt
   end
 end.parse!
 
-refactory_period = Integer(options[:refactory])
-soft_length = Integer(options[:soft_length])
-hard_length = Integer(options[:hard_length])
-spurt_size = Integer(options[:spurt_size])
-spurt_distance = Integer(options[:spurt_distance])
-dong_count = Integer(File.read PROMPT_FILE)
+file = options[:file]
 
-dong_factor = hard_length - soft_length
-cooldown = dong_factor
-dong_cycle = dong_factor+spurt_distance+spurt_size+cooldown+refactory_period
+File.open( file, 'w') {|f| f.write "0" } if !File.exists? file
 
-penis = Dong.new
-penis.girthy = options[:thickness]
+penis = Dong.new ({
+                    soft_length: Integer(options[:soft_length]), 
+                    hard_length: Integer(options[:hard_length]),
+                    refractory_period: Integer(options[:refractory]),
+                    spurt_size: Integer(options[:spurt_size]),
+                    spurt_distance: Integer(options[:spurt_distance]),
+                    girth: options[:thickness],
+                    balls: options[:balls],
+                    direction: options[:direction],
+                    dong_stage: Integer(File.read file)
+                  })
 
-penis.length = hard_length
-penis.max_length = hard_length
-penis.spurt_size = spurt_size
-penis.spurt_distance = spurt_distance
-penis.spurt_traveled = 0
 
-dong = ""
-  if dong_count <= (hard_length - dong_factor)
-    penis.length = (soft_length + dong_count)
-    dong << penis.member
-  elsif dong_count < (spurt_size + dong_factor)
-    penis.spurt_size = dong_count - dong_factor
-    dong << penis.spurt << penis.member
-  elsif dong_count <= (spurt_distance + spurt_size + dong_factor)
-    penis.spurt_traveled = dong_count - dong_factor - spurt_size
-    dong << penis.spurt << penis.member
-  elsif dong_count <= (cooldown+ spurt_distance + spurt_size + dong_factor)
-    penis.length = hard_length - (dong_count - (spurt_distance + spurt_size + dong_factor))
-    dong << penis.member
-  else
-    penis.length = soft_length
-    dong << penis.member
-  end
-puts dong
-
-File.open(PROMPT_FILE, 'w'){|f| f.write ((dong_count + 1) % dong_cycle).to_s }
+puts penis.schlong
+ 
+File.open(file, 'w'){|f| f.write (penis.next_dong_stage) }
