@@ -13,16 +13,25 @@ class Dong
                 :spurt_distance, :girth, :balls, :direction, :dong_stage
 
   def initialize args
+    @refractory_period = 2
+    @soft_length = 2
+    @hard_length = 5
+    @spurt_size = 4
+    @spurt_distance = 8
+    @thickness = "thick"
+    @balls = "big"
+    @direction = "right"
+    
     args.each { |k,v| instance_variable_set("@#{k}", v) unless v.nil? }
   end
 
   def length
     if @dong_stage < dong_factor
       return @soft_length + @dong_stage
-    elsif @dong_stage >= dong_factor && @dong_stage < (dong_cycle - cooldown - @refractory_period)
+    elsif @dong_stage >= dong_factor && @dong_stage < spurt_cycle_end
       return @hard_length
-    elsif @dong_stage >= (dong_cycle - cooldown - @refractory_period) && @dong_stage < (dong_cycle - @refractory_period)
-      return @hard_length - (@dong_stage - (dong_cycle - cooldown - @refractory_period))
+    elsif @dong_stage >= (dong_cycle_end - cooldown - @refractory_period) && @dong_stage < (dong_cycle_end - @refractory_period)
+      return @hard_length - (@dong_stage - (dong_cycle_end - cooldown - @refractory_period))
     else
       return @soft_length
     end
@@ -30,17 +39,13 @@ class Dong
   end
 
   def member(direction)
-
+    pole = ""
+    length.times {pole << shaft}
     if direction == "left"
-      if girthy then body = "C" else body = "c" end
-      length.times {body << shaft_section}
-      body << balls
+      return (girthy ? "C" : "c") << pole << balls
     else
-      body = balls
-      length.times {body << shaft_section}
-      if girthy then body << "D" else body << "" end
+      return balls << pole << (girthy ? "D" : "")
     end
-    return body
   end
 
   def spurt(direction)
@@ -75,30 +80,34 @@ class Dong
 
   def schlong
     unit = ""
+    spray = true if length >= @hard_length
     if @direction == "right"
       unit << member("right")
-      unit << spurt("right") if length >= @hard_length
+      unit << spurt("right") if spray
     else
-      unit << spurt("left") if length >= @hard_length
+      unit << spurt("left") if spray
       unit << member("left")
     end
     unit
   end
 
   def balls; if @balls == "big" then return "8" else return ":" end end
+  def shaft; if girthy then return "=" else return "-" end end
+
   def cooldown; dong_factor end
-  def dong_cycle; dong_factor+@spurt_distance+@spurt_size+cooldown+@refractory_period end
+  def dong_cycle_end; dong_factor+@spurt_distance+@spurt_size+cooldown+@refractory_period end
+  def spurt_cycle_end; dong_cycle_end - cooldown - @refractory_period end
   def dong_factor; @hard_length - @soft_length; end
   def girthy; (@girth === "thick") || false end
-  def next_dong_stage; (@dong_stage + 1) % dong_cycle end
-  def shaft_section; if girthy then return "=" else return "-" end end
+  def next_dong_stage; (@dong_stage + 1) % dong_cycle_end end
+  
 
 end
 
 options = {}
 
 OptionParser.new do |opts|
-  options[:refractory] = 2 # DEFAULT_refractory_PERIOD
+  options[:refractory] = 2 # DEFAULT_REFRACTORY_PERIOD
   opts.on("-r", "--refractory PERIOD", "length of the refractory period") do |opt|
     options[:refractory] = opt
   end
@@ -152,7 +161,6 @@ penis = Dong.new ({
                     dong_stage: Integer(File.read file)
                   })
 
+File.open(file, 'w'){|f| f.write (penis.next_dong_stage) }
 
 puts penis.schlong
- 
-File.open(file, 'w'){|f| f.write (penis.next_dong_stage) }
