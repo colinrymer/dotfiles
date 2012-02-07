@@ -7,53 +7,116 @@
 
 require 'optparse'
 
+class Dong
+
+attr_accessor :girthy, :length, :max_length, :spurt_size, :spurt_distance, :spurt_traveled
+
+  def girthy
+    (@girthy === "thick") || false
+  end
+
+  def member
+    if girthy then body = "C" else body = "c" end
+    @length.times {body << shaft_section}
+    body << "8"
+    return body
+  end
+
+  def shaft_section
+    if girthy then return "=" else return "-" end
+  end
+
+  def spurt
+    splurge = ""
+    spurt_distance_minus_traveled = @spurt_distance - @spurt_traveled
+    (spurt_distance_minus_traveled - @spurt_size).times {splurge << " "}
+    if spurt_distance_minus_traveled < @spurt_size
+      spurt_distance_minus_traveled.times {splurge << "~"}
+    else
+      @spurt_size.times {splurge << "~"}
+    end
+    @spurt_traveled.times {splurge << " "}
+    return splurge
+  end
+end
+
+DEFAULT_SOFT_LENGTH       = 2
+DEFAULT_HARD_LENGTH       = 5
+DEFAULT_SPURT_SIZE        = 4
+DEFAULT_SPURT_DISTANCE    = 8
+DEFAULT_REFACTORY_PERIOD  = 2
+DEFAULT_THICKNESS         = "thick"
+
+PROMPT_FILE = "#{ENV['HOME']}/.dong"
+
+File.open( PROMPT_FILE, 'w') {|f| f.write "0" } if !File.exists? PROMPT_FILE
+
 options = {}
 
 OptionParser.new do |opts|
-
-  opts.on("-r", "--refactory_period LENGTH", "length of the refactory period") do |r|
-    options[:refactory] = r
+  options[:refactory] = DEFAULT_REFACTORY_PERIOD
+  opts.on("-r", "--refactory_period LENGTH", "length of the refactory period") do |opt|
+    options[:refactory] = opt
   end
-
+  options[:soft_length] = DEFAULT_SOFT_LENGTH
+  opts.on("-f", "--flaccid LENGTH", "length of the soft dong") do |opt|
+    options[:soft_length] = opt
+  end
+  options[:hard_length] = DEFAULT_HARD_LENGTH
+  opts.on("-h", "--hard LENGTH", "length of the hard dong") do |opt|
+    options[:hard_length] = opt
+  end
+  options[:spurt_size] = DEFAULT_SPURT_SIZE
+  opts.on("-s", "--spurt SIZE", "size of the spurt") do |opt|
+    options[:spurt_size] = opt
+  end
+  options[:spurt_distance] = DEFAULT_SPURT_DISTANCE
+  opts.on("-d", "--distance LENGTH", "distance of the spurt") do |opt|
+    options[:spurt_distance] = opt
+  end
+  options[:thickness] = DEFAULT_THICKNESS
+  opts.on("-t", "--thin", "none of those thick dongs; make it thin") do
+    options[:thickness] = false
+  end
 end.parse!
 
-prompt_file = "#{ENV['HOME']}/.dong"
+refactory_period = Integer(options[:refactory])
+soft_length = Integer(options[:soft_length])
+hard_length = Integer(options[:hard_length])
+spurt_size = Integer(options[:spurt_size])
+spurt_distance = Integer(options[:spurt_distance])
+dong_count = Integer(File.read PROMPT_FILE)
 
-ref = Integer(options[:refactory]) if options[:refactory]
+dong_factor = hard_length - soft_length
+cooldown = dong_factor
+dong_cycle = dong_factor+spurt_distance+spurt_size+cooldown+refactory_period
 
-refactory_period = ref || 16
+penis = Dong.new
+penis.girthy = options[:thickness]
 
-if !File.exists? prompt_file
-  File.open( prompt_file, 'w') do |file|
-  	file.write "0"
+penis.length = hard_length
+penis.max_length = hard_length
+penis.spurt_size = spurt_size
+penis.spurt_distance = spurt_distance
+penis.spurt_traveled = 0
+
+dong = ""
+  if dong_count <= (hard_length - dong_factor)
+    penis.length = (soft_length + dong_count)
+    dong << penis.member
+  elsif dong_count < (spurt_size + dong_factor)
+    penis.spurt_size = dong_count - dong_factor
+    dong << penis.spurt << penis.member
+  elsif dong_count <= (spurt_distance + spurt_size + dong_factor)
+    penis.spurt_traveled = dong_count - dong_factor - spurt_size
+    dong << penis.spurt << penis.member
+  elsif dong_count <= (cooldown+ spurt_distance + spurt_size + dong_factor)
+    penis.length = hard_length - (dong_count - (spurt_distance + spurt_size + dong_factor))
+    dong << penis.member
+  else
+    penis.length = soft_length
+    dong << penis.member
   end
-end
-
-dong_count = File.read prompt_file
-
-dong = case dong_count
-  when "1"  then "C===8"
-  when "2"  then "C====8"
-  when "3"  then "C=====8"
-  when "4"  then "~C=====8"
-  when "5"  then "~~C=====8"
-  when "6"  then "~~~C=====8"
-  when "7"  then "~~~~C=====8"
-  when "8"  then "~~~~ C=====8"
-  when "9"  then "~~~~  C=====8"
-  when "10" then "~~~~   C=====8"
-  when "11" then "~~~    C=====8"
-  when "12" then "~~     C=====8"
-  when "13" then "~      C=====8"
-  when "14" then "C====8"
-  when "15" then "C===8"
-  else "C==8"
-end
-
-dong_size = (Integer(dong_count) + 1) % refactory_period
-
-File.open( prompt_file, 'w') do |file|
-  file.write dong_size.to_s
-end
-
 puts dong
+
+File.open(PROMPT_FILE, 'w'){|f| f.write ((dong_count + 1) % dong_cycle).to_s }
