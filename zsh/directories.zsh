@@ -3,6 +3,9 @@ setopt auto_name_dirs
 setopt auto_pushd
 setopt pushd_ignore_dups
 
+setopt auto_cd
+cdpath=($HOME/Projects/School $HOME/Projects/sites $HOME/Projects)
+
 alias 1='cd -'
 alias 2='cd +2'
 alias 3='cd +3'

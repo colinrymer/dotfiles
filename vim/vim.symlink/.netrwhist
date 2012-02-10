@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/Users/Colin/.dotfiles/zsh'
+let g:netrw_dirhist_2='/Users/Colin/Projects/school/capstone'
+let g:netrw_dirhist_3='/Users/Colin/Projects/school/capstone/app'
+let g:netrw_dirhist_4='/Users/Colin/Projects/school/capstone/app/controllers'

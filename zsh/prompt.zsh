@@ -35,4 +35,4 @@ dong_it(){
 	echo `dong -lx ~/.zdong`
 }
 
-export RPROMPT='$(dong_it)'
+#export RPROMPT='$(dong_it)'
