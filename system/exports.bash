@@ -1,5 +1,5 @@
 # Editor
-export EDITOR='vim'
+export EDITOR='v'
 
 # Colors for ls
 export CLICOLOR=1

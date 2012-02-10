@@ -10,7 +10,7 @@ require 'optparse'
 class Dong
 
   attr_accessor :soft_length, :hard_length, :refractory_period, :spurt_size, :swordfight,
-                :spurt_distance, :girth, :balls, :direction, :dong_stage, :moneyshot
+                :spurt_distance, :girth, :balls, :direction, :dong_stage, :moneyshot, :mandingo
 
   def initialize args
     @refractory_period = 2
@@ -23,6 +23,7 @@ class Dong
     @direction = "right"
     @moneyshot = false
     @swordfight = false
+    @mandingo = false
 
     args.each { |k,v| instance_variable_set("@#{k}", v) unless v.nil? }
   end
@@ -81,6 +82,8 @@ class Dong
   end
 
   def schlong
+    return giant_dong if @mandingo
+
     unit = ""
     spray = true if length >= @hard_length
     if @direction == "right"
@@ -107,6 +110,10 @@ class Dong
     end
   end
 
+  def giant_dong
+    return "  --\n/~  ~\\                   ____\n\\ ~  /------------------|    \\\n  --                    |    -\n/ ~ ~\\------------------|____/\n\\  ~ /\n  --"
+  end
+
   def no_spurt; result = ""; @spurt_distance.times{result << " "}; return result end
   def balls; if @balls == "big" then return "8" else return ":" end end
   def shaft; if girthy then return "=" else return "-" end end
@@ -131,6 +138,7 @@ options = {
   spurt_distance: 8,                      # DEFAULT_SPURT_DISTANCE
   spurt_size:     4,                      # DEFAULT_SPURT_SIZE
   swordfight:     false,                  # DEFAULT_SWORDFIGHT_STATUS
+  mandingo:       false,                  # DEFAULT_MANDINGO_STATUS
   thickness:      "thick"                 # DEFAULT_THICKNESS
 }
 
@@ -139,6 +147,7 @@ OptionParser.new do |opts|
   opts.on("-d", "--distance [LENGTH]", "distance of the spurt") {|opt| options[:spurt_distance] = opt }
   opts.on("-e", "--erect [LENGTH]", "length of the hard dong") {|opt| options[:hard_length] = opt }
   opts.on("-f", "--flaccid [LENGTH]", "length of the soft dong") {|opt| options[:soft_length] = opt }
+  opts.on("-g", "--giant", "mandingo dong") {options[:mandingo] = true}
   opts.on("-l", "--left", "normally, it hangs to the right.") { options[:direction] = "left" }
   opts.on("-m", "--moneyshot [boobs|butt|face]", "give that dong a target.") {|opt| options[:moneyshot] = opt }
   opts.on("-r", "--refractory [PERIOD]", "length of the refractory period") {|opt| options[:refractory] = opt }
@@ -164,9 +173,20 @@ penis = Dong.new ({
                     direction: options[:direction],
                     moneyshot: options[:moneyshot],
                     swordfight: options[:swordfight],
+                    mandingo: options[:mandingo],
                     dong_stage: Integer(File.read file)
                   })
 
 File.open(file, 'w'){|f| f.write (penis.next_dong_stage) }
 
 puts penis.schlong
+
+__END__
+
+  --
+/~  ~\                   ____
+\ ~  /------------------|    \
+  --                    |    -
+/ ~ ~\------------------|____/
+\  ~ /
+  --
