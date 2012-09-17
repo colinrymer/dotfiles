@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/Users/pdvdev/Projects/styro_pwn'
+let g:netrw_dirhist_2='/Users/pdvdev/Projects/styro_pwn/app'
+let g:netrw_dirhist_3='/Users/pdvdev/.dotfiles/vim'
+let g:netrw_dirhist_4='/Users/pdvdev/Projects/styro_pwn'

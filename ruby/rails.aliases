@@ -1,1 +1,3 @@
 alias dms="rake db:drop && rake db:migrate && rake db:seed"
+alias rs="rails server"
+alias rc="rails console"
