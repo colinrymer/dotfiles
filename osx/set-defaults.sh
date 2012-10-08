@@ -21,6 +21,9 @@ defaults write com.apple.Finder FXPreferredViewStyle Nlsv
 # Show the ~/Library folder
 chflags nohidden ~/Library
 
+# Quit hiding files
+defaults write com.apple.Finder AppleShowAllFiles TRUE
+
 # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
@@ -57,6 +60,8 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # Copy text in Quicklook windows
 defaults write com.apple.finder QLEnableTextSelection -bool TRUE
 
+# Set shell to zsh
+chsh -s /bin/zsh
+
 # Kill affected applications
 for app in Finder Dock; do echo "killing $app"; killall "$app"; done
-
