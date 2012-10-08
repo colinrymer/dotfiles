@@ -1,4 +1,4 @@
 secrets/*
 git/gitconfig.symlink
 bash/colors.sh
-
+.DS_Store

@@ -2,7 +2,7 @@ autoload colors && colors
 autoload spectrum && spectrum
 
 parse_git_dirty(){
-  [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit" ]] && echo "*"
+  [[ $(git status 4> /dev/null | tail -n1) != "nothing to commit (working directory clean)" ]] && echo "*"
 }
 
 parse_git_branch(){
@@ -10,7 +10,9 @@ parse_git_branch(){
 }
 
 git_status(){
-  echo "%{$FG[254]%}on %{$FG[141]%}$(parse_git_branch)%{$reset_color%}"
+  if [ -d .git ]; then
+    echo "%{$FG[254]%}on %{$FG[141]%}$(parse_git_branch)%{$reset_color%}"
+  fi;
 }
 
 directory_name(){
