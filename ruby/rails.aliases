@@ -1,3 +1,4 @@
 alias dms="rake db:drop && rake db:migrate && rake db:seed"
 alias rs="rails s"
 alias rc="rails c"
+alias rt="rake test"
