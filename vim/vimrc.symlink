@@ -315,6 +315,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 
 " My Bundles here:
+Bundle 'tpope/vim-rvm'
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-fugitive'
 Bundle 'int3/vim-extradite'
@@ -328,11 +329,17 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'tpope/vim-cucumber'
 Bundle 'scrooloose/nerdcommenter'
-
+Bundle 'kien/ctrlp.vim'
+Bundle 'scrooloose/syntastic'
+Bundle 'myusuf3/numbers.vim'
+Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/neocomplcache-snippets-complete'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vimux
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:VimuxUseNearestPane = 1
+
 " Prompt for a command to run
 nmap <leader>rp :PromptVimTmuxCommand<CR>
 
@@ -356,8 +363,8 @@ nmap <Leader>rs vip<Leader>rs<CR>
 " => Turbux
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:no_turbux_mappings = 1
-nmap <leader>rT <Plug>SendTestToTmux
-nmap <leader>rt <Plug>SendFocusedTestToTmux
+nmap <leader>T <Plug>SendTestToTmux
+nmap <leader>t <Plug>SendFocusedTestToTmux
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -365,7 +372,7 @@ nmap <leader>rt <Plug>SendFocusedTestToTmux
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <C-s> :NERDTreeToggle<CR>
 map <C-f> :NERDTreeFind<CR>
-
+map <leader>e :NERDTreeToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Tags
@@ -381,6 +388,7 @@ nmap <leader>tt :TagbarToggle<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:extradite_width = 60
 nmap <leader>gs :Gstatus<CR>
+nmap <leader>gc :Gcommit<CR>
 nmap <leader>gg :Ggrep 
 nmap <leader>gl :Extradite!<CR>
 nmap <leader>gd :Gdiff<CR>
