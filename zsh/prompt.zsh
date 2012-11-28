@@ -1,8 +1,22 @@
 autoload colors && colors
 autoload spectrum && spectrum
 
+# set VIMODE according to the current mode (default “[i]”)
+VIMODE='-- INSERT --'
+function zle-keymap-select {
+ VIMODE="${${KEYMAP/vicmd/}/(main|viins)/-- INSERT --}"
+ zle reset-prompt
+}
+
+function zle-line-finish {
+ VIMODE='-- INSERT --'
+}
+
+zle -N zle-keymap-select
+zle -N zle-line-finish
+
 parse_git_dirty(){
-  [[ $(git status 4> /dev/null | tail -n1) != "nothing to commit (working directory clean)" ]] && echo "*"
+  [[ $(git status 4> /dev/null | tail -n1) != "nothing to commit, working directory clean" ]] && echo "*"
 }
 
 parse_git_branch(){
@@ -24,14 +38,18 @@ user_and_host(){
 }
 
 ruby_version(){
-  echo "%{$FG[200]%}Ruby `ruby -e 'print RUBY_VERSION'`%{$reset_color%}"
+  echo "%{$FG[200]%}Ruby `ruby -e 'print "#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL}"'`%{$reset_color%}"
 }
 
-gemset_name(){
-  echo "%{$FG[123]%}`rvm gemset name`%{$reset_color%}"
-}
 
-export PROMPT=$'\n$(user_and_host)%{$FG[254]%} in $(directory_name) $(git_status) %{$FG[254]%}using $(ruby_version)%{$FG[254]%}, gemset $(gemset_name)%{$reset_color%}\n\$ '
+# not used with rbenv
+#gemset_name(){
+  #echo "%{$FG[123]%}`rvm gemset name`%{$reset_color%}"
+#}
+
+export PROMPT=$'\n$(user_and_host)%{$FG[254]%} in $(directory_name) $(git_status) %{$FG[254]%}using $(ruby_version)%{$FG[254]%}%{$reset_color%}\n\$ '
+
+export RPROMPT=$'%{$FG[077]%}${VIMODE}%{$reset_color%}'
 
 dong_it(){
 	echo `dong -lx ~/.zdong`

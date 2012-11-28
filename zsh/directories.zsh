@@ -4,7 +4,7 @@ setopt auto_pushd
 setopt pushd_ignore_dups
 
 setopt auto_cd
-cdpath=($HOME/Projects/sites $HOME/Projects)
+cdpath=(. $HOME/Projects/sites $HOME/Projects/primedia $HOME/Projects)
 
 alias 1='cd -'
 alias 2='cd +2'
