@@ -5,7 +5,10 @@ alias push='git push'
 alias pull='git pull'
 alias commit='git commit'
 alias cam='git commit -a -m'
+alias c='git commit -m'
 alias s='git status'
+
+alias git='hub'
 
 #-------------------
 # Git Functions
