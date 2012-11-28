@@ -34,12 +34,12 @@ call vundle#rc()
 " required! 
 Bundle 'gmarik/vundle'
 
-if filereadable(expand("~/.vim.bundles"))
-  source ~/.vim.bundles
+if filereadable(expand("~/.vim/bundles"))
+  source ~/.vim/bundles
 endif
 
-if filereadable(expand("~/.vim.bundles.local"))
-  source ~/.vim.bundles.local
+if filereadable(expand("~/.vim/bundles.local"))
+  source ~/.vim/bundles.local
 endif
 
 
@@ -81,6 +81,8 @@ nmap <leader>q :q<cr>
 " Use par for prettier line formatting
 set formatprg=par\ -w72
 
+" Clipboard fix for OsX
+set clipboard=unnamed
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -88,6 +90,7 @@ set formatprg=par\ -w72
 
 " Use jj instead of <Esc>
 imap jj <Esc>
+imap jJ <Esc>
 
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
@@ -97,17 +100,13 @@ set wildmenu
 set wildmode=list:longest
 
 " Ignore compiled files
-set wildignore=*.o,*~,*.pyc
-if has("win16") || has("win32")
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-else
-    set wildignore+=.git\*,.hg\*,.svn\*
-endif
+set wildignore=*.o,*~,*.pyc,*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store,*/vendor/cache/*,*/public/system/*,*/tmp/*
 
 "Always show current position
 set ruler
 set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
 set relativenumber
+set numberwidth=2
 
 " Height of the command bar
 set cmdheight=1
@@ -222,6 +221,9 @@ set wrap "Wrap lines
 " Backspace through everything in insert mode
 set backspace=indent,eol,start
 
+" Show whitespace at end of a line
+set list listchars=tab:»·,trail:·
+
 
 """"""""""""""""""""""""""""""
 " => Visual mode related
@@ -250,9 +252,9 @@ map <leader>ba :1,1000 bd!<cr>
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
-     \ if line("'\"") > 0 && line("'\"") <= line("$") |
-     \   exe "normal! g`\"" |
-     \ endif
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \   exe "normal! g`\"" |
+      \ endif
 " Remember info about open buffers on close
 set viminfo^=%
 
@@ -321,7 +323,7 @@ function! VisualSelection(direction, extra_filter) range
 endfunction
 
 function! StripWhitespace()
-      exec ':%s/ \+$//gc'
+  exec ':%s/ \+$//gc'
 endfunction
 map <leader>s :call StripWhitespace()<CR>
 
@@ -361,6 +363,8 @@ nmap <leader>t <Plug>SendFocusedTestToTmux
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => NERDTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let NERDTreeShowHidden=1
+
 map <C-s> :NERDTreeToggle<CR>
 map <C-f> :NERDTreeFind<CR>
 map <leader>e :NERDTreeToggle<CR>
@@ -399,3 +403,76 @@ map <leader><leader> <plug>NERDCommenterInvert
 " Quickly edit/reload the vimrc file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
+
+" Move around in windows more easily
+nmap <leader>h <C-w>h
+nmap <leader>j <C-w>j
+nmap <leader>k <C-w>k
+nmap <leader>l <C-w>l
+nmap <leader>p <C-w>p
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Neocomplcache
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Disable AutoComplPop.
+"let g:acp_enableAtStartup = 0
+"" Use neocomplcache.
+"let g:neocomplcache_enable_at_startup = 1
+"" Use smartcase.
+"let g:neocomplcache_enable_smart_case = 1
+"" Use camel case completion.
+"let g:neocomplcache_enable_camel_case_completion = 1
+"" Use underbar completion.
+"let g:neocomplcache_enable_underbar_completion = 1
+"" Set minimum syntax keyword length.
+"let g:neocomplcache_min_syntax_length = 3
+"let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+"
+"" Define dictionary.
+"let g:neocomplcache_dictionary_filetype_lists = {
+"      \ 'default' : '',
+"      \ 'vimshell' : $HOME.'/.vimshell_hist',
+"      \ 'scheme' : $HOME.'/.gosh_completions'
+"      \ }
+"
+"" Define keyword.
+"if !exists('g:neocomplcache_keyword_patterns')
+"  let g:neocomplcache_keyword_patterns = {}
+"endif
+"let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+"
+"" Plugin key-mappings.
+"imap <C-k>     <Plug>(neocomplcache_snippets_expand)
+"smap <C-k>     <Plug>(neocomplcache_snippets_expand)
+"inoremap <expr><C-g>     neocomplcache#undo_completion()
+"inoremap <expr><C-l>     neocomplcache#complete_common_string()
+"
+"" Recommended key-mappings.
+"" <CR>: close popup and save indent.
+"inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
+"" <TAB>: completion.
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+"" <C-h>, <BS>: close popup and delete backword char.
+"inoremap <expr><C-h>  neocomplcache#smart_close_popup()."\<C-h>"
+"inoremap <expr><BS>   neocomplcache#smart_close_popup()."\<C-h>"
+"inoremap <expr><C-y>  neocomplcache#close_popup()
+"inoremap <expr><C-e>  neocomplcache#cancel_popup()
+"
+"
+"" Enable omni completion.
+"autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"
+"" Enable heavy omni completion.
+"if !exists('g:neocomplcache_omni_patterns')
+"  let g:neocomplcache_omni_patterns = {}
+"endif
+"let g:neocomplcache_omni_patterns.ruby = '[^.  *\t]\.\w*\|\h\w*::'
+""autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+"let g:neocomplcache_omni_patterns.php = '[^.  \t]->\h\w*\|\h\w*::'
+"let g:neocomplcache_omni_patterns.c = '\%(\.\|->\)\h\w*'
+"let g:neocomplcache_omni_patterns.cpp = '\h\w*\%(\.\|->\)\h\w*\|\h\w*::'
