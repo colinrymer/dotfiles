@@ -1,3 +1,10 @@
+set-option -g default-command "reattach-to-user-namespace -l $SHELL; cd ."
+set -g default-terminal "screen-256color"
+set -g history-limit 20000
+
+# use VI
+set-window-option -g mode-keys vi
+
 # status bar
 set-option -g status-utf8 on
 
@@ -24,8 +31,12 @@ set-window-option -g window-status-current-bg default
 set-window-option -g window-status-current-attr bright
 
 # C-b is not acceptable -- Vim uses it
-set-option -g prefix C-a
-bind-key C-a last-window
+set -g prefix C-a
+unbind C-b
+bind C-a send-prefix
+
+# Bind a to go to beginning of line (ctrl-a expected behaviour)
+bind a send-prefix
 
 # Start numbering at 1
 set -g base-index 1
@@ -33,10 +44,50 @@ set -g base-index 1
 # Allows for faster key repetition
 set -s escape-time 0
 
+unbind C-f
+bind C-f command-prompt "switch-client -t %%"
+
+# kill
+unbind k
+bind k confirm-before "kill-window"
+
+unbind ^x
+bind ^x kill-pane
+
+unbind ^T
+bind ^T split-window -p 25
+
+# horizontal and vertical splits
+unbind |
+bind | split-window -h
+unbind _
+bind _ split-window
+
+# tile all windows
+unbind =
+bind = select-layout tiled
+
+# cycle through panes
+unbind ^A
+bind ^A select-pane -t :.+
+
+unbind Right
+bind Right resize-pane -R 8
+unbind Left
+bind Left resize-pane -L 8
+unbind Up
+bind Up resize-pane -U 4
+unbind Down
+bind Down resize-pane -D 4
+
+# Set window notifications
+setw -g monitor-activity off
+set -g visual-activity off
+
 # Rather than constraining window size to the maximum size of any client 
 # connected to the *session*, constrain window size to the maximum size of any 
 # client connected to *that window*. Much more reasonable.
-setw -g aggressive-resize on
+set-window-option -g aggressive-resize on
 
 # Allows us to use C-a a <command> to send commands to a TMUX session inside 
 # another TMUX session
@@ -55,10 +106,23 @@ bind-key -t vi-copy 'v' begin-selection
 bind-key -t vi-copy 'y' copy-selection
 
 # hjkl pane traversal
+unbind h
 bind h select-pane -L
+unbind j
 bind j select-pane -D
+unbind k
 bind k select-pane -U
+unbind l
 bind l select-pane -R
+
+# Copy mode works as Vim
+unbind [
+bind Escape copy-mode
+unbind p
+bind p paste-buffer
+
+bind -t vi-copy 'v' begin-selection
+bind -t vi-copy 'y' copy-selection
 
 # reload config
 bind r source-file ~/.tmux.conf \; display-message "Config reloaded..."
