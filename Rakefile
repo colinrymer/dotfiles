@@ -32,6 +32,9 @@ task :install do
     end
     `ln -s "$PWD/#{linkable}" "#{target}"`
   end
+
+  puts 'Installing gems'
+  puts `cd ruby; bundle install`
 end
 
 task :uninstall do
