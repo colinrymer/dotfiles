@@ -1,0 +1,6 @@
+source :rubygems
+gem 'gem-ctags'
+gem 'boom'
+gem 'bundler'
+gem 'rake'
+
