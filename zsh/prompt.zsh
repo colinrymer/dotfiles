@@ -38,7 +38,7 @@ user_and_host(){
 }
 
 ruby_version(){
-  echo "%{$FG[200]%}Ruby `ruby -e 'print "#{RUBY_VERSION}-p#{RUBY_PATCHLEVEL}"'`%{$reset_color%}"
+  echo "%{$FG[200]%}Ruby `rbenv version | cut -d' ' -f 1`%{$reset_color%}"
 }
 
 
