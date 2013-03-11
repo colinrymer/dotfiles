@@ -1,6 +1,12 @@
 source :rubygems
-gem 'gem-ctags'
 gem 'boom'
 gem 'bundler'
+gem 'fastri'
+gem 'gem-ctags'
+gem 'git-smart'
+gem 'omglog'
+gem 'osxsub'
+gem 'pry'
 gem 'rake'
-
+gem 'rcodetools'
+gem 'cloudapp_api'

@@ -2,13 +2,15 @@
 # Git Aliases
 #-------------------
 alias push='git push'
-alias pull='git pull'
+alias pull='git smart-pull'
 alias commit='git commit'
 alias cam='git commit -a -m'
 alias c='git commit -m'
 alias s='git status'
+alias gl="git log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'"
+alias gco='git checkout'
 
-alias git='hub'
+eval "$(hub alias -s)"
 
 #-------------------
 # Git Functions

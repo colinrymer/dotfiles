@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -e
+
+log()   { printf -- "-----> $*\n" ; return $? ; }
+fail()  { printf -- "\nERROR: $*\n" ; exit 1 ; }
+
+if [[ -f "$PWD/Berksfile" ]] ; then
+  if command -v berks >/dev/null ; then
+    fetch_cmd="berks install --path cookbooks"
+    depfile="Berksfile"
+  else
+    fail "berks is not found in PATH. Please 'gem install berkshelf'"
+  fi
+elif [[ -f "$PWD/Cheffile" ]] ; then
+  if command -v librarian-chef >/dev/null ; then
+    fetch_cmd="librarian-chef install --clean --verbose"
+    depfile="Cheffile"
+  else
+    fail "librarian-chef is not found in PATH. Please 'gem install librarian'"
+  fi
+else
+  fail "Berksfile or Cheffile must be present in $PWD"
+fi
+
+name="$1"
+build="$PWD/build-$$"
+
+log "Preparing build project"
+mkdir -p $build
+cp -f $PWD/${depfile}* $build/
+
+log "Fetching cookbooks and their dependencies"
+(cd $build && $fetch_cmd)
+
+log "Creating $PWD/$name.tar.gz"
+rm -f $PWD/$name.tar{,.gz}
+(cd $build && tar cf $(dirname $PWD)/$name.tar cookbooks/)
+gzip $PWD/$name.tar
+
+log "Cleaning up"
+rm -rf $build
+
+log "Done"

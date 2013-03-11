@@ -4,11 +4,17 @@ GEM
     boom (0.2.3)
       json_pure (~> 1.5.3)
       multi_json (~> 1.0.3)
+    colorize (0.5.8)
+    fastri (0.3.1.1)
     gem-ctags (1.0.4)
+    git-smart (0.1.9)
+      colorize
     json_pure (1.5.4)
       spruz (~> 0.2.8)
     multi_json (1.0.4)
+    osxsub (0.1.2)
     rake (10.0.2)
+    rcodetools (0.8.5.0)
     spruz (0.2.13)
 
 PLATFORMS
@@ -17,5 +23,9 @@ PLATFORMS
 DEPENDENCIES
   boom
   bundler
+  fastri
   gem-ctags
+  git-smart
+  osxsub
   rake
+  rcodetools
