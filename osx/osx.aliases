@@ -1,1 +1,5 @@
 alias qlf='qlmanage -p'
+
+alias ssh_on='sudo launchctl load -w /System/Library/LaunchDaemons/ssh.plist'
+alias ssh_off='sudo launchctl unload -w /System/Library/LaunchDaemons/ssh.plist'
+

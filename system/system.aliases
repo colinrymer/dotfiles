@@ -2,6 +2,8 @@
 # Personal Aliases
 #-------------------
 
+alias z='fg'
+
 # -> Prevents accidentally clobbering files.
 alias rm='rm -i'
 alias cp='cp -i'
@@ -9,14 +11,10 @@ alias mv='mv -i'
 alias rd='rmdir'
 alias mkdir='mkdir -p'
 
-alias bye='logout'
-
 alias sickbeard='python ~/Sick-Beard/SickBeard.py -d'
 
 alias netlogon="sudo sysctl -w net.inet.ip.fw.verbose=1"
 alias netlogoff="sudo sysctl -w net.inet.ip.fw.verbose=0"
-
-alias gemit="rvm gem install"
 
 if $(gls &>/dev/null)
 then
@@ -33,18 +31,10 @@ else
 fi
 
 # Basic directory operations
-
-alias -- -='cd -'
-alias ~='cd ~'
 alias h='cd ~'
 
 alias ..='cd ..'
 alias ...='cd ../..'
-
-alias cd..='cd ..'
-alias cd...='cd ../..'
-alias cd....='cd ../../..'
-alias cd.....='cd ../../../..'
 
 # Show history
 alias history='fc -l 1'
@@ -56,7 +46,5 @@ alias afind='ack-grep -il'
 #-------------------------------------------------------------
 alias xs='cd'
 alias vf='cd'
-alias moer='more'
-alias moew='more'
 alias puhs='push'
 alias psuh='push'

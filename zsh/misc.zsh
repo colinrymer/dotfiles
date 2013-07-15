@@ -13,4 +13,3 @@ export PAGER=less
 export LC_CTYPE=$LANG
 
 alias reload!='. ~/.zshrc'
-alias z='fg'

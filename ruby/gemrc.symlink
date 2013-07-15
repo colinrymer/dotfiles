@@ -4,8 +4,7 @@ install: --no-ri --no-rdoc
 :backtrace: false
 :benchmark: false
 :sources: 
-- http://rubygems.org/
-- http://gemserver01.nor.primedia.com
+- https://rubygems.org/
 update: --no-ri --no-rdoc
 :update_sources: true
 :bulk_threshold: 1000

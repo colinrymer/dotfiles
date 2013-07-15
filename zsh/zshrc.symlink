@@ -1,20 +1,15 @@
 export ZSH=$HOME/.dotfiles
-export PROJECTS=~/Projects
-
-# source every .zsh file in this rep
-for config_file ($ZSH/**/*.zsh) source $config_file
-
-# source every .aliases file in this rep
-for config_file ($ZSH/**/*.aliases) source $config_file
 
 # initialize autocomplete here, otherwise functions won't be loaded
 autoload -U compinit
 compinit
 
+# source every .zsh file in this rep
+for config_file ($ZSH/**/*.zsh) source $config_file
+# source every .aliases file in this rep
+for config_file ($ZSH/**/*.aliases) source $config_file
 # load every completion after autocomplete loads
 for config_file ($ZSH/**/*.completion) source $config_file
 
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-#source /usr/local/opt/chruby/share/chruby/auto.sh
-
 eval "$($HOME/source/idg/bin/idg init -)"
