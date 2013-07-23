@@ -45,4 +45,5 @@
  ("/Users/colin/.emacs.d/init.d/01_packages.el" . 629)
  ("/Users/colin/.emacs.d/init.d/evil.el" . 32)
  ("/Users/colin/.emacs.d/init.el" . 776)
- ("/Users/colin/Projects/primedia/ag/app/apartmentguide.rb" . 2042))
+ ("/Users/colin/Projects/primedia/ag/app/apartmentguide.rb" . 2042)
+ ("/Users/colin/Projects/primedia/rnr_ui/lib/tasks/build.thor" . 1556))

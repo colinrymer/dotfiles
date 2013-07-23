@@ -30,24 +30,24 @@ class Dong
 
   def length
     if @dong_stage < dong_factor
-      return @soft_length + @dong_stage
+      @soft_length + @dong_stage
     elsif @dong_stage >= dong_factor && @dong_stage < spurt_cycle_end
-      return @hard_length
+      @hard_length
     elsif @dong_stage >= (dong_cycle_end - cooldown - @refractory_period) && @dong_stage < (dong_cycle_end - @refractory_period)
-      return @hard_length - (@dong_stage - (dong_cycle_end - cooldown - @refractory_period))
+      @hard_length - (@dong_stage - (dong_cycle_end - cooldown - @refractory_period))
     else
-      return @soft_length
+      @soft_length
     end
-      
+
   end
 
   def member(direction)
     pole = ""
     length.times {pole << shaft}
     if direction == "left"
-      return (girthy ? "C" : "c") << pole << balls
+      (girthy ? "C" : "c") << pole << balls
     else
-      return balls << pole << (girthy ? "D" : "")
+      balls << pole << (girthy ? "D" : "")
     end
   end
 
@@ -78,7 +78,7 @@ class Dong
       spurt_length.times {splurge << "~"}
       front_space.times {splurge << " "}
     end
-    return splurge
+    splurge
   end
 
   def schlong
@@ -100,31 +100,57 @@ class Dong
 
   def target
     if @moneyshot === "boobs"
-      return "(.)(.)"
+      "(.)(.)"
     elsif @moneyshot === "butt"
-      return "( Y )"
+      "( Y )"
     elsif @moneyshot === "face"
-      return "('o')"
+      "('o')"
     else
-      return ""
+      ""
     end
   end
 
   def giant_dong
-    return "  --\n/~  ~\\                   ____\n\\ ~  /------------------|    \\\n  --                    |    -\n/ ~ ~\\------------------|____/\n\\  ~ /\n  --"
+    "  --\n/~  ~\\                   ____\n\\ ~  /------------------|    \\\n  --                    |    -\n/ ~ ~\\------------------|____/\n\\  ~ /\n  --"
   end
 
-  def no_spurt; result = ""; @spurt_distance.times{result << " "}; return result end
-  def balls; if @balls == "big" then return "8" else return ":" end end
-  def shaft; if girthy then return "=" else return "-" end end
-  def cooldown; dong_factor end
-  def dong_cycle_end; dong_factor+@spurt_distance+@spurt_size+cooldown+@refractory_period end
-  def spurt_cycle_end; dong_cycle_end - cooldown - @refractory_period end
-  def dong_factor; @hard_length - @soft_length; end
-  def girthy; (@girth === "thick") || false end
-  def next_dong_stage; (@dong_stage + 1) % dong_cycle_end end
-  
+  def no_spurt
+    result = ""
+    @spurt_distance.times{result << " "}
+    result
+  end
 
+  def balls
+    @balls == "big" ? "8" : ":"
+  end
+
+  def shaft
+    girthy ? "=" : "-"
+  end
+
+  def cooldown
+    dong_factor
+  end
+
+  def dong_cycle_end
+    dong_factor + @spurt_distance + @spurt_size + cooldown + @refractory_period
+  end
+
+  def spurt_cycle_end
+    dong_cycle_end - cooldown - @refractory_period
+  end
+
+  def dong_factor
+    @hard_length - @soft_length
+  end
+
+  def girthy
+    @girth == "thick"
+  end
+
+  def next_dong_stage
+    (@dong_stage + 1) % dong_cycle_end
+  end
 end
 
 options = {
@@ -162,8 +188,7 @@ file = options[:file]
 
 File.open( file, 'w') {|f| f.write "0" } if !File.exists? file
 
-penis = Dong.new ({
-                    soft_length: Integer(options[:soft_length]), 
+penis = Dong.new ({ soft_length: Integer(options[:soft_length]),
                     hard_length: Integer(options[:hard_length]),
                     refractory_period: Integer(options[:refractory]),
                     spurt_size: Integer(options[:spurt_size]),
@@ -174,8 +199,7 @@ penis = Dong.new ({
                     moneyshot: options[:moneyshot],
                     swordfight: options[:swordfight],
                     mandingo: options[:mandingo],
-                    dong_stage: Integer(File.read file)
-                  })
+                    dong_stage: Integer(File.read file) })
 
 File.open(file, 'w'){|f| f.write (penis.next_dong_stage) }
 

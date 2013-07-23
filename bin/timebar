@@ -1,0 +1,102 @@
+#!/usr/bin/env ruby
+# Command line tool for controlling Timebar
+# Timebar is ♥ 2013 Whimsicalifornia
+# http://whimsicalifornia.com/timebar
+
+require 'uri'
+
+SCRIPT_VERSION = 'fc40e516'
+
+def print_usage_and_exit!(message = nil, exit_code = 1)
+  if message
+    puts message + "\n\n"
+  end
+
+  puts """usage: timebar --duration duration [ --message message ]
+       timebar --help
+       timebar --version
+
+--duration/-d     The duration of the countdown, in seconds. Must be greater than zero.
+--message/-m      The message to show when the countdown completes. Optional.
+--help/-h         Shows this message.
+--version/-v      Show version information.
+
+"""
+
+  exit(exit_code)
+end
+
+def print_version_info_and_exit!
+  path = `mdfind "kMDItemCFBundleIdentifier == 'com.whimsicalifornia.timebar'"`.strip.split("\n")[0]
+  if path.nil?
+    puts "Can't find Timebar on your Mac. :( Download it from the Mac App Store:"
+    puts "https://itunes.apple.com/us/app/timebar/id617829225?mt=12"
+    abort
+  end
+
+  app_version_number = `mdls -name kMDItemVersion '#{path}'`.strip.split(' = ')[1].gsub('"', '')
+
+  puts "Timebar #{app_version_number}, script #{SCRIPT_VERSION}"
+  exit
+end
+
+if ARGV.empty?
+  print_usage_and_exit!
+end
+
+OPT_DURATION = 'd'
+OPT_HELP = 'h'
+OPT_MESSAGE = 'm'
+OPT_PRINT = 'p'
+OPT_VERSION = 'v'
+
+print_url = false
+
+opt_regexp = /^--?([a-z])/
+opt_name = nil
+options = {}
+ARGV.each do |arg|
+  if opt_name
+    options[opt_name] = arg
+    opt_name = nil
+  elsif arg.match(opt_regexp) && opt_name.nil?
+    opt_name = arg.scan(opt_regexp).flatten[0]
+    case opt_name
+    when OPT_HELP
+      print_usage_and_exit!(message = nil, exit_code = 0)
+    when OPT_VERSION
+      print_version_info_and_exit!
+    when OPT_PRINT
+      # Undocumented flag to print out the URL needed to start Timebar, but not actually start it.
+      print_url = true
+      opt_name = nil
+    end
+  else
+    print_usage_and_exit!("Unexpected parameter: '#{arg}'")
+  end
+end
+
+duration = if options.has_key?(OPT_DURATION)
+  options[OPT_DURATION].to_i
+else
+  print_usage_and_exit!("You must provide a duration for the countdown.")
+end
+
+if duration <= 0
+  puts "Duration must be greater than zero."
+  abort
+end
+
+
+message = if options.has_key?(OPT_MESSAGE)
+  URI.encode(options[OPT_MESSAGE])
+else
+  ''
+end
+
+url = "timebar://whimsicalifornia.com/start?duration=#{duration}&message=#{message}"
+if print_url
+  puts url
+else
+  system('open', url)
+end

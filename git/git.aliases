@@ -2,7 +2,7 @@
 # Git Aliases
 #-------------------
 alias push='git push'
-alias pull='git smart-pull'
+#alias pull='git smart-pull'
 alias commit='git commit'
 alias cam='git commit -a -m'
 alias c='git commit -m'
@@ -15,6 +15,12 @@ eval "$(hub alias -s)"
 #-------------------
 # Git Functions
 #-------------------
+
+pull () {
+  rbenv shell $(rbenv global)
+  git smart-pull
+  rbenv shell --unset
+}
 
 cleanit () {
 	git clean -dxn
