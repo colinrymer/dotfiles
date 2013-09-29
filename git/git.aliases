@@ -22,8 +22,11 @@ pull () {
   rbenv shell --unset
 }
 
-cleanit () {
-	git clean -dxn
-	read -p "Remove those files (y/n)?"
-	[ "$REPLY" == "n" ] || git clean -dxf
+function g {
+  if [[ $# > 0 ]]; then
+    git $@
+  else
+    git status
+  fi
 }
+compdef g=git

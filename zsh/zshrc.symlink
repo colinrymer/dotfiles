@@ -13,3 +13,4 @@ for config_file ($ZSH/**/*.completion) source $config_file
 
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 eval "$($HOME/source/idg/bin/idg init -)"
+

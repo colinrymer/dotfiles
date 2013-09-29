@@ -428,4 +428,6 @@ nmap <leader>p <C-w>p
 
 nmap <buffer> <CR> <C-]>
 
-
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup

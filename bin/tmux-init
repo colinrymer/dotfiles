@@ -1,0 +1,13 @@
+session="base"
+tmux has-session -t $session &> /dev/null
+if [[ $? -eq 0  ]]; then
+  #window_count=$(tmux list-windows | wc -l)
+  #if [[ $window_count -gt 1 ]]; then
+    #new_window_name="$(expr 1 + )"
+    #tmux new-window -t $session -c ~ -n $new_window_name
+    #tmux select-window -t $session:$new_window_name
+  #fi
+  tmux attach -t $session
+else
+  tmux new-session -s $session
+fi
