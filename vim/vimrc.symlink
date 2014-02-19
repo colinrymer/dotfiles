@@ -269,8 +269,9 @@ set laststatus=2
 " Format the status line
 set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
-let g:Powerline_symbols = 'fancy'
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
