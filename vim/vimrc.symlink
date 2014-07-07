@@ -23,6 +23,15 @@
 
 set nocompatible " Must be first in .vimrc
 
+
+filetype off
+filetype plugin indent off
+set runtimepath+=/usr/local/opt/go/libexec/misc/vim/
+filetype plugin indent on
+syntax on
+
+autocmd FileType go autocmd BufWritePre <buffer> Fmt
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vundle
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -224,6 +233,8 @@ set backspace=indent,eol,start
 
 " Show whitespace at end of a line
 set list listchars=tab:»·,trail:·
+
+set matchpairs+=<:>
 
 
 """"""""""""""""""""""""""""""

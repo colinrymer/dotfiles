@@ -11,6 +11,14 @@ for config_file ($ZSH/**/*.aliases) source $config_file
 # load every completion after autocomplete loads
 for config_file ($ZSH/**/*.completion) source $config_file
 
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+[ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
 eval "$($HOME/source/idg/bin/idg init -)"
 
+#export TORQUEBOX_HOME=/opt/torquebox
+#export JBOSS_HOME=$TORQUEBOX_HOME/jboss
+#export JRUBY_HOME=$TORQUEBOX_HOME/jruby
+#export PATH=$JRUBY_HOME/bin:$PATH
+
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"

@@ -4,17 +4,40 @@ GEM
     boom (0.2.3)
       json_pure (~> 1.5.3)
       multi_json (~> 1.0.3)
+    cloudapp_api (0.4.0)
+      httparty
+      mime-types
+    coderay (1.0.9)
     colorize (0.5.8)
     fastri (0.3.1.1)
+    ffi (1.9.0)
     gem-ctags (1.0.4)
     git-smart (0.1.9)
       colorize
+    httparty (0.12.0)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
+    json (1.8.0)
     json_pure (1.5.4)
       spruz (~> 0.2.8)
+    method_source (0.8.2)
+    mime-types (1.25)
     multi_json (1.0.4)
+    multi_xml (0.5.5)
+    omglog (0.0.10)
+      rb-fsevent (~> 0.9.0)
+      rb-inotify (~> 0.8.8)
     osxsub (0.1.2)
+    pry (0.9.12.2)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
     rake (10.0.2)
+    rb-fsevent (0.9.3)
+    rb-inotify (0.8.8)
+      ffi (>= 0.5.0)
     rcodetools (0.8.5.0)
+    slop (3.4.6)
     spruz (0.2.13)
 
 PLATFORMS
@@ -23,9 +46,12 @@ PLATFORMS
 DEPENDENCIES
   boom
   bundler
+  cloudapp_api
   fastri
   gem-ctags
   git-smart
+  omglog
   osxsub
+  pry
   rake
   rcodetools
