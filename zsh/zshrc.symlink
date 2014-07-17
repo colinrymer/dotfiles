@@ -24,4 +24,4 @@ eval "$($HOME/source/idg/bin/idg init -)"
 export PATH="/usr/local/heroku/bin:$PATH"
 
 GOVERSION=$(brew list go | head -n 1 | cut -d '/' -f 6)
-export GOROOT=$(brew --prefix)/Cellar/go/$GOVERSION
+export GOPATH=$(brew --prefix)/Cellar/go/$GOVERSION/libexec
