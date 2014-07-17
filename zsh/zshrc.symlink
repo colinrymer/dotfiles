@@ -23,4 +23,4 @@ eval "$($HOME/source/idg/bin/idg init -)"
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-eval "$(direnv hook $0)"
+eval "$(direnv hook zsh)"
