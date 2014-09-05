@@ -11,7 +11,11 @@ for config_file ($ZSH/**/*.aliases) source $config_file
 # load every completion after autocomplete loads
 for config_file ($ZSH/**/*.completion) source $config_file
 
-[ -f /opt/boxen/env.sh ] && source /opt/boxen/env.sh
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
+
+chruby 2.1.2
+
 eval "$($HOME/source/idg/bin/idg init -)"
 
 #export TORQUEBOX_HOME=/opt/torquebox
