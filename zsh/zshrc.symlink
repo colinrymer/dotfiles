@@ -9,31 +9,15 @@ for config_file ($ZSH/**/*.zsh) source $config_file
 # source every .aliases file in this rep
 for config_file ($ZSH/**/*.aliases) source $config_file
 # load every completion after autocomplete loads
-for config_file ($ZSH/**/*.completion) source $config_file
-
-source /usr/local/opt/chruby/share/chruby/chruby.sh
-source /usr/local/opt/chruby/share/chruby/auto.sh
-
-chruby 2.1.2
+#for config_file ($ZSH/**/*.completion) source $config_file
 
 eval "$($HOME/source/idg/bin/idg init -)"
-
-#export TORQUEBOX_HOME=/opt/torquebox
-#export JBOSS_HOME=$TORQUEBOX_HOME/jboss
-#export JRUBY_HOME=$TORQUEBOX_HOME/jruby
-#export PATH=$JRUBY_HOME/bin:$PATH
-
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-eval "$(direnv hook zsh)"
-
-### This has to be after the direnv hook to fix a bug where the
-### directory contents are printed multiple times.
-function ls_after_chpwd() {
-  ls -la .
+function global_ruby () {
+  chruby $1
 }
-chpwd_functions=( ls_after_chpwd $chpwd_functions )
 
-
+global_ruby $(cat ~/.global-ruby-version)

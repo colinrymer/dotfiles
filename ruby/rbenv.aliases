@@ -1,2 +1,0 @@
-alias rhash='rbenv rehash'
-alias rinstall='rbenv install'

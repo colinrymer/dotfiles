@@ -4,7 +4,7 @@ setopt auto_pushd
 setopt pushd_ignore_dups
 
 setopt auto_cd
-cdpath=(. $HOME $HOME/Projects/sites $HOME/Projects/primedia $HOME/Projects)
+cdpath=(. $HOME $HOME/Projects/sites $HOME/Projects/spartan $HOME/Projects)
 
 # mkdir & cd to it
 function mcd() { 

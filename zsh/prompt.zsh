@@ -60,7 +60,7 @@ user_and_host(){
 }
 
 ruby_version(){
-  echo "%{$FG[200]%}Ruby $(chruby | grep '*' | cut -d' ' -f3 | cut -d'-' -f 2,3)%{$reset_color%}"
+  echo "%{$FG[200]%}Ruby $(chruby_prompt_info | cut -d'-' -f2)%{$reset_color%}"
 }
 
 export PROMPT=$'\n$(user_and_host)%{$FG[254]%} in $(directory_name) $(git_info) %{$FG[254]%}using $(ruby_version)%{$FG[254]%}%{$reset_color%}\n\$ '
