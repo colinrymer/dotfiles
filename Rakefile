@@ -4,7 +4,7 @@ desc "Hook our dotfiles into system-standard positions."
 task :install do
   linkables = Dir.glob('*/**{.symlink}')
 
-  skip_all = false
+  skip_all = ENV['SKIP_ALL']
   overwrite_all = false
   backup_all = false
 
