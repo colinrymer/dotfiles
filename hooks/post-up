@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ ! -e $HOME/.vim/bundle/Vundle.vim ]; then
+  git clone https://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
+fi
+vim -u $HOME/.vimrc.bundles +PluginInstall +PluginClean! +qa
+
+if [ ! -e $HOME/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.so ]; then
+  ~/.vim/bundle/YouCompleteMe/install.sh
+fi
+
+command -v bundle >/dev/null 2>&1
+if [ $? -eq 1 ]; then
+   gem install bundler
+ fi
+
+dotfile_gemfile="$HOME/.dotfiles/Gemfile"
+
+bundle check --gemfile=$dotfile_gemfile >/dev/null 2>&1
+if [ $? -eq 1 ]; then
+  bundle install --gemfile=$dotfile_gemfile
+fi
+
+gem ctags
+

@@ -1,0 +1,36 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    cloudapp_api (0.4.0)
+      httparty
+      mime-types
+    coderay (1.1.0)
+    colorize (0.7.5)
+    gem-ctags (1.0.6)
+    git-smart (0.1.10)
+      colorize
+    httparty (0.13.3)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
+    json (1.8.2)
+    method_source (0.8.2)
+    mime-types (2.4.3)
+    multi_xml (0.5.5)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    rake (10.4.2)
+    rcodetools (0.8.5.0)
+    slop (3.6.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  cloudapp_api
+  gem-ctags
+  git-smart
+  pry
+  rake
+  rcodetools

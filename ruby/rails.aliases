@@ -1,4 +1,0 @@
-alias dms="rake db:reset"
-alias rs="rails s"
-alias rc="rails c"
-alias rt="rake test"

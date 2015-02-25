@@ -1,2 +1,0 @@
-alias hlogs='heroku logs'
-alias hp='git push heroku master'

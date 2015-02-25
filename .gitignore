@@ -1,5 +1,4 @@
 secrets/*
 git/gitconfig.symlink
-bash/colors.sh
 .DS_Store
-vim/vim.symlink/bundle/*
+vim/bundle/*

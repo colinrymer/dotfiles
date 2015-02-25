@@ -1,8 +1,0 @@
-alias vs="vagrant status"
-alias vu="vagrant up"
-alias vp="vagrant provision"
-
-function vsh () {
-  [[ $(vagrant status | grep default | grep poweroff) != "" ]] && vagrant up
-  vagrant ssh
-}
