@@ -1,6 +1,11 @@
 export ZSH=$HOME/.dotfiles
 
-# initialize autocomplete here, otherwise functions won't be loaded
+# make things colorful
+autoload -U colors && colors
+source `brew --prefix`/etc/grc.bashrc
+
+fpath=($ZSH/zsh/completions $fpath)
+
 autoload -U compinit
 compinit
 

@@ -1,3 +1,5 @@
+alias reload!='. ~/.zshrc'
+
 # boot2docker
 alias btd="boot2docker"
 
@@ -53,8 +55,6 @@ alias v='$VISUAL'
 alias vs="vagrant status"
 alias vu="vagrant up"
 alias vp="vagrant provision"
-
-
 
 # typos
 alias puhs='push'

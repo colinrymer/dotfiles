@@ -96,6 +96,7 @@ set wildignore=*.o,*~,*.pyc,*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store,*/vendor/cache
 "Always show current position
 set ruler
 set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
+set number
 set relativenumber
 set numberwidth=2
 
@@ -146,8 +147,8 @@ set tm=500
 " Add a bit extra margin to the left
 set foldcolumn=1
 
-" Clear the search buffer on ,<space>
-nnoremap <leader><space> :noh<CR>
+ "Clear the search buffer on ,<space>
+nnoremap <leader><leader> :noh<CR>
 
 " Tab to move between bracket pairs
 nnoremap <tab> %
@@ -234,7 +235,7 @@ vnoremap <silent> # :call VisualSelection('b', '')<CR>
 map j gj
 map k gk
 
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+ "Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 "map <space> /
 
 " Close the current buffer
@@ -386,7 +387,7 @@ nmap <silent> <C-\> :Ggrep <cword><CR>:copen<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Commenting
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader><leader> <plug>NERDCommenterInvert
+map ,, <plug>NERDCommenterInvert
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Xmpfilter
@@ -437,12 +438,12 @@ au Syntax * RainbowParenthesesLoadBraces
 " The Platinum Searcher
 "------------------------------------------------------------------------------
 if executable('pt')
-  " Use pt over Grep
-  set grepprg=pt\ --nogroup\ --nocolor
+  " Use ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
 
-  " Use pt in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'pt %s -l --nocolor -g ""'
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
-  " pt is fast enough that CtrlP doesn't need to cache
+  " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 endif

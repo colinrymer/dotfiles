@@ -1,15 +1,4 @@
-# Setup ZSH like vim
-bindkey -v
-bindkey -M viins 'jj' vi-cmd-mode
-
-# But keep some emacs bindings
-bindkey -M viins '^a'    beginning-of-line
-bindkey -M viins '^e'    end-of-line
-bindkey -M viins '^k'    kill-line
-
-bindkey -M vicmd '^a'    beginning-of-line
-bindkey -M vicmd '^e'    end-of-line
-bindkey -M vicmd '^k'    kill-line
+bindkey -e
 
 if [[ -n $SSH_CONNECTION ]]; then
   export PS1='%m:%3~$(git_info_for_prompt)%# '
@@ -92,3 +81,14 @@ bindkey '^[^[[C' forward-word
 bindkey '^[[5D' beginning-of-line
 bindkey '^[[5C' end-of-line
 bindkey '^[^N' newtab
+
+## smart urls
+autoload -U url-quote-magic
+zle -N self-insert url-quote-magic
+
+## file rename magick
+bindkey "^[m" copy-prev-shell-word
+
+## jobs
+setopt long_list_jobs
+

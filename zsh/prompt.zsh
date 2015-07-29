@@ -1,19 +1,4 @@
-autoload colors && colors
 autoload spectrum && spectrum
-
-# set VIMODE according to the current mode (default “-- INSERT --”)
-VIMODE='-- INSERT --'
-function zle-keymap-select {
- VIMODE="${${KEYMAP/vicmd/}/(main|viins)/-- INSERT --}"
- zle reset-prompt
-}
-
-function zle-line-finish {
- VIMODE='-- INSERT --'
-}
-
-zle -N zle-keymap-select
-zle -N zle-line-finish
 
 git_path(){
   echo $(git rev-parse --git-dir 2>/dev/null)
@@ -45,24 +30,34 @@ git_dirty(){
   fi
 }
 
-git_info(){
+_ruby_version(){
+    local _ruby
+    _ruby="$(chruby |grep \* |tr -d '* ruby-')"
+    if [[ $(chruby |grep -c \*) -eq 1 ]]; then
+        echo ${_ruby}
+    else
+        echo "system"
+    fi
+}
+
+_user_host_info(){
+  echo "%{$FG[009]%}%n%{$reset_color%}%{$FG[254]%}@%{$reset_color%}%{$FG[172]%}%m%{$FG[254]%}"
+}
+
+_directory_info(){
+  echo " in %{$FG[190]%}${PWD/#$HOME/~}%{$reset_color%}"
+}
+
+_git_info(){
   if [[ "$(git_path)" != '' ]]; then
-    echo "%{$FG[254]%}on %{$FG[141]%}$(git_branch)%{$FG[254]%}@%{$FG[032]%}$(git_commit_id)%{$FG[095]%}$(git_rebase)%{$FG[084]%}$(git_dirty)%{$reset_color%}"
+    echo " %{$FG[254]%}on %{$FG[141]%}$(git_branch)%{$FG[254]%}@%{$FG[032]%}$(git_commit_id)%{$FG[095]%}$(git_rebase)%{$FG[084]%}$(git_dirty)%{$reset_color%}"
   fi
 }
 
-directory_name(){
-  echo "%{$FG[190]%}${PWD/#$HOME/~}%{$reset_color%}"
+_ruby_info(){
+  echo " %{$FG[254]%}using %{$FG[200]%}Ruby $(_ruby_version)%{$FG[254]%}"
 }
 
-user_and_host(){
-  echo "%{$FG[009]%}%n%{$reset_color%}%{$FG[254]%}@%{$reset_color%}%{$FG[172]%}%m%{$reset_color%}"
-}
+export PROMPT=$'\n$(_user_host_info)$(_directory_info)$(_git_info)$(_ruby_info)%{$reset_color%}\n\$ '
 
-ruby_version(){
-  echo "%{$FG[200]%}Ruby $(chruby_prompt_info | cut -d'-' -f2)%{$reset_color%}"
-}
-
-export PROMPT=$'\n$(user_and_host)%{$FG[254]%} in $(directory_name) $(git_info) %{$FG[254]%}using $(ruby_version)%{$FG[254]%}%{$reset_color%}\n\$ '
-
-export RPROMPT=$'%{$FG[077]%}${VIMODE}%{$reset_color%}'
+export RPROMPT='[%D{%L:%M:%S %p}]'

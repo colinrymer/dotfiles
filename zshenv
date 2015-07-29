@@ -2,23 +2,29 @@
 export VISUAL=vim
 export EDITOR=$VISUAL
 
+export GOPATH=~/Projects/gocode
+
+export HTTPIE_CONFIG_DIR='~/.config/httpie'
+
+export PAGER=less
+export LC_CTYPE=$LANG
+
 # ensure dotfiles bin directory is loaded first
-export PATH="$HOME/.bin:/usr/local/sbin:$PATH"
+export PATH="$HOME/.bin:.git/safe/../../bin:/usr/local/share/npm/bin:$GOPATH/bin:$PATH"
 
-# mkdir .git/safe in the root of repositories you trust
-export PATH=".git/safe/../../bin:$PATH"
+source $(brew --prefix chruby)/share/chruby/chruby.sh
+source $(brew --prefix chruby)/share/chruby/auto.sh
 
-# npm bin directory
-export PATH="/usr/local/share/npm/bin:$PATH"
+# Fix for zsh cd/chruby auto.sh execution priority issue
+precmd_functions+=("chruby_auto")
 
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
-source $HOME/.zsh/chruby
+chruby $(cat ~/.global-ruby-version)
 
 $(boot2docker shellinit 2>/dev/null)
 
 eval "$(hub alias -s)"
+
+eval "$(/usr/local/opt/hop/bin/hop init -)"
 
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local

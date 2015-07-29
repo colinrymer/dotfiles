@@ -1,0 +1,4 @@
+#compdef chruby
+#autoload
+
+compadd $(chruby | tr -d '* ')
