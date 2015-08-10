@@ -1,3 +1,3 @@
-EXCLUDES="README.md UNLICENSE Gemfile"
+EXCLUDES="README.md UNLICENSE Brewfile Gemfile"
 DOTFILES_DIRS="$HOME/.dotfiles-local $HOME/.dotfiles"
-SYMLINK_DIRS="bin hydra zsh"
+SYMLINK_DIRS="bin hydra mutt zsh"

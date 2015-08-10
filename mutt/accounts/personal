@@ -1,0 +1,15 @@
+set from      = "colin.rymer@gmail.com"
+set sendmail  = "/usr/bin/msmtp -a personal"
+set mbox      = "+colin.rymer-gmail.com/archive"
+set postponed = "+colin.rymer-gmail.com/drafts"
+
+color status green default
+
+macro index D \
+    "<save-message>+colin.rymer-gmail.com/Trash<enter>" \
+    "move message to the trash"
+
+macro index S \
+    "<save-message>+colin.rymer-gmail.com/Spam<enter>"  \
+        "mark message as spam"
+

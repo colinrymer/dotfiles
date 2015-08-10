@@ -1,5 +1,10 @@
 #!/bin/bash
 
+brew tap | grep bundle > /dev/null 2>&1
+if [ $? -eq 1 ]; then
+  brew bundle --file=$HOME/.dotfiles/Brewfile
+fi
+
 if [ ! -e $HOME/.vim/bundle/Vundle.vim ]; then
   git clone https://github.com/gmarik/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
 fi

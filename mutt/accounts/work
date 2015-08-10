@@ -1,0 +1,14 @@
+set from      = "crymer@rentpath.com"
+set sendmail  = "/usr/bin/msmtp -a work"
+set mbox      = "+crymer-rentpath.com/archive"
+set postponed = "+crymer-rentpath.com/drafts"
+
+color status cyan default
+
+macro index D \
+    "<save-message>+crymer-rentpath.com/Trash<enter>" \
+    "move message to the trash"
+
+macro index S \
+    "<save-message>+crymer-rentpath.com/Spam<enter>"  \
+        "mark message as spam"
