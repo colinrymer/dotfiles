@@ -1,7 +1,7 @@
 #!/bin/bash
 
 brew tap | grep bundle > /dev/null 2>&1
-if [ $? -eq 1 ]; then
+if [ $? -eq 0 ]; then
   brew bundle --file=$HOME/.dotfiles/Brewfile
 fi
 
