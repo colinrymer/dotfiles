@@ -24,7 +24,5 @@ $(boot2docker shellinit 2>/dev/null)
 
 eval "$(hub alias -s)"
 
-eval "$(/usr/local/opt/hop/bin/hop init -)"
-
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
