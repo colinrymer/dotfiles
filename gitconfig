@@ -26,3 +26,5 @@
   prune = true
 [heroku]
 	account = personal
+[commit]
+	gpgsign = true

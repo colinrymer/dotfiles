@@ -30,11 +30,25 @@ git_dirty(){
   fi
 }
 
+_elixir_version(){
+    echo "$(elixir --version | tail -n 1)"
+}
+
 _ruby_version(){
     local _ruby
     _ruby="$(chruby |grep \* |tr -d '* ruby-')"
     if [[ $(chruby |grep -c \*) -eq 1 ]]; then
         echo ${_ruby}
+    else
+        echo "system"
+    fi
+}
+
+_node_version(){
+    local _node
+    _node="$(chnode |grep \* |tr -d '* ruby-')"
+    if [[ $(chnode |grep -c \*) -eq 1 ]]; then
+        echo ${_node}
     else
         echo "system"
     fi
@@ -53,11 +67,18 @@ _git_info(){
     echo " %{$FG[254]%}on %{$FG[141]%}$(git_branch)%{$FG[254]%}@%{$FG[032]%}$(git_commit_id)%{$FG[095]%}$(git_rebase)%{$FG[084]%}$(git_dirty)%{$reset_color%}"
   fi
 }
-
-_ruby_info(){
-  echo " %{$FG[254]%}using %{$FG[200]%}Ruby $(_ruby_version)%{$FG[254]%}"
+_elixir_info(){
+  echo " %{$FG[200]%}$(_elixir_version)%{$FG[254]%}"
 }
 
-export PROMPT=$'\n$(_user_host_info)$(_directory_info)$(_git_info)$(_ruby_info)%{$reset_color%}\n\$ '
+_ruby_info(){
+  echo " %{$FG[200]%}Ruby $(_ruby_version)%{$FG[254]%}"
+}
+
+_node_info(){
+  echo " %{$FG[100]%}Node $(_node_version)%{$FG[254]%}"
+}
+
+export PROMPT=$'\n$(_user_host_info)$(_directory_info)$(_git_info) %{$FG[254]%}using$(_ruby_info)%{$FG[254]%},$(_node_info)%{$reset_color%}\n\$ '
 
 export RPROMPT='[%D{%L:%M:%S %p}]'

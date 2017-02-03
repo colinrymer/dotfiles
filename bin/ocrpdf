@@ -1,0 +1,38 @@
+#!/bin/bash
+
+PREFIX=$(basename "$1" .pdf)
+if [ ! -z "$TESSERACT_FLAGS" ]; then
+  echo "Picked up TESSERACT_FLAGS: $TESSERACT_FLAGS"
+fi
+echo "Prefix is: $PREFIX"
+echo "Converting to TIFF..."
+if command -v parallel >/dev/null 2>&1; then
+  LAST_PAGE=$(($(pdfinfo "$1"|grep '^Pages:'|awk '{print $2}') - 1))
+  parallel --bar -u convert -density 300 "$1"\[\{1\}\] -type Grayscale -compress lzw -background white +matte -depth 32 "${PREFIX}_page_%05d.tif" ::: $(seq 0 $LAST_PAGE)
+else
+  convert -density 300 "$1" -type Grayscale -compress lzw -background white +matte -depth 32 "${PREFIX}_page_%05d.tif"
+fi
+echo "Performing OCR..."
+if command -v parallel >/dev/null 2>&1; then
+  parallel --bar -u --retries 3 "tesseract $TESSERACT_FLAGS {} {.} pdf 2>/dev/null" ::: "${PREFIX}"_page_*.tif
+else
+  for i in "${PREFIX}"_page_*.tif; do
+    echo $i
+    tesseract $TESSERACT_FLAGS "$i" "$(basename "$i" .tif)" pdf 2>/dev/null
+  done
+fi
+echo "Verifying output and converting missing files back without OCR..."
+for i in "${PREFIX}"_page_*.pdf; do
+  if ! pdfinfo "$i" > /dev/null; then
+    rm -v $i
+    convert -density 300 $(basename $i .pdf).tif $i
+  fi
+done
+echo "Combining output to ${PREFIX}-OCR.pdf..."
+if command -v pdftk >/dev/null 2>&1; then
+  pdftk "${PREFIX}"_page_*.pdf cat output "${PREFIX}-OCR.pdf"
+else
+  gs -q -dNOPAUSE -dBATCH -dProvideUnicode -sDEVICE=pdfwrite -sOutputFile="${PREFIX}-OCR.pdf" "${PREFIX}"_page_*.pdf >/dev/null 2>&1
+fi
+echo "Cleaning up..."
+rm "${PREFIX}"_page_*.tif "${PREFIX}"_page_*.pdf "${PREFIX}"_page_*.txt

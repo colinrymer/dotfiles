@@ -1,6 +1,7 @@
-# use vim as the visual editor
-export VISUAL=vim
+export VISUAL="/usr/local/bin/emacsclient"
 export EDITOR=$VISUAL
+
+export ZSH=$HOME/.dotfiles
 
 export GOPATH=~/Projects/gocode
 
@@ -10,19 +11,23 @@ export PAGER=less
 export LC_CTYPE=$LANG
 
 # ensure dotfiles bin directory is loaded first
-export PATH="$HOME/.bin:.git/safe/../../bin:/usr/local/share/npm/bin:$GOPATH/bin:$PATH"
+export PATH="$HOME/.bin:.git/safe/../../bin:/usr/local/bin:/usr/local/sbin:/usr/local/share/npm/bin:$GOPATH/bin:$PATH"
 
-source $(brew --prefix chruby)/share/chruby/chruby.sh
-source $(brew --prefix chruby)/share/chruby/auto.sh
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
+source ~/Projects/chnode/share/chnode/chnode.sh
+source ~/Projects/chnode/share/chnode/auto.sh
 
-# Fix for zsh cd/chruby auto.sh execution priority issue
+# Fix for zsh cd/chruby/chnode auto.sh execution priority issue
 precmd_functions+=("chruby_auto")
+precmd_functions+=("chnode_auto")
 
-chruby $(cat ~/.global-ruby-version)
-
-$(boot2docker shellinit 2>/dev/null)
+#chruby $(< ~/.global-ruby-version)
+#chnode $(< ~/.global-node-version)
 
 eval "$(hub alias -s)"
+
+eval "$($HOME/Projects/rentpath/idg/bin/idg init -)"
 
 # Local config
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
