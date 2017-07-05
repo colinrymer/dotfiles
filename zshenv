@@ -15,8 +15,9 @@ export PATH="$HOME/.bin:.git/safe/../../bin:/usr/local/bin:/usr/local/sbin:/usr/
 
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/opt/chruby/share/chruby/auto.sh
-source ~/Projects/chnode/share/chnode/chnode.sh
-source ~/Projects/chnode/share/chnode/auto.sh
+
+export NVM_DIR="$HOME/.nvm"
+  . "/usr/local/opt/nvm/nvm.sh"
 
 # Fix for zsh cd/chruby/chnode auto.sh execution priority issue
 precmd_functions+=("chruby_auto")

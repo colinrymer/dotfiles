@@ -14,7 +14,8 @@ source $ZSH/zsh/fancy_ctrl_z.zsh
 source $ZSH/zsh/prompt.zsh
 
 chruby $(< ~/.global-ruby-version)
-chnode $(< ~/.global-node-version)
+
+nvm use $(< ~/.global-node-version)
 
 export PATH="$HOME/.yarn/bin:$PATH"
 
