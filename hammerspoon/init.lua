@@ -22,8 +22,8 @@ hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reloadConfig):start()
 -----------------------------------------------
 -- Set up
 -----------------------------------------------
---local hyper = {"shift", "cmd", "alt", "ctrl"}
-local hyper = {"alt", "ctrl"}
+local hyper = {"shift", "cmd", "alt", "ctrl"}
+--local hyper = {"alt", "ctrl"}
 
 -----------------------------------------------
 -- vim-like window movement

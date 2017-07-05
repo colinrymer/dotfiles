@@ -2,15 +2,15 @@
 
 accounts = Personal,Work
 maxsyncaccounts = 2
+autorefresh = 5
 ui = TTYUI
-pythonfile = ~/.mutt/offlineimap.py
 fsync = false
+pythonfile = ~/.dotfiles/offlineimap/offlineimap.py
 
 [Account Personal]
 
 localrepository = Personal-Local
 remoterepository = Personal-Remote
-status_backend = sqlite
 
 [Repository Personal-Local]
 
@@ -45,7 +45,6 @@ sslcacertfile = /usr/local/etc/openssl/cert.pem
 
 localrepository = Work-Local
 remoterepository = Work-Remote
-status_backend = sqlite
 
 [Repository Work-Local]
 

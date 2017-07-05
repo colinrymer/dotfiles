@@ -40,6 +40,9 @@ alias c='git commit -m'
 alias s='git status'
 alias gl="git log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'"
 alias gco='git checkout'
+gcd() {
+  git clone -p $1 && cd $(echo "$1" | sed -e 's/.*\///g')
+}
 
 # heroku
 alias hlogs='heroku logs'
