@@ -3,3 +3,5 @@ git/gitconfig.symlink
 .DS_Store
 vim/bundle/*
 mutt/cache/headers
+emacs.d/oauth2.plstore
+emacs.d/private
