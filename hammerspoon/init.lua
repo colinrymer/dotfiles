@@ -17,7 +17,7 @@ function reloadConfig(files)
     hs.reload()
   end
 end
-hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reloadConfig):start()
+hs.pathwatcher.new(os.getenv("HOME") .. "/.dotfiles/hammerspoon/", reloadConfig):start()
 
 -----------------------------------------------
 -- Set up
@@ -57,7 +57,7 @@ for key, name in pairs({
   -- a = "",
   -- b = "",
   c = "Google Chrome",
-  -- d = <Used by Dash>,
+  -- d = "",
   e = "Emacs",
   f = "Finder",
   -- g = "",
@@ -68,7 +68,7 @@ for key, name in pairs({
   -- l = ""
   m = "Messages",
   -- n = "",
-  -- o = "",
+  o = "OmniFocus",
   p = "Spotify",
   -- q = "",
   -- r = "",

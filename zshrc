@@ -1,3 +1,4 @@
+zmodload zsh/zprof
 autoload -U colors && colors
 
 fpath=($ZSH/zsh/completions $fpath)
@@ -13,9 +14,8 @@ source $ZSH/zsh/edit-command-line.zsh
 source $ZSH/zsh/fancy_ctrl_z.zsh
 source $ZSH/zsh/prompt.zsh
 
-chruby $(< ~/.global-ruby-version)
-
-nvm use $(< ~/.global-node-version)
+source /usr/local/opt/asdf/asdf.sh
+source /usr/local/etc/bash_completion.d/asdf.bash
 
 export PATH="$HOME/.yarn/bin:$PATH"
 
@@ -26,9 +26,3 @@ source $ZSH/zsh/zsh-history-substring-search.zsh
 
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-
-#antigen bundle docker
-#antigen bundle encode64
-#antigen bundle httpie
-#antigen bundle arialdomartini/oh-my-git
-#antigen bundle zsh-users/zsh-autosuggestions

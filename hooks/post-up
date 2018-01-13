@@ -1,18 +1,18 @@
 #!/bin/bash
 
-brew tap | grep bundle > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-  brew bundle --file=$HOME/.dotfiles/Brewfile
-fi
+brew bundle --global
+sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
 
-command -v bundle >/dev/null 2>&1
-if [ $? -eq 1 ]; then
-   gem install bundler
- fi
+. /usr/local/opt/asdf/asdf.sh
 
-dotfile_gemfile="$HOME/.dotfiles/Gemfile"
+for plugin in $(cat ../.asdf-plugins); do
+    asdf plugin-list | grep $plugin > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        asdf plugin-add $plugin
+    fi
+done
 
-bundle check --gemfile=$dotfile_gemfile >/dev/null 2>&1
-if [ $? -eq 1 ]; then
-  bundle install --gemfile=$dotfile_gemfile
-fi
+pushd ~/
+GNUPGHOME="${ASDF_DIR:-$HOME/.asdf}/keyrings/nodejs" asdf install
+popd

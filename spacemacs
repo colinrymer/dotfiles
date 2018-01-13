@@ -50,25 +50,22 @@ values."
      go
      helm
      html
+     ;; ivy
      javascript
      (latex :variables
             latex-enable-folding t)
      lua
      markdown
-     (mu4e :variables
-           mu4e-installation-path "/usr/local/Cellar/mu/0.9.18_1/share/emacs/site-lisp/mu")
      (org :variables
           org-projectile-file "~/org/projectile.org")
      osx
      pandoc
-     php
      python
      puppet
      react
      restclient
      ruby
      ruby-on-rails
-     salt
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -77,6 +74,7 @@ values."
      spotify
      syntax-checking
      terraform
+     typescript
      version-control
      yaml
      )
@@ -84,9 +82,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(
-                                      google-contacts
-                                      helm-org-contacts)
+   dotspacemacs-additional-packages '()
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -371,65 +367,9 @@ you should place your code here."
         alchemist-goto-elixir-source-dir "~/Projects/src/elixir"
         alchemist-hooks-test-on-save t
 
-        helm-dash-browser-func 'eww
+        ;; helm-dash-browser-func 'eww
 
-        message-send-mail-function 'smtpmail-send-it
-
-        mu4e-maildir "~/.mail" ;; top-level Maildir
-        mu4e-enable-mode-line t
-        mu4e-enable-notifications t
-        mu4e-get-mail-command "offlineimap"
-        mu4e-sent-messages-behavior 'delete
-        mu4e-update-interval 120
-        mu4e-view-show-addresses t
-        mu4e-view-show-images t
-
-        require-final-newline t
-
-        smtpmail-stream-type 'starttls
-        smtpmail-default-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-service 587)
-
-
-  (with-eval-after-load 'mu4e
-    (setq mu4e-contexts
-          `( ,(make-mu4e-context
-               :name "Personal"
-               :enter-func (lambda () (mu4e-message "Entering Personal context"))
-               ;; we match based on the contact-fields of the message
-               :match-func (lambda (msg)
-                             (when msg
-                               (mu4e-message-contact-field-matches msg :to "colin.rymer@gmail.com")))
-               :vars '( ( user-mail-address      . "colin.rymer@gmail.com"  )
-                        ( user-full-name         . "Colin Rymer" )
-                        ( mu4e-sent-folder       . "/colin.rymer-gmail.com/sent" )    ;; folder for sent messages
-                        ( mu4e-drafts-folder     . "/colin.rymer-gmail.com/drafts" )  ;; unfinished messages
-                        ( mu4e-trash-folder      . "/colin.rymer-gmail.com/trash" )   ;; trashed messages
-                        ( mu4e-refile-folder     . "/colin.rymer-gmail.com/archive" ) ;; saved messages
-                        ( mu4e-compose-signature . (concat
-                                                    "--\n"
-                                                    "Colin Rymer\n"))))
-             ,(make-mu4e-context
-               :name "Work"
-               :enter-func (lambda () (mu4e-message "Switch to the Work context"))
-               ;; we match based on the contact-fields of the message
-               :match-func (lambda (msg)
-                             (when msg
-                               (mu4e-message-contact-field-matches msg :to "crymer@rentpath.com")))
-               :vars '( ( user-mail-address       . "crymer@rentpath.com" )
-                        ( user-full-name          . "Colin Rymer" )
-                        ( mu4e-sent-folder        . "/crymer-rentpath.com/sent" )    ;; folder for sent messages
-                        ( mu4e-drafts-folder      . "/crymer-rentpath.com/drafts" )  ;; unfinished messages
-                        ( mu4e-trash-folder       . "/crymer-rentpath.com/trash" )   ;; trashed messages
-                        ( mu4e-refile-folder      . "/crymer-rentpath.com/archive" ) ;; saved messages
-                        ( mu4e-compose-signature  . (concat
-                                                     "Colin Rymer | Director, Engineering\n"
-                                                     "\n"
-                                                     "950 East Paces Ferry Road NE, Suite 2600, Atlanta, GA 30326\n"
-                                                     "crymer@rentpath.com | 404-268-7180\n")))))))
-  (with-eval-after-load 'mu4e-alert
-    (mu4e-alert-set-default-style 'notifier))
+        require-final-newline t)
 
   (with-eval-after-load 'org
     ;; here goes your Org config :)
@@ -447,7 +387,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (oauth2 define-word yapfify xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org theme-changer terraform-mode tagedit sunshine spotify spaceline smeargle slim-mode shell-pop scss-mode sass-mode salt-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restclient-helm restart-emacs rbenv rase rainbow-mode rainbow-identifiers rainbow-delimiters pyvenv pytest pyenv-mode py-isort puppet-mode pug-mode projectile-rails popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pbcopy paradox pandoc-mode ox-pandoc osx-trash osx-location osx-dictionary orgit org-ref org-projectile org-present org-pomodoro org-download org-bullets open-junk-file ob-restclient ob-http ob-elixir neotree multi-term mu4e-maildirs-extension mu4e-alert move-text minitest markdown-toc magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor js-doc jinja2-mode insert-shebang info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-spotify helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate google-contacts golden-ratio go-guru go-eldoc gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-mix flycheck-credo flx-ido fish-mode fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erlang emoji-cheat-sheet-plus emmet-mode elisp-slime-nav dumb-jump drupal-mode dockerfile-mode docker diff-hl dash-at-point cython-mode csv-mode company-web company-tern company-statistics company-shell company-restclient company-go company-emoji company-auctex company-ansible company-anaconda column-enforce-mode color-identifiers-mode coffee-mode clojure-snippets clj-refactor clean-aindent-mode cider-eval-sexp-fu chruby bundler auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk ansible-doc ansible alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (multi wgrep smex ivy-hydra flyspell-correct-ivy counsel-projectile counsel-dash counsel swiper oauth2 define-word yapfify xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org theme-changer terraform-mode tagedit sunshine spotify spaceline smeargle slim-mode shell-pop scss-mode sass-mode salt-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restclient-helm restart-emacs rbenv rase rainbow-mode rainbow-identifiers rainbow-delimiters pyvenv pytest pyenv-mode py-isort puppet-mode pug-mode projectile-rails popwin pip-requirements phpunit phpcbf php-extras php-auto-yasnippets persp-mode pbcopy paradox pandoc-mode ox-pandoc osx-trash osx-location osx-dictionary orgit org-ref org-projectile org-present org-pomodoro org-download org-bullets open-junk-file ob-restclient ob-http ob-elixir neotree multi-term mu4e-maildirs-extension mu4e-alert move-text minitest markdown-toc magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode launchctl js2-refactor js-doc jinja2-mode insert-shebang info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-spotify helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate google-contacts golden-ratio go-guru go-eldoc gnuplot github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flycheck-mix flycheck-credo flx-ido fish-mode fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erlang emoji-cheat-sheet-plus emmet-mode elisp-slime-nav dumb-jump drupal-mode dockerfile-mode docker diff-hl dash-at-point cython-mode csv-mode company-web company-tern company-statistics company-shell company-restclient company-go company-emoji company-auctex company-ansible company-anaconda column-enforce-mode color-identifiers-mode coffee-mode clojure-snippets clj-refactor clean-aindent-mode cider-eval-sexp-fu chruby bundler auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk ansible-doc ansible alchemist aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

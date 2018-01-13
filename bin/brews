@@ -1,9 +1,5 @@
-#!/usr/bin/env ruby
-require 'json'
+#!/bin/bash
 
-`brew list`.split.each do |formula|
-  receipt_path = Dir.glob("#{`brew --prefix`.chomp}/Cellar/#{formula}/**/INSTALL_RECEIPT.json").first
-  receipt = JSON.load(File.open(receipt_path))
-  options = receipt['used_options'].join(' ')
-  puts "#{formula} #{options}"
-end
+set -e
+
+brew bundle --file=$HOME/.dotfiles/Brewfile
