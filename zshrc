@@ -1,5 +1,8 @@
-zmodload zsh/zprof
-autoload -U colors && colors
+cdpath=(. $HOME/Projects/rentpath $HOME/Projects/sites $HOME/Projects $HOME)
+fpath=(/usr/local/Homebrew/completions/zsh/ /usr/local/share/zsh-completions $fpath)
+
+autoload -Uz colors && colors
+autoload -Uz compinit && compinit
 
 export BABEL_CACHE_PATH=~/cache/babel.json
 export CLICOLOR=true
@@ -16,55 +19,47 @@ export PATH="$HOME/.bin:.git/safe/../../bin:$GOPATH/bin:$PATH"
 export VISUAL="/usr/local/bin/emacsclient"
 export EDITOR=$VISUAL
 
-fpath=(/usr/local/Homebrew/completions/zsh/ /usr/local/share/zsh-completions $fpath)
-autoload -U compinit && compinit
-
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 
 source /usr/local/opt/asdf/asdf.sh
 source /usr/local/etc/bash_completion.d/asdf.bash
-
 source <(kubectl completion zsh)
 
 eval "$(hub alias -s)"
 eval "$($HOME/Projects/rentpath/idg/bin/idg init -)"
 
-cdpath=(. $HOME/Projects/rentpath $HOME/Projects/sites $HOME/Projects $HOME)
-
-
 unsetopt menu_complete   # do not autoselect the first completion entry
 unsetopt flowcontrol
 
 setopt always_to_end
-setopt APPEND_HISTORY
+setopt append_history
 setopt auto_cd
 setopt auto_menu         # show completion menu on succesive tab press
 setopt auto_name_dirs
 setopt auto_pushd
-setopt CDABLEVARS
+setopt cdablevars
 setopt complete_aliases
 setopt complete_in_word
-setopt CORRECT
-setopt EXTENDED_HISTORY # add timestamps to history
-setopt IGNORE_EOF
-setopt INC_APPEND_HISTORY
-setopt LOCAL_OPTIONS # allow functions to have local options
-setopt LOCAL_TRAPS # allow functions to have local traps
+setopt correct
+setopt extended_history # add timestamps to history
+setopt ignore_eof
+setopt inc_append_history
+setopt local_options # allow functions to have local options
+setopt local_traps # allow functions to have local traps
 setopt long_list_jobs
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_IGNORE_SPACE
-setopt HIST_REDUCE_BLANKS
-setopt HIST_VERIFY
-setopt NO_BG_NICE # don't nice background tasks
-setopt NO_HUP
-setopt NO_LIST_BEEP
-setopt PROMPT_SUBST
+setopt hist_expire_dups_first
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt hist_verify
+setopt no_bg_nice # don't nice background tasks
+setopt no_hup
+setopt no_list_beep
+setopt prompt_subst
 setopt pushd_ignore_dups
-setopt SHARE_HISTORY # share history between sessions ???
-
+setopt share_history # share history between sessions ???
 
 WORDCHARS=''
 
@@ -293,14 +288,12 @@ if [ ! -n "$SPACESHIP_PROMPT_ORDER" ]; then
     xcode
     swift
     golang
-    php
     rust
     haskell
     julia
     docker
     aws
     venv
-    conda
     pyenv
     dotnet
     ember
@@ -308,7 +301,6 @@ if [ ! -n "$SPACESHIP_PROMPT_ORDER" ]; then
     exec_time
     line_sep
     battery
-    vi_mode
     jobs
     exit_code
     char
@@ -317,8 +309,6 @@ fi
 
 # PROMPT
 SPACESHIP_PROMPT_SYMBOL="${SPACESHIP_PROMPT_SYMBOL:="➜"}"
-SPACESHIP_PROMPT_ADD_NEWLINE="${SPACESHIP_PROMPT_ADD_NEWLINE:=true}"
-SPACESHIP_PROMPT_SEPARATE_LINE="${SPACESHIP_PROMPT_SEPARATE_LINE:=true}"
 SPACESHIP_PROMPT_PREFIXES_SHOW="${SPACESHIP_PROMPT_PREFIXES_SHOW:=true}"
 SPACESHIP_PROMPT_SUFFIXES_SHOW="${SPACESHIP_PROMPT_SUFFIXES_SHOW:=true}"
 SPACESHIP_PROMPT_DEFAULT_PREFIX="${SPACESHIP_PROMPT_DEFAULT_PREFIX:=" "}"
@@ -451,13 +441,6 @@ SPACESHIP_GOLANG_SUFFIX="${SPACESHIP_GOLANG_SUFFIX:="$SPACESHIP_PROMPT_DEFAULT_S
 SPACESHIP_GOLANG_SYMBOL="${SPACESHIP_GOLANG_SYMBOL:="🐹 "}"
 SPACESHIP_GOLANG_COLOR="${SPACESHIP_GOLANG_COLOR:="cyan"}"
 
-# PHP
-SPACESHIP_PHP_SHOW="${SPACESHIP_PHP_SHOW:=true}"
-SPACESHIP_PHP_PREFIX="${SPACESHIP_PHP_PREFIX:="$SPACESHIP_PROMPT_DEFAULT_PREFIX"}"
-SPACESHIP_PHP_SUFFIX="${SPACESHIP_PHP_SUFFIX:="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"}"
-SPACESHIP_PHP_SYMBOL="${SPACESHIP_PHP_SYMBOL:="🐘 "}"
-SPACESHIP_PHP_COLOR="${SPACESHIP_PHP_COLOR:="blue"}"
-
 # RUST
 SPACESHIP_RUST_SHOW="${SPACESHIP_RUST_SHOW:=true}"
 SPACESHIP_RUST_PREFIX="${SPACESHIP_RUST_PREFIX:="$SPACESHIP_PROMPT_DEFAULT_PREFIX"}"
@@ -491,13 +474,6 @@ SPACESHIP_VENV_SHOW="${SPACESHIP_VENV_SHOW:=true}"
 SPACESHIP_VENV_PREFIX="${SPACESHIP_VENV_PREFIX:="$SPACESHIP_PROMPT_DEFAULT_PREFIX"}"
 SPACESHIP_VENV_SUFFIX="${SPACESHIP_VENV_SUFFIX:="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"}"
 SPACESHIP_VENV_COLOR="${SPACESHIP_VENV_COLOR:="blue"}"
-
-# CONDA
-SPACESHIP_CONDA_SHOW="${SPACESHIP_CONDA_SHOW:=true}"
-SPACESHIP_CONDA_PREFIX="${SPACESHIP_CONDA_PREFIX:="$SPACESHIP_PROMPT_DEFAULT_PREFIX"}"
-SPACESHIP_CONDA_SUFFIX="${SPACESHIP_CONDA_SUFFIX:="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"}"
-SPACESHIP_CONDA_SYMBOL="${SPACESHIP_CONDA_SYMBOL:="🅒 "}"
-SPACESHIP_CONDA_COLOR="${SPACESHIP_CONDA_COLOR:="blue"}"
 
 # PYENV
 SPACESHIP_PYENV_SHOW="${SPACESHIP_PYENV_SHOW:=true}"
@@ -535,22 +511,12 @@ SPACESHIP_EXEC_TIME_COLOR="${SPACESHIP_EXEC_TIME_COLOR:="yellow"}"
 SPACESHIP_EXEC_TIME_ELAPSED="${SPACESHIP_EXEC_TIME_ELAPSED:=2}"
 
 # BATTERY
-SPACESHIP_BATTERY_SHOW="${SPACESHIP_BATTERY_SHOW:=true}"
-SPACESHIP_BATTERY_ALWAYS_SHOW="${SPACESHIP_BATTERY_ALWAYS_SHOW:=false}"
 SPACESHIP_BATTERY_PREFIX="${SPACESHIP_BATTERY_PREFFIX:=""}"
 SPACESHIP_BATTERY_SUFFIX="${SPACESHIP_BATTERY_SUFFIX:="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"}"
 SPACESHIP_BATTERY_CHARGING_SYMBOL="${SPACESHIP_BATTERY_CHARGING_SYMBOL:="⇡"}"
 SPACESHIP_BATTERY_DISCHARGING_SYMBOL="${SPACESHIP_BATTERY_DISCHARGING_SYMBOL:="⇣"}"
 SPACESHIP_BATTERY_FULL_SYMBOL="${SPACESHIP_BATTERY_FULL_SYMBOL:="•"}"
 SPACESHIP_BATTERY_THRESHOLD="${SPACESHIP_BATTERY_THRESHOLD:=10}"
-
-# VI_MODE
-SPACESHIP_VI_MODE_SHOW="${SPACESHIP_VI_MODE_SHOW:=true}"
-SPACESHIP_VI_MODE_PREFIX="${SPACESHIP_VI_MODE_PREFIX:=""}"
-SPACESHIP_VI_MODE_SUFFIX="${SPACESHIP_VI_MODE_SUFFIX:="$SPACESHIP_PROMPT_DEFAULT_SUFFIX"}"
-SPACESHIP_VI_MODE_INSERT="${SPACESHIP_VI_MODE_INSERT:="[I]"}"
-SPACESHIP_VI_MODE_NORMAL="${SPACESHIP_VI_MODE_NORMAL:="[N]"}"
-SPACESHIP_VI_MODE_COLOR="${SPACESHIP_VI_MODE_COLOR:="white"}"
 
 # JOBS
 SPACESHIP_JOBS_SHOW="${SPACESHIP_JOBS_SHOW:=true}"
@@ -635,17 +601,6 @@ _prompt_section() {
     echo -n "$suffix"
   fi
   echo -n "%{%b%}" # unset bold
-}
-
-# Print message backward compatibility warning
-# USAGE:
-#  _deprecate <deprecated> <actual>
-_deprecated() {
-  [[ -n $1 && -n $2 ]] || return
-  local deprecated=$1 actual=$2 b=$bold_color r=$reset_color
-  local deprecated_value=${(P)deprecated} # the value of variable name $deprecated
-  [[ -n $deprecated_value ]] || return
-  echo "${b}\$$deprecated${r} is deprecated. Use ${b}\$$actual${r} instead."
 }
 
 # Display seconds in human readable fromat
@@ -1079,25 +1034,6 @@ spaceship_golang() {
     "$SPACESHIP_GOLANG_SUFFIX"
 }
 
-# PHP
-# Show current version of PHP
-spaceship_php() {
-  [[ $SPACESHIP_PHP_SHOW == false ]] && return
-
-  # Show only if php files exist in current directory
-  [[ -n *.php(#qN^/) ]] || return
-
-  _exists php || return
-
-  local php_version=$(php -v 2>&1 | grep --color=never -oe "^PHP\s*[0-9.]*" | awk '{print $2}')
-
-  _prompt_section \
-    "$SPACESHIP_PHP_COLOR" \
-    "$SPACESHIP_PHP_PREFIX" \
-    "${SPACESHIP_PHP_SYMBOL}v${php_version}" \
-    "${SPACESHIP_PHP_SUFFIX}"
-}
-
 # RUST
 # Show current version of Rust
 spaceship_rust() {
@@ -1214,21 +1150,6 @@ spaceship_venv() {
     "$SPACESHIP_VENV_SUFFIX"
 }
 
-# CONDA
-# Show current conda virtual environment
-spaceship_conda() {
-  [[ $SPACESHIP_CONDA_SHOW == false ]] && return
-
-  # Check if running via conda virtualenv
-  _exists conda && [ -n "$CONDA_DEFAULT_ENV" ] || return
-
-  _prompt_section \
-    "$SPACESHIP_CONDA_COLOR" \
-    "$SPACESHIP_CONDA_PREFIX" \
-    "${SPACESHIP_CONDA_SYMBOL}${CONDA_DEFAULT_ENV}" \
-    "$SPACESHIP_CONDA_SUFFIX"
-}
-
 # PYENV
 # Show current version of pyenv python, including system.
 spaceship_pyenv() {
@@ -1324,8 +1245,6 @@ spaceship_exec_time() {
 # - Battery is fully charged
 # Escape % for display since it's a special character in zsh prompt expansion
 spaceship_battery() {
-  [[ $SPACESHIP_BATTERY_SHOW == false ]] && return
-
   local battery_data battery_percent battery_status battery_color
 
   if _exists pmset; then
@@ -1377,51 +1296,11 @@ spaceship_battery() {
     battery_symbol="${SPACESHIP_BATTERY_FULL_SYMBOL}"
   fi
 
-  # Escape % for display since it's a special character in zsh prompt expansion
-  if [[ $SPACESHIP_BATTERY_ALWAYS_SHOW == true || $battery_percent -lt $SPACESHIP_BATTERY_THRESHOLD || $battery_status =~ "(charged|full)"  ]]; then
-    _prompt_section \
-      "$battery_color" \
-      "$SPACESHIP_BATTERY_PREFIX" \
-      "$battery_symbol$battery_percent%%" \
-      "$SPACESHIP_BATTERY_SUFFIX"
-  fi
-}
-
-# VI_MODE
-# Show current vi_mode mode
-spaceship_vi_mode() {
-  [[ $SPACESHIP_VI_MODE_SHOW == true ]] || return
-
-  if bindkey | grep "vi-quoted-insert" > /dev/null 2>&1; then # check if vi-mode enabled
-    local mode_indicator="${SPACESHIP_VI_MODE_INSERT}"
-
-    case "${KEYMAP}" in
-      main|viins)
-      mode_indicator="${SPACESHIP_VI_MODE_INSERT}"
-      ;;
-      vicmd)
-      mode_indicator="${SPACESHIP_VI_MODE_NORMAL}"
-      ;;
-    esac
-
-    _prompt_section \
-      "$SPACESHIP_VI_MODE_COLOR" \
-      "$SPACESHIP_VI_MODE_PREFIX" \
-      "$mode_indicator" \
-      "$SPACESHIP_VI_MODE_SUFFIX"
-  fi
-}
-
-# Temporarily switch to vi-mode
-spaceship_vi_mode_enable() {
-  function zle-keymap-select() { zle reset-prompt ; zle -R }
-  zle -N zle-keymap-select
-  bindkey -v
-}
-
-# Temporarily switch to emacs-mode
-spaceship_vi_mode_disable() {
-  bindkey -e
+  _prompt_section \
+    "$battery_color" \
+    "$SPACESHIP_BATTERY_PREFIX" \
+    "$battery_symbol$battery_percent%%" \
+    "$SPACESHIP_BATTERY_SUFFIX"
 }
 
 # JOBS
@@ -1454,9 +1333,8 @@ spaceship_exit_code() {
 }
 
 # LINE SEPARATOR
-# Should it write prompt in two lines or not?
 spaceship_line_sep() {
-  [[ $SPACESHIP_PROMPT_SEPARATE_LINE == true ]] && echo -n "$NEWLINE"
+  echo -n "$NEWLINE"
 }
 
 # PROMPT CHARACTER
@@ -1465,42 +1343,6 @@ spaceship_line_sep() {
 spaceship_char() {
   _prompt_section "%(?.green.red)" "${SPACESHIP_PROMPT_SYMBOL} "
 }
-
-# ------------------------------------------------------------------------------
-# BACKWARD COMPATIBILITY WARNINGS
-# Show deprecation messages for options that are set, but not supported
-# ------------------------------------------------------------------------------
-
-# PROMPT
-_deprecated SPACESHIP_PROMPT_TRUNC SPACESHIP_DIR_TRUNC
-# PREFIXES
-_deprecated SPACESHIP_PREFIX_SHOW SPACESHIP_PROMPT_PREFIXES_SHOW
-_deprecated SPACESHIP_PREFIX_TIME SPACESHIP_TIME_PREFIX
-_deprecated SPACESHIP_PREFIX_USER SPACESHIP_USER_PREFIX
-_deprecated SPACESHIP_PREFIX_HOST SPACESHIP_HOST_PREFIX
-_deprecated SPACESHIP_PREFIX_DIR SPACESHIP_DIR_PREFIX
-_deprecated SPACESHIP_PREFIX_GIT SPACESHIP_GIT_PREFIX
-_deprecated SPACESHIP_PREFIX_ENV_DEFAULT SPACESHIP_PROMPT_DEFAULT_PREFIX
-_deprecated SPACESHIP_PREFIX_NVM SPACESHIP_NODE_PREFIX
-_deprecated SPACESHIP_PREFIX_RUBY SPACESHIP_RUBY_PREFIX
-_deprecated SPACESHIP_PREFIX_XCODE SPACESHIP_XCODE_PREFIX
-_deprecated SPACESHIP_PREFIX_SWIFT SPACESHIP_SWIFT_PREFIX
-_deprecated SPACESHIP_PREFIX_GOLANG SPACESHIP_GOLANG_PREFIX
-_deprecated SPACESHIP_PREFIX_DOCKER SPACESHIP_DOCKER_PREFIX
-_deprecated SPACESHIP_PREFIX_VENV SPACESHIP_VENV_PREFIX
-_deprecated SPACESHIP_PREFIX_PYENV SPACESHIP_PYENV_PREFIX
-_deprecated SPACESHIP_PREFIX_VI_MODE SPACESHIP_VI_MODE_PREFIX
-# NVM
-_deprecated SPACESHIP_NVM_SHOW SPACESHIP_NODE_SHOW
-_deprecated SPACESHIP_NVM_SYMBOL SPACESHIP_NODE_SYMBOL
-# GIT
-_deprecated SPACESHIP_GIT_COLOR SPACESHIP_GIT_BRANCH_COLOR
-_deprecated SPACESHIP_GIT_UNCOMMITTED SPACESHIP_GIT_STATUS_ADDED
-_deprecated SPACESHIP_GIT_UNTRACKED SPACESHIP_GIT_STATUS_UNTRACKED
-_deprecated SPACESHIP_GIT_UNSTAGED SPACESHIP_GIT_STATUS_MODIFIED
-_deprecated SPACESHIP_GIT_STASHED SPACESHIP_GIT_STATUS_STASHED
-_deprecated SPACESHIP_GIT_UNPULLED SPACESHIP_GIT_STATUS_BEHIND
-_deprecated SPACESHIP_GIT_UNPUSHED SPACESHIP_GIT_STATUS_AHEAD
 
 # ------------------------------------------------------------------------------
 # MAIN
@@ -1519,8 +1361,7 @@ spaceship_prompt() {
   # http://zsh.sourceforge.net/Doc/Release/Conditional-Expressions.html
   setopt EXTENDED_GLOB LOCAL_OPTIONS
 
-  # Should it add a new line before the prompt?
-  [[ $SPACESHIP_PROMPT_ADD_NEWLINE == true ]] && echo -n "$NEWLINE"
+  echo -n "$NEWLINE"
 
   # Execute all parts
   for section in $SPACESHIP_PROMPT_ORDER; do
