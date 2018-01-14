@@ -710,8 +710,8 @@ spaceship_package() {
 spaceship_node() {
   [[ $SPACESHIP_NODE_SHOW == false ]] && return
 
-  # Always ~Show~ NODE status only for JS-specific folders
-  # [[ -f package.json || -d node_modules || -n *.js(#qN^/) ]] || return
+  # Show NODE status only for JS-specific folders
+  [[ -f package.json || -d node_modules || -n *.js(#qN^/) ]] || return
 
   local node_version
 
@@ -740,8 +740,8 @@ spaceship_node() {
 spaceship_ruby() {
   [[ $SPACESHIP_RUBY_SHOW == false ]] && return
 
-  # Always ~Show~ versions only for Ruby-specific folders
-  # [[ -f Gemfile || -f Rakefile || -n *.rb(#qN^/) ]] || return
+  # Show versions only for Ruby-specific folders
+  [[ -f Gemfile || -f Rakefile || -n *.rb(#qN^/) ]] || return
 
   local ruby_version
 
@@ -774,8 +774,8 @@ spaceship_ruby() {
 spaceship_elixir() {
   [[ $SPACESHIP_ELIXIR_SHOW == false ]] && return
 
-  # Always ~Show~ versions only for Elixir-specific folders
-  # [[ -f mix.exs || -n *.ex(#qN^/) || -n *.exs(#qN^/) ]] || return
+  # Show versions only for Elixir-specific folders
+  [[ -f mix.exs || -n *.ex(#qN^/) || -n *.exs(#qN^/) ]] || return
 
   local elixir_version
 
@@ -961,8 +961,8 @@ spaceship_docker() {
 
   _exists docker || return
 
-  # Always ~Show~ Docker status only for Docker-specific folders
-  # [[ -f Dockerfile || -f docker-compose.yml ]] || return
+  # Show Docker status only for Docker-specific folders
+  [[ -f Dockerfile || -f docker-compose.yml ]] || return
 
   # if docker daemon isn't running you'll get an error saying it can't connect
   local docker_version=$(docker version -f "{{.Server.Version}}" 2>/dev/null)
