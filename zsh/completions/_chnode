@@ -1,5 +1,0 @@
-#compdef chnode
-#autoload
-
-compadd $(chnode | tr -d '* ')
-

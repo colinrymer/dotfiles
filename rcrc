@@ -1,3 +1,2 @@
 EXCLUDES="README.md UNLICENSE"
-DOTFILES_DIRS="$HOME/.dotfiles-local $HOME/.dotfiles"
-SYMLINK_DIRS="bin zsh"
+SYMLINK_DIRS="bin"

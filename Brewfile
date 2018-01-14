@@ -139,6 +139,8 @@ brew "xhyve"
 brew "xz"
 brew "yarn"
 brew "zsh"
+brew "zsh-completions"
+brew "zsh-history-substring-search"
 brew "zsh-syntax-highlighting"
 
 brew "d12frosted/emacs-plus/emacs-plus"
