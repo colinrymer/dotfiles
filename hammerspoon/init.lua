@@ -65,7 +65,7 @@ for key, name in pairs({
   -- i = "",
   -- j = ""
   -- k = ""
-  -- l = ""
+  -- l = Used to lock screen
   m = "Messages",
   -- n = "",
   o = "OmniFocus",
@@ -92,6 +92,9 @@ for key, name in pairs({
   end)
 end
 
+hs.hotkey.bind(hyper, "l", function()
+  hs.caffeinate.startScreensaver()
+end)
 
 -----------------------------------------------
 -- Yubikey Wakeup/Sleep
