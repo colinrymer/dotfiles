@@ -61,10 +61,10 @@ for key, name in pairs({
   e = "Emacs",
   f = "Finder",
   -- g = "",
-  -- h = ""
+  -- h = "",
   -- i = "",
-  -- j = ""
-  -- k = ""
+  -- j = "",
+  k = "Sketch",
   -- l = Used to lock screen
   m = "Messages",
   -- n = "",
@@ -75,7 +75,7 @@ for key, name in pairs({
   s = "Slack",
   t = "iTerm",
   -- u = "",
-  v = "Sococo"
+  v = "Sococo",
   -- w = "",
   -- x = "",
   -- y = "",

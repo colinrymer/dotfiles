@@ -3,6 +3,7 @@ fpath=(/usr/local/Homebrew/completions/zsh/ /usr/local/share/zsh-completions $fp
 
 autoload -Uz colors && colors
 autoload -Uz compinit && compinit
+_comp_options+=(globdots)
 
 autoload -U promptinit; promptinit
 prompt spaceship
@@ -229,6 +230,8 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ln="ln -v"
 
+alias cat='bat'
+
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
 
@@ -243,4 +246,4 @@ bindkey '^[[B' history-substring-search-down
 # MUST BE LOADED LAST #
 #######################
 
-archey -c
+archey -c -o

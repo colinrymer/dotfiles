@@ -1,6 +1,7 @@
 [user]
   name = Colin Rymer
   email = colin.rymer@gmail.com
+	signingKey = 888D246B8E184DD4
 [push]
 	default = current
 [color]
@@ -35,3 +36,5 @@
 	autosetuprebase = always
 [rerere]
 	enabled = 1
+[commit]
+	gpgsign = true
