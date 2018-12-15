@@ -1,4 +1,4 @@
-cdpath=(. $HOME/Projects/rentpath $HOME/Projects/sites $HOME/Projects $HOME)
+cdpath=(. $HOME/Projects/fathomops $HOME/Projects/rentpath $HOME/Projects/sites $HOME/Projects $HOME)
 fpath=(/usr/local/Homebrew/completions/zsh/ /usr/local/share/zsh-completions $fpath)
 
 autoload -Uz colors && colors
