@@ -1,7 +1,7 @@
 [user]
   name = Colin Rymer
   email = colin.rymer@gmail.com
-	signingKey = 888D246B8E184DD4
+	signingKey = 86DD89E19CF0CD37
 [push]
 	default = current
 [color]
@@ -19,7 +19,7 @@
   st = status
   up = !git fetch origin && git rebase origin/master
 [core]
-  excludesfile = ~/.gitignore
+	excludesfile = /Users/colin/.gitignore_global
   autocrlf = input
 [merge]
   ff = only

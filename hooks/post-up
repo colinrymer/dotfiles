@@ -17,4 +17,4 @@ pushd ~/
 GNUPGHOME="${ASDF_DIR:-$HOME/.asdf}/keyrings/nodejs" asdf install
 popd
 
-ln -sf "~/.dotfiles/spaceship-prompt/spaceship.zsh" "/usr/local/share/zsh/site-functions/prompt_spaceship_setup"
+ln -sf ~/.dotfiles/spaceship-prompt/spaceship.zsh /usr/local/share/zsh/site-functions/prompt_spaceship_setup

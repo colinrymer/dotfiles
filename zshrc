@@ -8,7 +8,7 @@ _comp_options+=(globdots)
 autoload -U promptinit; promptinit
 prompt spaceship
 
-SPACESHIP_PROMPT_ORDER=(time user dir host git package node ruby elixir golang rust docker aws kubecontext exec_time line_sep battery jobs exit_code char)
+SPACESHIP_PROMPT_ORDER=(time user dir host git package node ruby elixir golang rust docker kubecontext exec_time line_sep battery jobs exit_code char)
 SPACESHIP_TIME_SHOW=true
 SPACESHIP_DIR_TRUNC=0
 SPACESHIP_DIR_TRUNC_REPO=false
@@ -71,7 +71,6 @@ SAVEHIST=10000
 
 source /usr/local/opt/asdf/asdf.sh
 source /usr/local/etc/bash_completion.d/asdf.bash
-source <(kubectl completion zsh)
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 eval "$(hub alias -s)"
