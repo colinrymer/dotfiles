@@ -1,11 +1,11 @@
 [user]
   name = Colin Rymer
   email = colin.rymer@gmail.com
-	signingKey = 86DD89E19CF0CD37
+  signingkey = CC1E9C453436D34B
 [push]
-	default = current
+  default = current
 [color]
-	ui = true
+  ui = true
 [alias]
   branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
   co-pr = !sh -c 'git fetch origin pull/$1/head:pr/$1 && git checkout pr/$1' -
@@ -19,28 +19,28 @@
   st = status
   up = !git fetch origin && git rebase origin/master
 [core]
-	excludesfile = /Users/colin/.gitignore_global
+  excludesfile = /Users/colin/.gitignore_global
   autocrlf = input
 [merge]
   ff = only
 [fetch]
   prune = true
 [heroku]
-	account = personal
+  account = personal
 [filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
 [branch]
-	autosetuprebase = always
+  autosetuprebase = always
 [rerere]
-	enabled = 1
+  enabled = 1
 [commit]
-	gpgsign = true
+  gpgsign = true
 [magithub]
-	online = false
+  online = false
 [magithub "status"]
-	includeStatusHeader = false
-	includePullRequestsSection = false
-	includeIssuesSection = false
+  includeStatusHeader = false
+  includePullRequestsSection = false
+  includeIssuesSection = false

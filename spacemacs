@@ -33,13 +33,12 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(html
-     rust
-     ansible
+   '(ansible
      auto-completion
      bibtex
      clojure
      colors
+     copy-as-format
      csv
      dash
      docker
@@ -47,43 +46,69 @@ This function should only modify configuration layer settings."
      emoji
      elixir
      erlang
+     evil-snipe
      geolocation
      git
      github
      go
      groovy
      helm
-     helm
+     html
+     ibuffer
+     ietf
      java
-     (javascript :variables node-add-modules-path t)
+     (javascript :variables
+                 node-add-modules-path t)
+     json
+     jsonnet
      (latex :variables
             latex-enable-folding t)
      lua
      markdown
+     nginx
      (org :variables
           org-enable-bootstrap-support t
           org-enable-github-support t
           org-enable-org-journal-support t
+          org-journal-enable-agenda-integration t
+          org-journal-carryover-items nil
+          org-journal-dir "~/org/journal/"
+          org-journal-file-format "%Y-%m-%d.org"
+          org-journal-date-prefix "#+TITLE: "
+          org-journal-date-format "%A, %B %d %Y"
+          org-journal-time-prefix "* "
+          org-journal-time-format "%R "
           org-projectile-file "~/org/projectile.org")
      osx
      pandoc
      pdf
-     python
+     phoenix
+     (plantuml :variables
+               org-plantuml-jar-path "/usr/local/opt/plantUml.jar"
+               plantuml-jar-path "/usr/local/opt/plantUml.jar")
+     protobuf
      puppet
+     python
      react
      restclient
      ruby
      ruby-on-rails
+     rust
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
      shell-scripts
      spell-checking
      spotify
+     sql
      syntax-checking
      terraform
+     themes-megapack
+     theming
      treemacs
      typescript
+     (unicode-fonts :variables
+                    unicode-fonts-force-multi-color-on-mac t)
      version-control
      yaml
      )
@@ -481,6 +506,16 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-pretty-docs nil))
 
+
+
+(defun dotspacemacs/user-env ()
+  "Environment variables setup.
+This function defines the environment variables for your Emacs session. By
+default it calls `spacemacs/load-spacemacs-env' which loads the environment
+variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
+See the header of this file for more information."
+  (spacemacs/load-spacemacs-env))
+
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
 This function is called immediately after `dotspacemacs/init', before layer
@@ -491,9 +526,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
-This function is called while dumping Spacemacs configuration. You can
-`require' or `load' the libraries of your choice that will be included
-in the dump."
+This function is called only while dumping Spacemacs configuration. You can
+`require' or `load' the libraries of your choice that will be included in the
+dump."
   )
 
 (defun dotspacemacs/user-config ()
@@ -502,8 +537,6 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-
-  ;; UTF8!
   (set-language-environment 'utf-8)
   (set-terminal-coding-system 'utf-8)
   (setq locale-coding-system 'utf-8)
@@ -519,13 +552,6 @@ before packages are loaded."
   (define-key evil-window-map "\C-k" `evil-window-up)
   (define-key evil-window-map "\C-l" `evil-window-right)
 
-  (defun custom-erlang-mode-hook ()
-    (define-key erlang-mode-map (kbd "M-,") 'alchemist-goto-jump-back))
-
-  (add-hook 'erlang-mode-hook 'custom-erlang-mode-hook)
-  (add-hook 'doc-view-mode-hook 'auto-revert-mode)
-  (fset 'evil-visual-update-x-selection 'ignore)
-
   (setq-default mac-right-option-modifier nil
                 ;; js2-mode
                 js2-basic-offset 2
@@ -537,58 +563,27 @@ before packages are loaded."
                 web-mode-attr-indent-offset 2)
 
 
-  (setq alchemist-goto-erlang-source-dir "~/Projects/src/erlang"
-        alchemist-goto-elixir-source-dir "~/Projects/src/elixir"
-        alchemist-hooks-test-on-save t
-
-        js2-strict-missing-semi-warning nil
-
-        ;; helm-dash-browser-func 'eww
-
+  (setq js2-strict-missing-semi-warning nil
         require-final-newline t)
 
   (with-eval-after-load 'org
-    ;; here goes your Org config :)
-    ;; ....
-    ;;(setq org-agenda-files '("~/org"))
+    (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
+    (defun org-journal-find-location ()
+      ;; Open today's journal, but with no heading (org-capture will handle it)
+      (org-journal-new-entry t)
+      ;; Position point on top-level heading so org-capture will add entry as a child.
+      (goto-char (point-min)))
+
+    (setq org-capture-templates
+          '(("j" "Journal entry" entry (function org-journal-find-location)
+             "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
+            ("t" "todo" entry (file+headline "~/Dropbox/Org/work/notes.org" "Tasks")
+             "** TODO %^{Task} %U\n%?")))
+
     (load-library "find-lisp")
     (setq org-agenda-files (find-lisp-find-files "~/org" "\.org$"))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-want-Y-yank-to-eol t)
- '(package-selected-packages
-   (quote
-    (ox-twbs ox-gfm org-journal seeing-is-believing prettier-js helm-git-grep go-impl go-gen-test go-fill-struct gitignore-templates evil-goggles doom-modeline eldoc-eval shrink-path auctex-latexmk dotenv-mode yasnippet-snippets yapfify yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toml-mode toc-org tide tagedit symon string-inflection spotify spaceline-all-the-icons smeargle slim-mode shell-pop scss-mode sayid sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocop rspec-mode robe rjsx-mode reveal-in-osx-finder restclient-helm restart-emacs rbenv rainbow-mode rainbow-identifiers rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort puppet-mode pug-mode projectile-rails popwin pippel pipenv pip-requirements persp-mode pbcopy password-generator paradox pandoc-mode ox-pandoc overseer osx-trash osx-dictionary orgit org-ref org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file ob-restclient ob-http ob-elixir neotree nameless mvn multi-term move-text mmm-mode minitest meghanada maven-test-mode markdown-toc magithub magit-svn magit-gitflow magit-gh-pulls macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint launchctl json-navigator js2-refactor js-doc jinja2-mode insert-shebang indent-guide importmagic impatient-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-spotify-plus helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag groovy-mode groovy-imports gradle-mode google-translate golden-ratio godoctor go-tag go-rename go-guru go-eldoc gnuplot github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md fuzzy font-lock+ flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-mix flycheck-credo flycheck-bashate flx-ido fish-mode fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eshell-z eshell-prompt-extras esh-help erlang ensime emojify emoji-cheat-sheet-plus emmet-mode elisp-slime-nav editorconfig dumb-jump dockerfile-mode docker diminish diff-hl dash-at-point cython-mode csv-mode counsel-projectile company-web company-terraform company-tern company-statistics company-shell company-restclient company-lua company-go company-emoji company-emacs-eclim company-auctex company-ansible company-anaconda column-enforce-mode color-identifiers-mode clojure-snippets clojure-cheatsheet clj-refactor clean-aindent-mode cider-eval-sexp-fu chruby centered-cursor-mode cargo bundler browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile ansible-doc ansible alchemist aggressive-indent add-node-modules-path ace-window ace-link ace-jump-helm-line ac-ispell))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-want-Y-yank-to-eol t)
- '(package-selected-packages
-   (quote
-    (company-emacs-eclim eclim oceanic-theme emojify org-mime helm-spotify-plus yapfify yaml-mode xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toml-mode toc-org tide typescript-mode theme-changer terraform-mode hcl-mode tagedit sunshine spotify spaceline powerline smeargle slim-mode shell-pop scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder restclient-helm restart-emacs rbenv rase rainbow-mode rainbow-identifiers rainbow-delimiters racer pyvenv pytest pyenv-mode py-isort puppet-mode pug-mode projectile-rails rake popwin pip-requirements persp-mode pcre2el pbcopy paradox pandoc-mode ox-pandoc osx-trash osx-location osx-dictionary orgit org-ref pdf-tools key-chord ivy org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download org-bullets open-junk-file ob-restclient ob-http ob-elixir neotree multi-term move-text mmm-mode minitest markdown-toc magit-gitflow magit-gh-pulls macrostep lua-mode lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint launchctl js2-refactor js2-mode js-doc jinja2-mode insert-shebang indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-spotify multi helm-pydoc helm-projectile helm-mode-manager helm-make projectile helm-gitignore request helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-bibtex parsebib helm-ag haml-mode google-translate golden-ratio go-guru go-eldoc gnuplot gitignore-mode github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gist gh marshal logito pcache ht gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-rust flycheck-pos-tip pos-tip flycheck-mix flycheck-credo flycheck flx-ido flx fish-mode fill-column-indicator feature-mode fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit git-commit ghub with-editor evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eshell-z eshell-prompt-extras esh-help erlang emoji-cheat-sheet-plus emmet-mode elisp-slime-nav dumb-jump dockerfile-mode docker json-mode tablist magit-popup docker-tramp json-snatcher json-reformat diminish diff-hl dash-at-point cython-mode csv-mode company-web web-completion-data company-tern dash-functional tern company-statistics company-shell company-restclient restclient know-your-http-well company-go go-mode company-emoji company-auctex company-ansible company-anaconda column-enforce-mode color-identifiers-mode coffee-mode clojure-snippets clj-refactor hydra inflections edn multiple-cursors paredit peg clean-aindent-mode cider-eval-sexp-fu eval-sexp-fu highlight cider sesman spinner queue clojure-mode chruby cargo markdown-mode rust-mode bundler inf-ruby bind-map bind-key biblio biblio-core auto-yasnippet yasnippet auto-highlight-symbol auto-dictionary auto-compile packed auctex ansible-doc ansible anaconda-mode pythonic f alchemist s company dash elixir-mode pkg-info epl aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core async ac-ispell auto-complete popup))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+

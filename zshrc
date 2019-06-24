@@ -8,7 +8,7 @@ _comp_options+=(globdots)
 autoload -U promptinit; promptinit
 prompt spaceship
 
-SPACESHIP_PROMPT_ORDER=(time user dir host git package node ruby elixir golang rust docker kubecontext exec_time line_sep battery jobs exit_code char)
+SPACESHIP_PROMPT_ORDER=(time user dir host git package node ruby elixir golang rust docker kubecontext terraform exec_time line_sep battery jobs exit_code char)
 SPACESHIP_TIME_SHOW=true
 SPACESHIP_DIR_TRUNC=0
 SPACESHIP_DIR_TRUNC_REPO=false
