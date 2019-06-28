@@ -5,3 +5,4 @@ vim/bundle/*
 mutt/cache/headers
 emacs.d/oauth2.plstore
 emacs.d/private
+gmail.crt

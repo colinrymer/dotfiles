@@ -54,40 +54,42 @@ end
 -- application hotkeys
 -----------------------------------------------
 for key, name in pairs({
-  -- a = "",
-  -- b = "",
-  c = "Google Chrome",
-  -- d = "",
-  e = "Emacs",
-  f = "Finder",
-  -- g = "",
-  -- h = "",
-  -- i = "",
-  -- j = "",
-  k = "Sketch",
+  --  a = {""},
+  -- b = {""},
+  c = {"Google Chrome"},
+  -- d = {""},
+  e = {"Emacs"},
+  f = {"Finder"},
+  -- g = {""},
+  -- h = {""},
+  -- i = {""},
+  -- j = {""},
+  k = {"Sketch"},
   -- l = Used to lock screen
-  m = "Messages",
-  -- n = "",
-  o = "Emacs",
-  p = "Spotify",
-  -- q = "",
-  -- r = "",
-  s = "Slack",
-  t = "iTerm2",
+  m = {"Messages"},
+  -- n = {""},
+  -- o = {""},
+  p = {"Spotify"},
+  -- q = {""},
+  -- r = {""},
+  s = {"Slack"},
+  t = {"iTerm2"},
   -- u = "",
-  v = "Postman",
-  -- w = "",
-  -- x = "",
-  -- y = "",
-  -- z = "",
+  v = {"Postman"},
+  -- w = {""},
+  -- x = {""},,
+  -- y = {""},
+  -- z = {""},
 }) do
   hs.hotkey.bind(hyper, key, function()
-    local app = hs.application.get(name)
+    local app = hs.application.get(name[1])
 
     if app and app:isFrontmost() then
       app:hide()
     else
-      hs.application.launchOrFocus(name)
+      if not hs.application.launchOrFocus(name[1]) then
+        hs.application.launchOrFocus(name[2])
+      end
     end
   end)
 end

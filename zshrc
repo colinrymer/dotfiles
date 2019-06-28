@@ -5,17 +5,6 @@ autoload -Uz colors && colors
 autoload -Uz compinit && compinit
 _comp_options+=(globdots)
 
-autoload -U promptinit; promptinit
-prompt spaceship
-
-SPACESHIP_PROMPT_ORDER=(time user dir host git package node ruby elixir golang rust docker kubecontext terraform exec_time line_sep battery jobs exit_code char)
-SPACESHIP_TIME_SHOW=true
-SPACESHIP_DIR_TRUNC=0
-SPACESHIP_DIR_TRUNC_REPO=false
-SPACESHIP_EXEC_TIME_ELAPSED=0
-SPACESHIP_BATTERY_SHOW=always
-SPACESHIP_EXIT_CODE_SHOW=true
-
 export BABEL_CACHE_PATH=~/cache/babel.json
 export CLICOLOR=true
 export ERL_AFLAGS="-kernel shell_history enabled"
@@ -71,8 +60,8 @@ _fzf_compgen_dir() {
 }
 
 HISTFILE=$HOME/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 
 source /usr/local/opt/asdf/asdf.sh
 source /usr/local/etc/bash_completion.d/asdf.bash
@@ -236,8 +225,12 @@ alias ln="ln -v"
 
 alias cat='bat'
 
+alias k='kubectl'
+
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
+
+eval "$(starship init zsh)"
 
 #######################
 # MUST BE LOADED LAST #
@@ -251,3 +244,4 @@ bindkey '^[[B' history-substring-search-down
 #######################
 
 archey -c -o
+

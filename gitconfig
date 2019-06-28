@@ -1,7 +1,7 @@
 [user]
   name = Colin Rymer
   email = colin.rymer@gmail.com
-  signingkey = CC1E9C453436D34B
+#  signingkey = CC1E9C453436D34B
 [push]
   default = current
 [color]

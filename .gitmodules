@@ -1,6 +1,3 @@
 [submodule "emacs.d"]
 	path = emacs.d
 	url = ./emacs.d
-[submodule "spaceship-prompt"]
-	path = spaceship-prompt
-	url = https://github.com/denysdovhan/spaceship-prompt.git
