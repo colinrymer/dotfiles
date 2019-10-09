@@ -27,7 +27,12 @@ export PAGER=less
 export TIME_STYLE=long-iso
 export YARN_CACHE_FOLDER=~/cache/yarn
 export ZSH=$HOME/.dotfiles
+export GPG_TTY="$(tty)"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
+gpgconf --launch gpg-agent
+
+export PATH="/usr/local/opt/curl-openssl/bin:$PATH"
 export PATH="$HOME/.bin:.git/safe/../../bin:$GOPATH/bin:$PATH"
 export VISUAL="/usr/local/bin/emacsclient"
 export EDITOR=$VISUAL
@@ -86,7 +91,7 @@ setopt auto_menu         # show completion menu on succesive tab press
 setopt auto_name_dirs
 setopt auto_pushd
 setopt cdablevars
-setopt complete_aliases
+#setopt complete_aliases
 setopt complete_in_word
 setopt correct
 setopt extended_history # add timestamps to history

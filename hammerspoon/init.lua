@@ -58,7 +58,7 @@ for key, name in pairs({
   -- b = "",
   c = "Google Chrome",
   -- d = "",
-  e = "Code",
+  e = "Emacs",
   f = "Finder",
   -- g = "",
   -- h = "",
