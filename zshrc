@@ -3,6 +3,7 @@ fpath=(/usr/local/Homebrew/completions/zsh/ /usr/local/share/zsh-completions $fp
 
 autoload -Uz colors && colors
 autoload -Uz compinit && compinit
+autoload -Uz bashcompinit && bashcompinit
 _comp_options+=(globdots)
 
 export BABEL_CACHE_PATH=~/cache/babel.json
@@ -66,6 +67,8 @@ SAVEHIST=100000
 source /usr/local/opt/asdf/asdf.sh
 source /usr/local/etc/bash_completion.d/asdf.bash
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+[ -f /usr/local/etc/bash_completion.d/az ] && source /usr/local/etc/bash_completion.d/az
 
 eval "$(hub alias -s)"
 eval "$($HOME/Projects/rentpath/idg/bin/idg init -)"

@@ -64,7 +64,7 @@ for key, name in pairs({
   -- h = {""},
   -- i = {""},
   -- j = {""},
-  k = {"Sketch"},
+  --  k = {""},
   -- l = Used to lock screen
   m = {"Messages"},
   -- n = {""},
@@ -75,7 +75,7 @@ for key, name in pairs({
   s = {"Slack"},
   t = {"iTerm2"},
   -- u = "",
-  v = {"Postman"},
+  -- v = {""},
   -- w = {""},
   -- x = {""},,
   -- y = {""},
