@@ -79,7 +79,7 @@ for key, name in pairs({
   -- w = {""},
   -- x = {""},,
   -- y = {""},
-  -- z = {""},
+  z = {"zoom.us"},
 }) do
   hs.hotkey.bind(hyper, key, function()
     local app = hs.application.get(name[1])

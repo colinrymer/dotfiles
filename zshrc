@@ -22,8 +22,7 @@ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 gpgconf --launch gpg-agent
 
-export PATH="/usr/local/opt/curl-openssl/bin:$PATH"
-export PATH="$HOME/.bin:.git/safe/../../bin:$GOPATH/bin:$PATH"
+export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/curl-openssl/bin:$PATH"
 export VISUAL="/usr/local/bin/emacsclient"
 export EDITOR=$VISUAL
 
@@ -69,6 +68,9 @@ source /usr/local/etc/bash_completion.d/asdf.bash
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f /usr/local/etc/bash_completion.d/az ] && source /usr/local/etc/bash_completion.d/az
+
+source <(kubectl completion zsh)
+[ -f ~/.kubectl_aliases ] && source ~/.kubectl_aliases
 
 eval "$(hub alias -s)"
 eval "$($HOME/Projects/rentpath/idg/bin/idg init -)"
@@ -227,8 +229,6 @@ alias ...='cd ../..'
 alias ln="ln -v"
 
 alias cat='bat'
-
-alias k='kubectl'
 
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
