@@ -1,5 +1,5 @@
 tap "homebrew/cask-drivers"
-tap "hombrew/cask-fonts"
+tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "d12frosted/emacs-plus"
 tap "thoughtbot/formulae"
