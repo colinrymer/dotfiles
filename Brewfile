@@ -113,10 +113,9 @@ brew "global"
 brew "gnu-sed"
 brew "gnu-tar"
 brew "gnu-units"
-brew "gnupg", link: false
+brew "gnupg"
 brew "gnutls"
 brew "go"
-brew "gpg-agent", link: true
 brew "grafana"
 brew "graphicsmagick"
 brew "graphviz"
@@ -151,7 +150,7 @@ brew "mkcert"
 brew "mono"
 brew "mosh"
 brew "msmtp"
-brew "mu", args: ["with-emacs"]
+brew "mu"
 brew "mysql", restart_service: true
 brew "neofetch"
 brew "nginx"
