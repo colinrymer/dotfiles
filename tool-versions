@@ -1,9 +1,9 @@
 erlang 21.0.2
 elixir 1.7.4-otp-21
 golang 1.10.3
-nodejs 11.9.0
-ruby 2.5.1
+nodejs 12.13.0
+ruby 2.7.1
 rust 1.37.0
 java oracle-8.191
 maven 3.6.0
-python 3.6.8
+python anaconda3-2019.10

@@ -246,5 +246,5 @@ bindkey '^[[B' history-substring-search-down
 # MUST BE LOADED LAST #
 #######################
 
-archey -c -o
+neofetch
 

@@ -54,17 +54,17 @@ end
 -- application hotkeys
 -----------------------------------------------
 for key, name in pairs({
-  --  a = {""},
+  a = {"Arduino"},
   -- b = {""},
   c = {"Google Chrome"},
-  -- d = {""},
+  d = {"Discord"},
   e = {"Emacs"},
   f = {"Finder"},
   -- g = {""},
   -- h = {""},
   -- i = {""},
   -- j = {""},
-  --  k = {""},
+  -- k = {""},
   -- l = Used to lock screen
   m = {"Messages"},
   -- n = {""},
@@ -74,7 +74,7 @@ for key, name in pairs({
   -- r = {""},
   s = {"Slack"},
   t = {"iTerm2"},
-  -- u = "",
+  u = {"PrusaSlicer"},
   -- v = {""},
   -- w = {""},
   -- x = {""},,
@@ -130,3 +130,8 @@ hs.alert.show("Config loaded")
 -- of the clipboard
 -----------------------------------------------
 hs.hotkey.bind({"cmd", "alt"}, "v", function() hs.eventtap.keyStrokes(hs.pasteboard.getContents()) end)
+
+-----------------------------------------------
+-- Toggle Mono Audio
+-----------------------------------------------
+hs.hotkey.bind({"ctrl", "alt"}, "m", function() hs.eventtap.keyStrokes(hs.pasteboard.getContents()) end)
