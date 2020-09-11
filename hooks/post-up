@@ -4,6 +4,9 @@ brew bundle --global
 sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
 sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
 
+export GNUPGHOME="bash /usr/local/opt/asdf/keyrings/nodejs" && mkdir -p "$GNUPGHOME" && chmod 0700 "$GNUPGHOME"
+bash /usr/local/opt/asdf/plugins/nodejs/bin/import-release-team-keyring
+
 . /usr/local/opt/asdf/asdf.sh
 
 for plugin in $(cat ../.asdf-plugins); do
