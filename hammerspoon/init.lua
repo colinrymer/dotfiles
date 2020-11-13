@@ -73,7 +73,7 @@ for key, name in pairs({
   -- q = {""},
   -- r = {""},
   s = {"Slack"},
-  t = {"iTerm2"},
+  t = {"iTerm"},
   u = {"PrusaSlicer"},
   -- v = {""},
   -- w = {""},

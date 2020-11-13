@@ -1,5 +1,6 @@
 [character]
-symbol = "➜"
+success_symbol = "[➜](bold green) "
+error_symbol = "[✗](bold red) "
 
 [cmd_duration]
 min_time = 10
@@ -17,7 +18,7 @@ only_detached = false
 
 [kubernetes]
 disabled = false
-symbol = "☸  "
+symbol = "☸ "
 [kubernetes.context_aliases]
 "insc1-aks-prod" = "AKS Scen1 Prod"
 "insc1-aks-prod-admin" = "AKS Scen1 Prod ADMIN"

@@ -37,7 +37,7 @@
 [rerere]
   enabled = 1
 [commit]
-  gpgsign = true
+  gpgsign = false
 [magithub]
   online = false
 [magithub "status"]

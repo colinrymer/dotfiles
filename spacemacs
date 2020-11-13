@@ -32,7 +32,8 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(ansible
+   '(
+     ansible
      auto-completion
      bibtex
      clojure
@@ -40,8 +41,7 @@ This function should only modify configuration layer settings."
      copy-as-format
      csv
      (dash :variables
-           dash-docs-docset-newpath "~/Library/Application Support/Dash/DocSets/"
-           helm-dash-docset-newpath "~/Library/Application Support/Dash/DocSets/")
+           dash-docs-docset-newpath "~/Library/Application Support/Dash/DocSets/")
      deft
      docker
      emacs-lisp
@@ -51,7 +51,6 @@ This function should only modify configuration layer settings."
      erlang
      evil-commentary
      evil-snipe
-     games
      geolocation
      git
      github
@@ -87,11 +86,13 @@ This function should only modify configuration layer settings."
      multiple-cursors
      nginx
      (org :variables
+          org-agenda-files '("~/org")
           org-enable-bootstrap-support t
           org-enable-github-support t
+          org-enable-hugo-support t
           org-enable-org-journal-support t
           org-enable-reveal-js-support t
-          org-enable-hugo-support t
+          org-enable-roam-support t
           org-journal-enable-agenda-integration t
           org-journal-carryover-items ""
           org-journal-dir "~/org/journal/"
@@ -100,8 +101,11 @@ This function should only modify configuration layer settings."
           org-journal-date-format "%A, %B %d %Y"
           org-journal-time-prefix "* "
           org-journal-time-format "%R "
-          org-projectile-file "~/org/projectile.org")
-     org-roam
+          org-reveal-root ""
+          org-roam-directory "~/org"
+          org-roam-dailies-directory "~/org/daily/"
+          org-projectile-file "~/org/projectile.org"
+          org-want-todo-bindings t)
      osx
      pandoc
      parinfer
@@ -127,7 +131,8 @@ This function should only modify configuration layer settings."
      spotify
      sql
      syntax-checking
-     terraform
+     (terraform :variables
+                terraform-auto-format-on-save t)
      themes-megapack
      theming
      treemacs
@@ -135,8 +140,8 @@ This function should only modify configuration layer settings."
      (unicode-fonts :variables
                     unicode-fonts-force-multi-color-on-mac t)
      version-control
-     yaml
-     )
+     yaml)
+
 
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -148,8 +153,8 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(
                                       arduino-mode
                                       arduino-cli-mode
-                                      bazel-mode
-                                      )
+                                      bazel-mode)
+
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -209,7 +214,7 @@ It should only modify the values of Spacemacs settings."
    ;; This is an advanced option and should not be changed unless you suspect
    ;; performance issues due to garbage collection operations.
    ;; (default '(100000000 0.1))
-   dotspacemacs-gc-cons '(100000000 0.1)
+   dotspacemacs-gc-cons '(200000000 0.1)
 
    ;; Set `read-process-output-max' when startup finishes.
    ;; This defines how much data is read from a foreign process.
@@ -551,6 +556,7 @@ It should only modify the values of Spacemacs settings."
    ;; visiting README.org files of Spacemacs.
    ;; (default nil)
    dotspacemacs-pretty-docs nil
+
    ;; If nil the home buffer shows the full path of agenda items
    ;; and todos. If non nil only the file name is shown.
    dotspacemacs-home-shorten-agenda-source nil))
@@ -569,7 +575,6 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-
   (setq package-check-signature nil))
 
 (defun dotspacemacs/user-load ()
@@ -587,11 +592,15 @@ dump."
 
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+  (define-key evil-visual-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-visual-state-map (kbd "k") 'evil-previous-visual-line)
 
   (define-key evil-window-map "\C-h" `evil-window-left)
   (define-key evil-window-map "\C-j" `evil-window-down)
   (define-key evil-window-map "\C-k" `evil-window-up)
   (define-key evil-window-map "\C-l" `evil-window-right)
+
+  (evil-ex-define-cmd "q" 'kill-this-buffer)
 
   (defun custom-erlang-mode-hook ()
     (define-key erlang-mode-map (kbd "M-,") 'alchemist-goto-jump-back))
@@ -600,13 +609,15 @@ dump."
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
   (fset 'evil-visual-update-x-selection 'ignore)
 
-  (setq-default mac-right-option-modifier nil
-                typescript-indent-level 2
-                ;; js2-mode
+  (setq-default company-lsp-cache-candidates t
+                css-indent-offset 2
                 js2-basic-offset 2
                 js-indent-level 2
-                ;; web-mode
-                css-indent-offset 2
+                lsp-completion-provider :capf
+                lsp-idle-delay 0.500
+                mac-right-option-modifier nil
+                read-process-output-max (* 1024 1024)
+                typescript-indent-level 2
                 web-mode-markup-indent-offset 2
                 web-mode-css-indent-offset 2
                 web-mode-code-indent-offset 2
@@ -645,10 +656,11 @@ dump."
   (add-to-list 'auto-mode-alist '("BUILD$" . bazel-mode))
 
   (with-eval-after-load 'org
-    (load-library "find-lisp")
-
-    (setq org-agenda-files (find-lisp-find-files "~/org" "\.org$")
-          org-reveal-root ""
+    (setq org-roam-dailies-capture-templates '(("d" "default" entry
+                                                #'org-roam-capture--get-point
+                                                "* %?"
+                                                :file-name "daily/%<%Y-%m-%d>"
+                                                :head "#+title: %<%Y-%m-%d>\n\n"))
           org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
     (defun org-journal-find-location ()
@@ -674,3 +686,22 @@ before packages are loaded."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(ucs-utils font-utils typescript-mode rake inflections pyvenv persistent-soft emacsql-sqlite3 org-category-capture alert log4e gntp epc ctable concurrent deferred multi flyspell-correct terraform-mode hcl-mode restclient know-your-http-well autothemer rust-mode inf-ruby anaconda-mode pythonic mmt pdf-tools key-chord ivy magit-popup origami dap-mode posframe lsp-treemacs bui skewer-mode hierarchy multiple-cursors js2-mode htmlize simple-httpd lsp-mode dash-functional dash-docs helm-bibtex bibtex-completion biblio parsebib biblio-core haml-mode gitignore-mode fringe-helper git-gutter+ gh marshal logito pcache ghub closql emacsql-sqlite emacsql treepy pos-tip package-lint flycheck magit git-commit with-editor spark clang-format list-utils transient tablist json-mode docker-tramp json-snatcher json-reformat web-completion-data lua-mode go-mode cider sesman queue parseedn clojure-mode parseclj a yasnippet packed auctex company elixir-mode auto-complete rjsx-mode zenburn-theme zen-and-art-theme yasnippet-snippets yapfify yaml-mode xterm-color ws-butler writeroom-mode wolfram-mode winum white-sand-theme which-key web-mode web-beautify vterm volatile-highlights vi-tilde-fringe vala-snippets vala-mode uuidgen use-package unicode-fonts undo-tree underwater-theme ujelly-theme typit twilight-theme twilight-bright-theme twilight-anti-bright-theme treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toxi-theme toml-mode toc-org tide thrift terminal-here tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon symbol-overlay sunny-day-theme sudoku sublime-themes subatomic256-theme subatomic-theme string-inflection stickyfunc-enhance stan-mode srefactor sql-indent spotify sphinx-doc spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme seeing-is-believing scss-mode scad-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode ron-mode robe reverse-theme reveal-in-osx-finder restclient-helm restart-emacs rebecca-theme rbenv rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme racer qml-mode pytest pyenv-mode py-isort purple-haze-theme puppet-mode pug-mode protobuf-mode projectile-rails professional-theme prettier-js popwin plantuml-mode planet-theme pkgbuild-mode pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme password-generator parinfer paradox pandoc-mode pacmacs ox-twbs ox-rfc ox-pandoc ox-hugo ox-gfm overseer osx-trash osx-dictionary osx-clipboard orgit organic-green-theme org-superstar org-roam org-rich-yank org-ref org-re-reveal org-projectile org-present org-pomodoro org-mime org-journal org-download org-cliplink org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-http ob-elixir nodejs-repl noctilux-theme nginx-mode naquadah-theme nameless mvn mustang-theme multi-term mu4e-maildirs-extension mu4e-alert move-text monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme mmm-mode minitest minimal-theme meghanada maven-test-mode matlab-mode material-theme markdown-toc majapahit-theme magit-svn magit-section magit-gitflow madhat2r-theme macrostep lush-theme lsp-ui lsp-python-ms lsp-pyright lsp-origami lsp-latex lsp-java lorem-ipsum logcat livid-mode live-py-mode link-hint light-soap-theme launchctl kaolin-themes jsonnet-mode json-navigator js2-refactor js-doc jinja2-mode jbeans-theme jazz-theme ir-black-theme insert-shebang inkpot-theme indent-guide importmagic impatient-mode ietf-docs ibuffer-projectile hybrid-mode hungry-delete hoon-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-spotify-plus helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mu helm-mode-manager helm-make helm-lsp helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-cider helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme groovy-mode groovy-imports grandshell-theme gotham-theme google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ gist gh-md gandalf-theme fuzzy forge font-lock+ flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-package flycheck-elsa flycheck-credo flycheck-bashate flx-ido flatui-theme flatland-theme fish-mode feature-mode farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-snipe evil-org evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-commentary evil-cleverparens evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help es-mode erlang emr emojify emoji-cheat-sheet-plus emmet-mode elisp-slime-nav editorconfig ebuild-mode dumb-jump dracula-theme dotenv-mode doom-themes dockerfile-mode docker django-theme diminish devdocs deft dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme csv-mode copy-as-format company-web company-terraform company-shell company-restclient company-reftex company-lua company-go company-emoji company-auctex company-ansible company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode clues-theme clojure-snippets clean-aindent-mode cider-eval-sexp-fu chruby chocolate-theme cherry-blossom-theme centered-cursor-mode cargo busybee-theme bundler bubbleberry-theme browse-at-remote blacken birds-of-paradise-plus-theme bazel-mode badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk arduino-mode arduino-cli-mode apropospriate-theme anti-zenburn-theme ansible-doc ansible ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme add-node-modules-path ace-link ace-jump-helm-line ac-ispell 2048-game)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)
