@@ -15,16 +15,24 @@ export LC_CTYPE=$LANG
 export LSCOLORS="exfxcxdxbxegedabagacad"
 export PAGER=less
 export TIME_STYLE=long-iso
-export YARN_CACHE_FOLDER=~/cache/yarn
 export ZSH=$HOME/.dotfiles
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 gpgconf --launch gpg-agent
 
-export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/curl-openssl/bin:$PATH"
-export VISUAL="/usr/local/bin/emacsclient"
-export EDITOR=$VISUAL
+export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/curl-openssl/bin:$PATH:$(go env GOPATH)/bin"
+
+if [ -f "/Applications/Emacs.app/Contents/MacOS/Emacs" ]; then
+  export EMACS="/Applications/Emacs.app/Contents/MacOS/Emacs"
+  alias emacs="$EMACS -nw"
+fi
+
+if [ -f "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient" ]; then
+  alias emacsclient="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
+  export VISUAL="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -c"
+  export EDITOR=$VISUAL
+fi
 
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"

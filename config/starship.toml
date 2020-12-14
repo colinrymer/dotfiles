@@ -1,9 +1,11 @@
 [character]
 success_symbol = "[➜](bold green) "
-error_symbol = "[✗](bold red) "
+error_symbol = "[✖](bold red) "
 
 [cmd_duration]
 min_time = 10
+show_notifications = true
+min_time_to_notify = 30_000
 
 [directory]
 truncation_length = 8

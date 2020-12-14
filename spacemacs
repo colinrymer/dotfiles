@@ -183,7 +183,7 @@ It should only modify the values of Spacemacs settings."
    ;; to compile Emacs 27 from source following the instructions in file
    ;; EXPERIMENTAL.org at to root of the git repository.
    ;; (default nil)
-   dotspacemacs-enable-emacs-pdumper t
+   dotspacemacs-enable-emacs-pdumper nil
 
    ;; Name of executable file pointing to emacs 27+. This executable must be
    ;; in your PATH.
@@ -582,6 +582,14 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
+  )
+
+(defun dotspacemacs/user-config ()
+  "Configuration for user code:
+This function is called at the very end of Spacemacs startup, after layer
+configuration.
+Put your configuration code here, except for variables that should be set
+before packages are loaded."
 
   (set-language-environment 'utf-8)
   (set-terminal-coding-system 'utf-8)
@@ -599,8 +607,6 @@ dump."
   (define-key evil-window-map "\C-j" `evil-window-down)
   (define-key evil-window-map "\C-k" `evil-window-up)
   (define-key evil-window-map "\C-l" `evil-window-right)
-
-  (evil-ex-define-cmd "q" 'kill-this-buffer)
 
   (defun custom-erlang-mode-hook ()
     (define-key erlang-mode-map (kbd "M-,") 'alchemist-goto-jump-back))
@@ -675,14 +681,6 @@ dump."
              "** TODO %^{Task} %U\n%?")
             ("h" "home todo" entry (file+headline "~/Dropbox/Org/personal.org" "Tasks")
              "** TODO %^{Task} %U\n%?")))))
-
-(defun dotspacemacs/user-config ()
-  "Configuration for user code:
-This function is called at the very end of Spacemacs startup, after layer
-configuration.
-Put your configuration code here, except for variables that should be set
-before packages are loaded."
-  )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

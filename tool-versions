@@ -1,6 +1,6 @@
 erlang 21.0.2
 elixir 1.7.4-otp-21
-golang 1.10.3
+golang 1.15.5
 nodejs 14.13.0
 ruby 2.7.1
 rust 1.37.0
