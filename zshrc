@@ -1,4 +1,4 @@
-cdpath=(. $HOME/Projects/fathomops $HOME/Projects/rentpath $HOME/Projects/sites $HOME/Projects $HOME)
+cdpath=(. $HOME/Projects/updater $HOME/Projects/sites $HOME/Projects $HOME)
 fpath=(/usr/local/Homebrew/completions/zsh/ /usr/local/share/zsh-completions $fpath)
 
 autoload -Uz colors && colors
@@ -20,8 +20,6 @@ export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 gpgconf --launch gpg-agent
-
-export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/curl-openssl/bin:$PATH:$(go env GOPATH)/bin"
 
 if [ -f "/Applications/Emacs.app/Contents/MacOS/Emacs" ]; then
   export EMACS="/Applications/Emacs.app/Contents/MacOS/Emacs"
@@ -81,7 +79,8 @@ source <(kubectl completion zsh)
 [ -f ~/.kubectl_aliases ] && source ~/.kubectl_aliases
 
 eval "$(hub alias -s)"
-eval "$($HOME/Projects/rentpath/idg/bin/idg init -)"
+
+export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/curl-openssl/bin:$PATH:$(go env GOPATH)/bin"
 
 unsetopt menu_complete   # do not autoselect the first completion entry
 unsetopt flowcontrol
