@@ -242,6 +242,30 @@ alias path='echo $PATH | tr -s ":" "\n"'
 
 eval "$(starship init zsh)"
 
+function awssession {
+    unset AWS_SESSION_TOKEN
+    unset AWS_ACCESS_KEY_ID
+    unset AWS_SECRET_ACCESS_KEY
+    output=`aws sts get-session-token \                                                                                                                                                                                                       
+      --serial-number arn:aws:iam::887744313716:mfa/colin.rymer@updater.com \                                                                                                                                                                
+      --token-code $1 \                                                                                                                                                                                                                       
+      --duration-seconds 43200`
+    secret=`echo $output | jq '.Credentials.SecretAccessKey'`
+    secret="${secret%\"}"
+    secret="${secret#\"}"
+    access=`echo $output | jq '.Credentials.AccessKeyId'`
+    access="${access%\"}"
+    access="${access#\"}"
+    sessionToken=`echo $output | jq '.Credentials.SessionToken'`
+    sessionToken="${sessionToken%\"}"
+    sessionToken="${sessionToken#\"}"
+    export AWS_SESSION_TOKEN=$sessionToken
+    export AWS_ACCESS_KEY_ID=$access
+    export AWS_SECRET_ACCESS_KEY=$secret
+    echo "Session Token Expires at:"
+    echo $output | jq '.Credentials.Expiration'
+}
+
 #######################
 # MUST BE LOADED LAST #
 #######################
