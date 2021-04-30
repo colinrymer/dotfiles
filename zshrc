@@ -1,15 +1,16 @@
-cdpath=(. $HOME/Projects/updater $HOME/Projects/sites $HOME/Projects $HOME)
-fpath=(/usr/local/Homebrew/completions/zsh/ /usr/local/share/zsh-completions $fpath)
+cdpath=(. $HOME/Projects/updater $HOME/Projects $HOME)
+fpath=($HOME/.dotfiles/zsh-completions/ /usr/local/Homebrew/completions/zsh/ /usr/local/share/zsh-completions $fpath)
 
 autoload -Uz colors && colors
 autoload -Uz compinit && compinit
 autoload -Uz bashcompinit && bashcompinit
 _comp_options+=(globdots)
 
-export BABEL_CACHE_PATH=~/cache/babel.json
+export AWS_VAULT_KEYCHAIN_NAME=login
 export CLICOLOR=true
 export ERL_AFLAGS="-kernel shell_history enabled"
-export GOPATH=~/Projects/gocode
+export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export HTTPIE_CONFIG_DIR='~/.config/httpie'
 export LC_CTYPE=$LANG
 export LSCOLORS="exfxcxdxbxegedabagacad"
@@ -31,9 +32,6 @@ if [ -f "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient" ]; then
   export VISUAL="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -c"
   export EDITOR=$VISUAL
 fi
-
-export FZF_DEFAULT_COMMAND='rg --files'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # Set location of z installation
 . /usr/local/etc/profile.d/z.sh
@@ -69,16 +67,16 @@ HISTFILE=$HOME/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
-source /usr/local/opt/asdf/asdf.sh
-source /usr/local/etc/bash_completion.d/asdf.bash
+[ -f /usr/local/opt/asdf/asdf.sh ] && source /usr/local/opt/asdf/asdf.sh
+[ -f /usr/local/etc/bash_completion.d/asdf.bash ] && source /usr/local/etc/bash_completion.d/asdf.bash
+[ -f ~/.asdf/plugins/java/set-java-home.zsh ] && source ~/.asdf/plugins/java/set-java-home.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-[ -f /usr/local/etc/bash_completion.d/az ] && source /usr/local/etc/bash_completion.d/az
-
-source <(kubectl completion zsh)
 [ -f ~/.kubectl_aliases ] && source ~/.kubectl_aliases
 
-eval "$(hub alias -s)"
+[ -x "$(command -v aws-vault)" ] && eval "$(aws-vault --completion-script-zsh)"
+[ -x "$(command -v hub)" ] && eval "$(hub alias -s)"
+[ -x "$(command -v kubectl)" ] && source <(kubectl completion zsh)
+[ -x "$(command -v stern)" ] && source <(stern --completion=zsh)
 
 export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/curl-openssl/bin:$PATH:$(go env GOPATH)/bin"
 
@@ -241,30 +239,6 @@ alias cat='bat'
 alias path='echo $PATH | tr -s ":" "\n"'
 
 eval "$(starship init zsh)"
-
-function awssession {
-    unset AWS_SESSION_TOKEN
-    unset AWS_ACCESS_KEY_ID
-    unset AWS_SECRET_ACCESS_KEY
-    output=`aws sts get-session-token \                                                                                                                                                                                                       
-      --serial-number arn:aws:iam::887744313716:mfa/colin.rymer@updater.com \                                                                                                                                                                
-      --token-code $1 \                                                                                                                                                                                                                       
-      --duration-seconds 43200`
-    secret=`echo $output | jq '.Credentials.SecretAccessKey'`
-    secret="${secret%\"}"
-    secret="${secret#\"}"
-    access=`echo $output | jq '.Credentials.AccessKeyId'`
-    access="${access%\"}"
-    access="${access#\"}"
-    sessionToken=`echo $output | jq '.Credentials.SessionToken'`
-    sessionToken="${sessionToken%\"}"
-    sessionToken="${sessionToken#\"}"
-    export AWS_SESSION_TOKEN=$sessionToken
-    export AWS_ACCESS_KEY_ID=$access
-    export AWS_SECRET_ACCESS_KEY=$secret
-    echo "Session Token Expires at:"
-    echo $output | jq '.Credentials.Expiration'
-}
 
 #######################
 # MUST BE LOADED LAST #

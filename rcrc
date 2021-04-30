@@ -1,2 +1,2 @@
-EXCLUDES="README.md UNLICENSE gmail.crt"
+EXCLUDES="README.md UNLICENSE gmail.crt zsh-completions"
 SYMLINK_DIRS="bin"

@@ -11,6 +11,9 @@ min_time_to_notify = 30_000
 truncation_length = 8
 truncate_to_repo = false
 
+[directory.substitutions]
+"~/Projects" = "(~/Projects) github.com"
+
 [docker_context]
 symbol = "🐋 "
 disabled = false
@@ -21,16 +24,9 @@ only_detached = false
 [kubernetes]
 disabled = false
 symbol = "☸ "
-[kubernetes.context_aliases]
-"insc1-aks-prod" = "AKS Scen1 Prod"
-"insc1-aks-prod-admin" = "AKS Scen1 Prod ADMIN"
-"insc1-aks-tools" = "AKS Scen1 Tools"
-"insc1-aks-tools-admin" = "AKS Scen1 Tools ADMIN"
-"ine2-aks-prod" = "AKS EastUS2 Prod"
-"ine2-aks-prod-admin" = "AKS EastUS2 Prod ADMIN"
-"ine2-aks-tools" = "AKS EastUS2 Tools"
-"ine2-aks-tools-admin" = "AKS EastUS2 Tools ADMIN"
-"dve2-aks-nonprod-admin" = "AKS NonProd ADMIN"
+
+[terraform]
+format = "via [$symbol$workspace@$version]($style) "
 
 [time]
 disabled = false

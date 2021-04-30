@@ -80,35 +80,20 @@ This function should only modify configuration layer settings."
            mu4e-installation-path "/usr/local/share/emacs/site-lisp/mu/mu4e"
            mu4e-sent-messages-behavior 'delete
            mu4e-update-interval 60
-           mu4e-use-maildirs-extension t
            mu4e-view-prefer-html t
            mu4e-view-show-images t)
-     multiple-cursors
      nginx
      (org :variables
-          org-agenda-files (directory-files-recursively "~/org/" "\\.org$")
-          org-enable-bootstrap-support t
+;;          org-agenda-files (directory-files-recursively "~/org/" "\\`[^.].*\\.org\\'")
           org-enable-github-support t
-          org-enable-hugo-support t
-          org-enable-org-journal-support t
           org-enable-reveal-js-support t
           org-enable-roam-support t
-          org-journal-enable-agenda-integration t
-          org-journal-carryover-items ""
-          org-journal-dir "~/org/journal/"
-          org-journal-file-format "%Y-%m-%d.org"
-          org-journal-date-prefix "#+TITLE: "
-          org-journal-date-format "%A, %B %d %Y"
-          org-journal-time-prefix "* "
-          org-journal-time-format "%R "
-          org-reveal-root ""
           org-roam-directory "~/org"
           org-roam-dailies-directory "~/org/daily/"
           org-projectile-file "~/org/projectile.org"
           org-want-todo-bindings t)
      osx
      pandoc
-     parinfer
      pdf
      phoenix
      (plantuml :variables
@@ -122,7 +107,6 @@ This function should only modify configuration layer settings."
      ruby
      ruby-on-rails
      rust
-     semantic
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -160,7 +144,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(orgit)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -214,7 +198,7 @@ It should only modify the values of Spacemacs settings."
    ;; This is an advanced option and should not be changed unless you suspect
    ;; performance issues due to garbage collection operations.
    ;; (default '(100000000 0.1))
-   dotspacemacs-gc-cons '(200000000 0.1)
+   dotspacemacs-gc-cons '(100000000 0.1)
 
    ;; Set `read-process-output-max' when startup finishes.
    ;; This defines how much data is read from a foreign process.
@@ -225,7 +209,9 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil then Spacelpa repository is the primary source to install
    ;; a locked version of packages. If nil then Spacemacs will install the
-   ;; latest version of packages from MELPA. (default nil)
+   ;; latest version of packages from MELPA. Spacelpa is currently in
+   ;; experimental state please use only for testing purposes.
+   ;; (default nil)
    dotspacemacs-use-spacelpa nil
 
    ;; If non-nil then verify the signature for downloaded Spacelpa archives.
@@ -267,9 +253,13 @@ It should only modify the values of Spacemacs settings."
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
-   ;; `recents' `bookmarks' `projects' `agenda' `todos'.
+   ;; `recents' `recents-by-project' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
+   ;; The exceptional case is `recents-by-project', where list-type must be a
+   ;; pair of numbers, e.g. `(recents-by-project . (7 .  5))', where the first
+   ;; number is the project limit and the second the limit on the recent files
+   ;; within a project.
    dotspacemacs-startup-lists '((recents . 5)
                                 (projects . 7)
                                 (agenda . 5))
@@ -316,7 +306,9 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
 
-   ;; Default font or prioritized list of fonts.
+   ;; Default font or prioritized list of fonts. The `:size' can be specified as
+   ;; a non-negative integer (pixel size), or a floating-point (point size).
+   ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("Hack Nerd Font"
                                :size 13.0
                                :weight normal
@@ -408,7 +400,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
-   dotspacemacs-loading-progress-bar t
+   dotspacemacs-loading-progress-bar nil
 
    ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
@@ -474,7 +466,7 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-line-numbers 'visual
 
-   ;; Code folding method. Possible values are `evil' and `origami'.
+   ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
 
@@ -494,7 +486,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, start an Emacs server if one is not already running.
    ;; (default nil)
-   dotspacemacs-enable-server t
+   dotspacemacs-enable-server nil
 
    ;; Set the emacs server socket location.
    ;; If nil, uses whatever the Emacs default is, otherwise a directory path
@@ -535,6 +527,9 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil - same as frame-title-format)
    dotspacemacs-icon-title-format nil
 
+   ;; Show trailing whitespace (default t)
+   dotspacemacs-show-trailing-whitespace t
+
    ;; Delete whitespace while saving buffer. Possible values are `all'
    ;; to aggressively delete empty line and long sequences of whitespace,
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
@@ -567,7 +562,10 @@ It should only modify the values of Spacemacs settings."
 
    ;; If nil the home buffer shows the full path of agenda items
    ;; and todos. If non nil only the file name is shown.
-   dotspacemacs-home-shorten-agenda-source nil))
+   dotspacemacs-home-shorten-agenda-source nil
+
+   ;; If non-nil then byte-compile some of Spacemacs files.
+   dotspacemacs-byte-compile t))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -674,40 +672,24 @@ before packages are loaded."
   (with-eval-after-load 'org
     (add-hook 'org-mode-hook #'visual-line-mode)
     (setq org-archive-location (concat org-directory "/archive/%s_archive::")
-          org-roam-capture-templates '(("d" "default" plain (function org-roam--capture-get-point)
-                                        "%?"
+          org-roam-capture-templates '(("d" "default" plain
+                                        #'org-roam--capture-get-point "%?"
                                         :file-name "notes/%<%Y%m%d%H%M%S>-${slug}"
                                         :head "#+title: ${title}\n"
                                         :unnarrowed t))
 
           org-roam-dailies-capture-templates '(("d" "default" entry
-                                                #'org-roam-capture--get-point
-                                                "* %?"
+                                                #'org-roam-capture--get-point "* %?"
                                                 :file-name "daily/%<%Y-%m-%d>"
                                                 :head "#+title: %<%Y-%m-%d>\n\n"))
+
+          org-roam-capture-ref-templates '(("r" "ref" plain
+                                            #'org-roam-capture--get-point "%?"
+                                            :file-name "notes/%<%Y%m%d%H%M%S>-${slug}"
+                                            :head "#+title: ${title}\n#+roam_key: ${ref}"
+                                            :unnarrowed t))
 
           org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-want-Y-yank-to-eol nil)
- '(package-selected-packages
-   '(ucs-utils font-utils typescript-mode rake inflections pyvenv persistent-soft emacsql-sqlite3 org-category-capture alert log4e gntp epc ctable concurrent deferred multi flyspell-correct terraform-mode hcl-mode restclient know-your-http-well autothemer rust-mode inf-ruby anaconda-mode pythonic mmt pdf-tools key-chord ivy magit-popup origami dap-mode posframe lsp-treemacs bui skewer-mode hierarchy multiple-cursors js2-mode htmlize simple-httpd lsp-mode dash-functional dash-docs helm-bibtex bibtex-completion biblio parsebib biblio-core haml-mode gitignore-mode fringe-helper git-gutter+ gh marshal logito pcache ghub closql emacsql-sqlite emacsql treepy pos-tip package-lint flycheck magit git-commit with-editor spark clang-format list-utils transient tablist json-mode docker-tramp json-snatcher json-reformat web-completion-data lua-mode go-mode cider sesman queue parseedn clojure-mode parseclj a yasnippet packed auctex company elixir-mode auto-complete rjsx-mode zenburn-theme zen-and-art-theme yasnippet-snippets yapfify yaml-mode xterm-color ws-butler writeroom-mode wolfram-mode winum white-sand-theme which-key web-mode web-beautify vterm volatile-highlights vi-tilde-fringe vala-snippets vala-mode uuidgen use-package unicode-fonts undo-tree underwater-theme ujelly-theme typit twilight-theme twilight-bright-theme twilight-anti-bright-theme treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toxi-theme toml-mode toc-org tide thrift terminal-here tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon symbol-overlay sunny-day-theme sudoku sublime-themes subatomic256-theme subatomic-theme string-inflection stickyfunc-enhance stan-mode srefactor sql-indent spotify sphinx-doc spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme seeing-is-believing scss-mode scad-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode ron-mode robe reverse-theme reveal-in-osx-finder restclient-helm restart-emacs rebecca-theme rbenv rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme racer qml-mode pytest pyenv-mode py-isort purple-haze-theme puppet-mode pug-mode protobuf-mode projectile-rails professional-theme prettier-js popwin plantuml-mode planet-theme pkgbuild-mode pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme password-generator parinfer paradox pandoc-mode pacmacs ox-twbs ox-rfc ox-pandoc ox-hugo ox-gfm overseer osx-trash osx-dictionary osx-clipboard orgit organic-green-theme org-superstar org-roam org-rich-yank org-ref org-re-reveal org-projectile org-present org-pomodoro org-mime org-journal org-download org-cliplink org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-http ob-elixir nodejs-repl noctilux-theme nginx-mode naquadah-theme nameless mvn mustang-theme multi-term mu4e-maildirs-extension mu4e-alert move-text monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme mmm-mode minitest minimal-theme meghanada maven-test-mode matlab-mode material-theme markdown-toc majapahit-theme magit-svn magit-section magit-gitflow madhat2r-theme macrostep lush-theme lsp-ui lsp-python-ms lsp-pyright lsp-origami lsp-latex lsp-java lorem-ipsum logcat livid-mode live-py-mode link-hint light-soap-theme launchctl kaolin-themes jsonnet-mode json-navigator js2-refactor js-doc jinja2-mode jbeans-theme jazz-theme ir-black-theme insert-shebang inkpot-theme indent-guide importmagic impatient-mode ietf-docs ibuffer-projectile hybrid-mode hungry-delete hoon-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-spotify-plus helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mu helm-mode-manager helm-make helm-lsp helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-cider helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme groovy-mode groovy-imports grandshell-theme gotham-theme google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ gist gh-md gandalf-theme fuzzy forge font-lock+ flyspell-correct-helm flycheck-rust flycheck-pos-tip flycheck-package flycheck-elsa flycheck-credo flycheck-bashate flx-ido flatui-theme flatland-theme fish-mode feature-mode farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-snipe evil-org evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-commentary evil-cleverparens evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help es-mode erlang emr emojify emoji-cheat-sheet-plus emmet-mode elisp-slime-nav editorconfig ebuild-mode dumb-jump dracula-theme dotenv-mode doom-themes dockerfile-mode docker django-theme diminish devdocs deft dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme csv-mode copy-as-format company-web company-terraform company-shell company-restclient company-reftex company-lua company-go company-emoji company-auctex company-ansible company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode clues-theme clojure-snippets clean-aindent-mode cider-eval-sexp-fu chruby chocolate-theme cherry-blossom-theme centered-cursor-mode cargo busybee-theme bundler bubbleberry-theme browse-at-remote blacken birds-of-paradise-plus-theme bazel-mode badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk arduino-mode arduino-cli-mode apropospriate-theme anti-zenburn-theme ansible-doc ansible ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme add-node-modules-path ace-link ace-jump-helm-line ac-ispell 2048-game))
- '(warning-suppress-log-types '((comp) (:warning))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-)
