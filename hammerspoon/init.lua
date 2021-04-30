@@ -1,29 +1,14 @@
-hs.alert("(Re)loading Hammerspoon configuration", 1)
-
-require 'caffeine'
-require 'volume'
+hs.notify.show("Config", "(Re)loading", "")
 
 -----------------------------------------------
 -- Auto Config Reload
 -----------------------------------------------
-function reloadConfig(files)
-  doReload = false
-  for _,file in pairs(files) do
-    if file:sub(-4) == ".lua" then
-      doReload = true
-    end
-  end
-  if doReload then
-    hs.reload()
-  end
-end
-hs.pathwatcher.new(os.getenv("HOME") .. "/.dotfiles/hammerspoon/", reloadConfig):start()
+hs.pathwatcher.new(os.getenv("HOME") .. "/.dotfiles/hammerspoon/", hs.reload):start()
 
 -----------------------------------------------
 -- Set up
 -----------------------------------------------
 local hyper = {"shift", "cmd", "alt", "ctrl"}
---local hyper = {"alt", "ctrl"}
 
 -----------------------------------------------
 -- vim-like window movement
@@ -54,7 +39,7 @@ end
 -- application hotkeys
 -----------------------------------------------
 for key, name in pairs({
-  a = {"Arduino"},
+  a = {"Active Trader Pro"},
   -- b = {""},
   c = {"Google Chrome"},
   d = {"Discord"},
@@ -67,7 +52,7 @@ for key, name in pairs({
   -- k = {""},
   -- l = Used to lock screen
   m = {"Messages"},
-  -- n = {""},
+  n = {"Notes"},
   -- o = {""},
   p = {"Spotify"},
   -- q = {""},
@@ -102,7 +87,8 @@ end)
 -- Yubikey Wakeup/Sleep
 -- wake up for knock when yubikey inserted and lock when yubikey is removed
 -----------------------------------------------
-function usbDeviceCallback(data)
+local usbWatcher = nil
+usbWatcher = hs.usb.watcher.new(function(data)
     hs.notify.show("USB", "You just connected", data["productName"])
     -- Replace "Yubikey" with the name of the usb device you want to use.
     if string.match(data["productName"], "Yubikey") then
@@ -114,14 +100,8 @@ function usbDeviceCallback(data)
             os.execute("pmset displaysleepnow")
        end
    end
-end
-
-local usbWatcher = nil
-usbWatcher = hs.usb.watcher.new(usbDeviceCallback)
+end)
 usbWatcher:start()
-
-hs.alert.show("Config loaded")
-
 
 -----------------------------------------------
 -- Paste Blocking Defeater
@@ -132,6 +112,57 @@ hs.alert.show("Config loaded")
 hs.hotkey.bind({"cmd", "alt"}, "v", function() hs.eventtap.keyStrokes(hs.pasteboard.getContents()) end)
 
 -----------------------------------------------
--- Toggle Mono Audio
+-- Caffeine
 -----------------------------------------------
-hs.hotkey.bind({"ctrl", "alt"}, "m", function() hs.eventtap.keyStrokes(hs.pasteboard.getContents()) end)
+caffeine = hs.menubar.new()
+
+function updateCaffeineDisplay(state)
+  hs.settings.set("hs-caffeine-state", state)
+  
+  if state then
+    caffeine:setIcon("caffeine-active.png")
+  else
+    caffeine:setIcon("caffeine-inactive.png")
+  end
+end
+
+if caffeine then
+  local initialState = hs.settings.get("hs-caffeine-state")
+  
+  hs.caffeinate.set("displayIdle", initialState)
+  
+  caffeine:setClickCallback(function()
+    updateCaffeineDisplay(hs.caffeinate.toggle("displayIdle"))
+  end)
+  
+  updateCaffeineDisplay(hs.caffeinate.get("displayIdle"))
+end
+
+-----------------------------------------------
+-- Mute on wifi network change
+-----------------------------------------------
+local wifiWatcher = nil
+local lastSSID = hs.wifi.currentNetwork()
+
+function ssidChangedCallback()
+  newSSID = hs.wifi.currentNetwork()
+
+  if newSSID ~= lastSSID then
+    hs.audiodevice.defaultOutputDevice():setVolume(0)
+  end
+
+  lastSSID = newSSID
+end
+
+function removeVolume()
+  wifiWatcher:delete()
+  wifiWatcher = nil
+end
+
+wifiWatcher = hs.wifi.watcher.new(ssidChangedCallback)
+wifiWatcher:start()
+
+-----------------------------------------------
+-- End of Config
+-----------------------------------------------
+hs.notify.show("Config", "Loaded", "")
