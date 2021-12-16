@@ -60,7 +60,7 @@ for key, name in pairs({
   s = {"Slack"},
   t = {"iTerm"},
   u = {"PrusaSlicer"},
-  -- v = {""},
+  v = {"Visual Studio Code"},
   -- w = {""},
   -- x = {""},,
   -- y = {""},
@@ -81,6 +81,18 @@ end
 
 hs.hotkey.bind(hyper, "l", function()
   hs.caffeinate.startScreensaver()
+end)
+
+hs.hotkey.bind("ctrl", "`", function()
+  local app = hs.application.get("iTerm2")
+
+    if app and app:isFrontmost() then
+      app:hide()
+    else
+      if not hs.application.launchOrFocus("iTerm") then
+        hs.application.launchOrFocus("iTerm2")
+      end
+    end
 end)
 
 -----------------------------------------------
@@ -118,7 +130,7 @@ caffeine = hs.menubar.new()
 
 function updateCaffeineDisplay(state)
   hs.settings.set("hs-caffeine-state", state)
-  
+
   if state then
     caffeine:setIcon("caffeine-active.png")
   else
@@ -128,13 +140,13 @@ end
 
 if caffeine then
   local initialState = hs.settings.get("hs-caffeine-state")
-  
+
   hs.caffeinate.set("displayIdle", initialState)
-  
+
   caffeine:setClickCallback(function()
     updateCaffeineDisplay(hs.caffeinate.toggle("displayIdle"))
   end)
-  
+
   updateCaffeineDisplay(hs.caffeinate.get("displayIdle"))
 end
 

@@ -18,12 +18,19 @@ truncate_to_repo = false
 symbol = "🐋 "
 disabled = false
 
+[gcloud]
+symbol = "G☁️ "
+
 [git_commit]
 only_detached = false
 
 [kubernetes]
 disabled = false
 symbol = "☸ "
+
+[kubernetes.context_aliases]
+"admin.updater.construction-6870" = "ADMIN:construction.updater"
+"admin.updater.live-1878" = "ADMIN:live.updater"
 
 [terraform]
 format = "via [$symbol$workspace@$version]($style) "

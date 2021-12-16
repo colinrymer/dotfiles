@@ -17,10 +17,10 @@ export LSCOLORS="exfxcxdxbxegedabagacad"
 export PAGER=less
 export TIME_STYLE=long-iso
 export ZSH=$HOME/.dotfiles
-export GPG_TTY="$(tty)"
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+#export GPG_TTY="$(tty)"
+#export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
-gpgconf --launch gpg-agent
+#gpgconf --launch gpg-agent
 
 if [ -f "/Applications/Emacs.app/Contents/MacOS/Emacs" ]; then
   export EMACS="/Applications/Emacs.app/Contents/MacOS/Emacs"
@@ -64,12 +64,14 @@ _fzf_compgen_dir() {
 }
 
 HISTFILE=$HOME/.zsh_history
-HISTSIZE=100000
-SAVEHIST=100000
+HISTSIZE=1000000
+SAVEHIST=1000000
 
-[ -f /usr/local/opt/asdf/asdf.sh ] && source /usr/local/opt/asdf/asdf.sh
+[ -f /usr/local/opt/asdf/libexec/asdf.sh ] && source /usr/local/opt/asdf/libexec/asdf.sh
 [ -f /usr/local/etc/bash_completion.d/asdf.bash ] && source /usr/local/etc/bash_completion.d/asdf.bash
+[ -f /usr/local/etc/bash_completion.d/kubie.bash ] && source /usr/local/etc/bash_completion.d/kubie.bash
 [ -f ~/.asdf/plugins/java/set-java-home.zsh ] && source ~/.asdf/plugins/java/set-java-home.zsh
+[ -f ~/.asdf/plugins/dotnet-core/set-dotnet-home.zsh ] && source ~/.asdf/plugins/dotnet-core/set-dotnet-home.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.kubectl_aliases ] && source ~/.kubectl_aliases
 
@@ -78,7 +80,18 @@ SAVEHIST=100000
 [ -x "$(command -v kubectl)" ] && source <(kubectl completion zsh)
 [ -x "$(command -v stern)" ] && source <(stern --completion=zsh)
 
-export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/curl-openssl/bin:$PATH:$(go env GOPATH)/bin"
+export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/curl-openssl/bin:/usr/local/sbin:$PATH:$(go env GOPATH)/bin:$HOME/.dotnet/tools:$HOME/.bin"
+
+function set-dotnet-vars {
+  DOTNET_BASE=$(dotnet --info | grep "Base Path" | awk '{print $3}')
+  DOTNET_ROOT=$(echo $DOTNET_BASE | sed -E "s/^(.*)(\/sdk\/[^\/]+\/)$/\1/")
+  
+  export MSBuildSDKsPath=${DOTNET_BASE}Sdks/ 
+  export DOTNET_ROOT=$DOTNET_ROOT
+  export PATH=$DOTNET_ROOT:$PATH
+}
+
+set-dotnet-vars
 
 unsetopt menu_complete   # do not autoselect the first completion entry
 unsetopt flowcontrol
@@ -218,6 +231,9 @@ alias cam='git commit -a -m'
 alias s='git status'
 alias gl="git log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'"
 alias gco='git checkout'
+
+# kubernetes
+alias knetdebug='kubectl run -i --tty --rm clr-tempshell --image=nicolaka/netshoot -- /bin/bash'
 
 # unix
 alias rm='rm -i'

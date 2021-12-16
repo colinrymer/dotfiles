@@ -44,3 +44,5 @@
   includeStatusHeader = false
   includePullRequestsSection = false
   includeIssuesSection = false
+[init]
+	defaultBranch = main

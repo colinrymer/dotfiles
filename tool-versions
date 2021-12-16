@@ -1,10 +1,11 @@
 erlang 21.0.2
 elixir 1.7.4-otp-21
 golang 1.16.3
-nodejs 16.0.0
+nodejs 14.16.1
 ruby 2.7.1
 rust 1.37.0
-java openjdk-15.0.2
+java openjdk-11
 maven 3.6.0
 python 3.9.0
-terraform 0.15.0
+terraform 1.0.10
+dotnet-core 5.0.403
