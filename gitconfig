@@ -1,11 +1,3 @@
-[user]
-  name = Colin Rymer
-  email = colin.rymer@gmail.com
-#  signingkey = CC1E9C453436D34B
-[push]
-  default = current
-[color]
-  ui = true
 [alias]
   branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
   co-pr = !sh -c 'git fetch origin pull/$1/head:pr/$1 && git checkout pr/$1' -
@@ -18,31 +10,66 @@
   rename-branch = !sh -c 'old=$(git current-branch) && git branch -m $old $1 && git push origin --set-upstream $1 && git push origin --delete $old' -
   st = status
   up = !git fetch origin && git rebase origin/master
+
+[branch]
+  autosetuprebase = always
+
+[color]
+  ui = true
+
+[commit]
+  gpgsign = false
+
 [core]
-  excludesfile = /Users/colin/.gitignore_global
   autocrlf = input
-[merge]
-  ff = only
+  pager = delta
+
+[delta]
+  light = false
+  line-numbers = true
+  navigate = true
+  side-by-side = true
+
+[diff]
+  colorMoved = default
+
 [fetch]
   prune = true
-[heroku]
-  account = personal
+
 [filter "lfs"]
   process = git-lfs filter-process
   required = true
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
-[branch]
-  autosetuprebase = always
-[rerere]
-  enabled = 1
-[commit]
-  gpgsign = false
+
+[heroku]
+  account = personal
+
+[init]
+  defaultBranch = main
+
+[interactive]
+  diffFilter = delta --color-only
+
 [magithub]
   online = false
+
 [magithub "status"]
   includeStatusHeader = false
   includePullRequestsSection = false
   includeIssuesSection = false
-[init]
-	defaultBranch = main
+
+[merge]
+  conflict = diff3
+  ff = only
+
+[push]
+  default = current
+
+[rerere]
+  enabled = 1
+
+[user]
+  name = Colin Rymer
+  email = colin.rymer@gmail.com
+#  signingkey = CC1E9C453436D34B

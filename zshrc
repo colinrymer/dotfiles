@@ -6,7 +6,23 @@ autoload -Uz compinit && compinit
 autoload -Uz bashcompinit && bashcompinit
 _comp_options+=(globdots)
 
-export AWS_VAULT_KEYCHAIN_NAME=login
+HISTDB_TABULATE_CMD=(sed -e $'s/\x1f/\t/g')
+source $HOME/.dotfiles/zsh-plugins/zsh-histdb/sqlite-history.zsh 
+
+_zsh_autosuggest_strategy_histdb_top_here() {
+    local query="select commands.argv from
+history left join commands on history.command_id = commands.rowid
+left join places on history.place_id = places.rowid
+where places.dir LIKE '$(sql_escape $PWD)%'
+and commands.argv LIKE '$(sql_escape $1)%'
+group by commands.argv order by count(*) desc limit 1"
+    suggestion=$(_histdb_query "$query")
+}
+
+ZSH_AUTOSUGGEST_STRATEGY=histdb_top_here
+
+autoload -Uz add-zsh-hook
+
 export CLICOLOR=true
 export ERL_AFLAGS="-kernel shell_history enabled"
 export FZF_DEFAULT_COMMAND='rg --files'
@@ -75,23 +91,29 @@ SAVEHIST=1000000
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f ~/.kubectl_aliases ] && source ~/.kubectl_aliases
 
-[ -x "$(command -v aws-vault)" ] && eval "$(aws-vault --completion-script-zsh)"
 [ -x "$(command -v hub)" ] && eval "$(hub alias -s)"
 [ -x "$(command -v kubectl)" ] && source <(kubectl completion zsh)
 [ -x "$(command -v stern)" ] && source <(stern --completion=zsh)
 
-export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/curl-openssl/bin:/usr/local/sbin:$PATH:$(go env GOPATH)/bin:$HOME/.dotnet/tools:$HOME/.bin"
-
-function set-dotnet-vars {
-  DOTNET_BASE=$(dotnet --info | grep "Base Path" | awk '{print $3}')
-  DOTNET_ROOT=$(echo $DOTNET_BASE | sed -E "s/^(.*)(\/sdk\/[^\/]+\/)$/\1/")
-  
-  export MSBuildSDKsPath=${DOTNET_BASE}Sdks/ 
-  export DOTNET_ROOT=$DOTNET_ROOT
-  export PATH=$DOTNET_ROOT:$PATH
+direnv() {
+  asdf exec direnv "$@"
 }
 
-set-dotnet-vars
+export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/curl-openssl/bin:/usr/local/sbin:$PATH:$(go env GOPATH)/bin:$HOME/.dotnet/tools:$HOME/.bin:$HOME/.rd/bin"
+
+update_dotnet_home() {
+  local dotnet_path
+  dotnet_base="$(dotnet --info | grep "Base Path" | awk '{print $3}')"
+  if [[ -n "${dotnet_base}" ]]; then
+    export DOTNET_BASE="${dotnet_base}"
+    export DOTNET_ROOT=$(echo $DOTNET_BASE | sed -E "s/^(.*)(\/sdk\/[^\/]+\/)$/\1/")
+    export MSBuildSDKsPath=${DOTNET_BASE}Sdks/ 
+  fi
+}
+
+update_dotnet_home
+
+# add-zsh-hook precmd update_dotnet_home
 
 unsetopt menu_complete   # do not autoselect the first completion entry
 unsetopt flowcontrol
@@ -205,7 +227,7 @@ bindkey -e
 bindkey '^?' backward-delete-char
 bindkey "^[[3~" delete-char
 
-eval "$(direnv hook zsh)"
+eval "$(asdf exec direnv hook zsh)"
 ### This has to be after the direnv hook to fix a bug where the
 ### directory contents are printed multiple times.
 chpwd_functions=( ls_after_chpwd $chpwd_functions )

@@ -36,6 +36,31 @@ for key, dir in pairs({
 end
 
 -----------------------------------------------
+-- vim-like window movement across screens
+-----------------------------------------------
+for key, dir in pairs({
+  h = "left",
+  j = "down",
+  k = "up",
+  l = "right"
+}) do
+  hs.hotkey.bind({"cmd", "alt", "shift"}, key, function()
+    local win = hs.window.focusedWindow()
+
+    if (dir == "left") then
+      win:moveOneScreenWest(false, true, 0)
+    elseif (dir == "down") then
+      win:moveOneScreenSouth(false, true, 0)
+    elseif (dir == "up") then
+      win:moveOneScreenNorth(false, true, 0)
+    elseif (dir == "right") then
+      win:moveOneScreenEast(false, true, 0)
+    end
+  end)
+end
+
+
+-----------------------------------------------
 -- application hotkeys
 -----------------------------------------------
 for key, name in pairs({
