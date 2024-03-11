@@ -1,10 +1,8 @@
-consul
 direnv
 dotnet-core
 elixir
 erlang
 golang
-helm
 istioctl
 java
 kubectl
@@ -20,4 +18,4 @@ terraform-lsp
 terraform-validator
 tflint
 tfsec
-vault 
+vault
