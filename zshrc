@@ -1,5 +1,15 @@
+if [ "$(arch)" = 'i386' ]; then
+  [ -e /usr/local/bin/brew ] && eval "$(/usr/local/bin/brew shellenv)"
+else # arch = arm64
+  [ -e /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 cdpath=(. $HOME/Projects/updater $HOME/Projects $HOME)
-fpath=($HOME/.dotfiles/zsh-completions/ /usr/local/Homebrew/completions/zsh/ /usr/local/share/zsh-completions $fpath)
+FPATH="$HOME/.dotfiles/zsh-completions/:/usr/local/share/zsh-completions:${FPATH}"
+
+if type brew &>/dev/null; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
 
 autoload -Uz colors && colors
 autoload -Uz compinit && compinit
