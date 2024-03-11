@@ -5,7 +5,7 @@ brew bundle --global
 export GNUPGHOME="${ASDF_DIR:-$HOME/.asdf}/keyrings/nodejs" && mkdir -p "$GNUPGHOME" && chmod 0700 "$GNUPGHOME"
 bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
 
-. /usr/local/opt/asdf/asdf.sh
+. $(brew --prefix)/opt/asdf/asdf.sh
 
 for plugin in $(cat ../.asdf-plugins); do
     asdf plugin-list | grep $plugin > /dev/null 2>&1
