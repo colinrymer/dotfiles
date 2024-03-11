@@ -5,10 +5,15 @@ else # arch = arm64
 fi
 
 cdpath=(. $HOME/Projects/updater $HOME/Projects $HOME)
-FPATH="$HOME/.dotfiles/zsh-completions/:/usr/local/share/zsh-completions:${FPATH}"
+FPATH="$HOME/.dotfiles/zsh-completions/:${FPATH}"
 
 if type brew &>/dev/null; then
-  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+  brew_installed="yes"
+  brew_prefix=$(brew --prefix)
+fi
+
+if [ -n "$brew_installed" ]; then
+  FPATH="${brew_prefix}/share/zsh/site-functions:${brew_prefix}/share/zsh-completions:${FPATH}"
 fi
 
 autoload -Uz colors && colors
@@ -60,7 +65,9 @@ if [ -f "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient" ]; then
 fi
 
 # Set location of z installation
-. /usr/local/etc/profile.d/z.sh
+if [ -n "$brew_installed" ]; then
+  . ${brew_prefix}/etc/profile.d/z.sh
+fi
 
 # f [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
@@ -93,9 +100,12 @@ HISTFILE=$HOME/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
 
-[ -f /usr/local/opt/asdf/libexec/asdf.sh ] && source /usr/local/opt/asdf/libexec/asdf.sh
-[ -f /usr/local/etc/bash_completion.d/asdf.bash ] && source /usr/local/etc/bash_completion.d/asdf.bash
-[ -f /usr/local/etc/bash_completion.d/kubie.bash ] && source /usr/local/etc/bash_completion.d/kubie.bash
+if [ -n "$brew_installed" ]; then
+  [ -f $(brew --prefix asdf)/libexec/asdf.sh ] && source $(brew --prefix asdf)/libexec/asdf.sh
+  [ -f ${brew_prefix}/etc/bash_completion.d/asdf.bash ] && source ${brew_prefix}/etc/bash_completion.d/asdf.bash
+  [ -f ${brew_prefix}/etc/bash_completion.d/kubie.bash ] && source ${brew_prefix}/etc/bash_completion.d/kubie.bash
+fi
+
 [ -f ~/.asdf/plugins/java/set-java-home.zsh ] && source ~/.asdf/plugins/java/set-java-home.zsh
 [ -f ~/.asdf/plugins/dotnet-core/set-dotnet-home.zsh ] && source ~/.asdf/plugins/dotnet-core/set-dotnet-home.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -109,7 +119,7 @@ direnv() {
   asdf exec direnv "$@"
 }
 
-export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:/usr/local/opt/curl-openssl/bin:/usr/local/sbin:$PATH:$(go env GOPATH)/bin:$HOME/.dotnet/tools:$HOME/.bin:$HOME/.rd/bin"
+export PATH="${brew_prefix}/opt/gnu-sed/libexec/gnubin:${brew_prefix}/opt/curl-openssl/bin:${brew_prefix}/sbin:$PATH:$(go env GOPATH)/bin:$HOME/.dotnet/tools:$HOME/.bin:$HOME/.rd/bin"
 
 update_dotnet_home() {
   local dotnet_path
@@ -291,8 +301,8 @@ eval "$(starship init zsh)"
 #######################
 # MUST BE LOADED LAST #
 #######################
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+source ${brew_prefix}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ${brew_prefix}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 #######################
@@ -300,4 +310,3 @@ bindkey '^[[B' history-substring-search-down
 #######################
 
 neofetch
-
