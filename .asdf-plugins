@@ -10,6 +10,7 @@ maven
 nodejs
 opa
 operator-sdk
+packer
 python
 ruby
 rust
