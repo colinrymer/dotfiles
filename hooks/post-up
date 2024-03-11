@@ -14,8 +14,4 @@ for plugin in $(cat ../.asdf-plugins); do
     fi
 done
 
-pushd ~/
-GNUPGHOME="${ASDF_DIR:-$HOME/.asdf}/keyrings/nodejs" asdf install
-popd
-
 ln -sf ~/.dotfiles/spaceship-prompt/spaceship.zsh $(brew --prefix)/share/zsh/site-functions/prompt_spaceship_setup
