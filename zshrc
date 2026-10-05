@@ -4,16 +4,22 @@ else # arch = arm64
   [ -e /opt/homebrew/bin/brew ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-cdpath=(. $HOME/Projects/updater $HOME/Projects $HOME)
+cdpath=(. $HOME/Projects/colinrymer $HOME/Projects/kobiton $HOME/Projects $HOME)
 FPATH="$HOME/.dotfiles/zsh-completions/:${FPATH}"
 
-if type brew &>/dev/null; then
-  brew_installed="yes"
+if [ -x "$(command -v brew)" ]; then
+  brew_installed=yes
   brew_prefix=$(brew --prefix)
+  FPATH="${brew_prefix}/share/zsh/site-functions:${brew_prefix}/share/zsh-completions:${FPATH}"
 fi
 
-if [ -n "$brew_installed" ]; then
-  FPATH="${brew_prefix}/share/zsh/site-functions:${brew_prefix}/share/zsh-completions:${FPATH}"
+if [ -x "$(command -v asdf)" ]; then
+  if [ ! -f "${ASDF_DATA_DIR:-$HOME/.asdf}/completions/_asdf" ]; then
+    mkdir -p "${ASDF_DATA_DIR:-$HOME/.asdf}/completions"
+    asdf completion zsh > "${ASDF_DATA_DIR:-$HOME/.asdf}/completions/_asdf"
+  fi
+
+  FPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/completions:${FPATH}"
 fi
 
 autoload -Uz colors && colors
@@ -38,6 +44,7 @@ ZSH_AUTOSUGGEST_STRATEGY=histdb_top_here
 
 autoload -Uz add-zsh-hook
 
+export ASDF_GOLANG_MOD_VERSION_ENABLED=true
 export CLICOLOR=true
 export ERL_AFLAGS="-kernel shell_history enabled"
 export FZF_DEFAULT_COMMAND='rg --files'
@@ -101,8 +108,6 @@ HISTSIZE=1000000
 SAVEHIST=1000000
 
 if [ -n "$brew_installed" ]; then
-  [ -f $(brew --prefix asdf)/libexec/asdf.sh ] && source $(brew --prefix asdf)/libexec/asdf.sh
-  [ -f ${brew_prefix}/etc/bash_completion.d/asdf.bash ] && source ${brew_prefix}/etc/bash_completion.d/asdf.bash
   [ -f ${brew_prefix}/etc/bash_completion.d/kubie.bash ] && source ${brew_prefix}/etc/bash_completion.d/kubie.bash
 fi
 
@@ -119,7 +124,7 @@ direnv() {
   asdf exec direnv "$@"
 }
 
-export PATH="${brew_prefix}/opt/gnu-sed/libexec/gnubin:${brew_prefix}/opt/curl-openssl/bin:${brew_prefix}/sbin:$PATH:$(go env GOPATH)/bin:$HOME/.dotnet/tools:$HOME/.bin:$HOME/.rd/bin"
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:${brew_prefix}/opt/gnu-sed/libexec/gnubin:${brew_prefix}/opt/curl-openssl/bin:${brew_prefix}/sbin:$PATH:$HOME/.dotnet/tools:$HOME/.bin:$HOME/.rd/bin:$HOME/.local/bin"
 
 update_dotnet_home() {
   local dotnet_path
@@ -218,6 +223,14 @@ zstyle ':completion:*:messages' format '%d'
 zstyle ':completion:*:warnings' format 'No matches for: %d'
 zstyle ':completion:*' group-name ''
 
+function kssh() {
+    sshpass -f /Users/colinrymer/Documents/kobiton/ssh/kobitonSupport.txt ssh kobitonSupport@$1
+}
+
+function kmssh() {
+    sshpass -f /Users/colinrymer/Documents/kobiton/ssh/deviceconnect.txt ssh deviceconnect@$1
+}
+
 function mcd() { 
     mkdir -p "$1" && cd "$1"; 
 }
@@ -296,6 +309,7 @@ alias cat='bat'
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
 
+export SPACESHIP_PROMPT_ASYNC=FALSE
 eval "$(starship init zsh)"
 
 #######################
@@ -310,3 +324,4 @@ bindkey '^[[B' history-substring-search-down
 #######################
 
 neofetch
+source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"

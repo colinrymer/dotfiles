@@ -1,0 +1,27 @@
+font-family = "Hack Nerd Font Mono"
+font-size = "13"
+
+# theme = "Oceanic-Next"
+
+palette = 0=#29414f
+palette = 1=#ec5f67
+palette = 2=#99c794
+palette = 3=#fac863
+palette = 4=#6699cc
+palette = 5=#c594c5
+palette = 6=#5fb3b3
+palette = 7=#65737e
+palette = 8=#405860
+palette = 9=#ec5f67
+palette = 10=#99c794
+palette = 11=#fac863
+palette = 12=#6699cc
+palette = 13=#c594c5
+palette = 14=#5fb3b3
+palette = 15=#adb5c0
+background = #1b2b34
+foreground = #d8dee9
+cursor-color = #c1c5cd
+cursor-text = #1e2b33
+selection-background = #515b65
+selection-foreground = #c1c5cd

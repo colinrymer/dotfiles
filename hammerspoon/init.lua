@@ -67,10 +67,10 @@ for key, name in pairs({
   a = {"Active Trader Pro"},
   -- b = {""},
   c = {"Google Chrome"},
-  d = {"Discord"},
+  -- d = {""},
   e = {"Emacs"},
   f = {"Finder"},
-  -- g = {""},
+  g = {"ChatGPT"},
   -- h = {""},
   -- i = {""},
   -- j = {""},
@@ -83,7 +83,7 @@ for key, name in pairs({
   -- q = {""},
   -- r = {""},
   s = {"Slack"},
-  t = {"iTerm"},
+  t = {"Warp"},
   u = {"PrusaSlicer"},
   v = {"Visual Studio Code"},
   -- w = {""},
@@ -109,14 +109,12 @@ hs.hotkey.bind(hyper, "l", function()
 end)
 
 hs.hotkey.bind("ctrl", "`", function()
-  local app = hs.application.get("iTerm2")
+  local app = hs.application.get("Ghostty")
 
     if app and app:isFrontmost() then
       app:hide()
     else
-      if not hs.application.launchOrFocus("iTerm") then
-        hs.application.launchOrFocus("iTerm2")
-      end
+      hs.application.launchOrFocus("Ghostty")
     end
 end)
 

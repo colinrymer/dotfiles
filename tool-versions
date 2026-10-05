@@ -12,3 +12,4 @@ dotnet-core 8.0.201
 direnv 2.30.3
 #istioctl 1.13.4
 #packer 1.8.2
+nodejs 22.16.0

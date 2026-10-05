@@ -1,3 +1,5 @@
+@github/copilot-language-server
+bash-language-server
 git-cz
 nx
 typescript-language-server
